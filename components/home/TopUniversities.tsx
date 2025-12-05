@@ -1,0 +1,97 @@
+import Link from 'next/link'
+import Image from 'next/image'
+import { FiStar, FiMapPin, FiUsers, FiArrowRight } from 'react-icons/fi'
+import universitiesData from '@/data/universities.json'
+
+export default function TopUniversities() {
+  const topUniversities = universitiesData
+    .sort((a, b) => b.rating - a.rating)
+    .slice(0, 6)
+
+  return (
+    <section className="py-20 bg-gray-50">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            Топ университеты <span className="gradient-text">Казахстана</span>
+          </h2>
+          <p className="text-xl text-gray-600">
+            Лучшие высшие учебные заведения по рейтингу и качеству образования
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {topUniversities.map((uni) => (
+            <Link key={uni.id} href={`/universities/${uni.id}`}>
+              <div className="glass-effect rounded-2xl overflow-hidden card-hover cursor-pointer h-full">
+                <div className="relative h-48 bg-gradient-to-br from-primary-100 to-secondary-100">
+                  <Image
+                    src={uni.cover}
+                    alt={uni.name}
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center space-x-1">
+                    <FiStar className="text-yellow-500" />
+                    <span className="font-bold">{uni.rating}</span>
+                  </div>
+                </div>
+
+                <div className="p-6">
+                  <div className="flex items-center space-x-3 mb-3">
+                    <Image
+                      src={uni.logo}
+                      alt={uni.shortName}
+                      width={48}
+                      height={48}
+                      className="rounded-lg"
+                    />
+                    <div>
+                      <h3 className="font-bold text-lg">{uni.shortName}</h3>
+                      <div className="flex items-center space-x-1 text-sm text-gray-500">
+                        <FiMapPin size={12} />
+                        <span>{uni.city}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                    {uni.description}
+                  </p>
+
+                  <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center space-x-1 text-gray-500">
+                      <FiUsers size={16} />
+                      <span>{uni.students.toLocaleString()} студентов</span>
+                    </div>
+                    <div className="text-primary-600 font-semibold flex items-center space-x-1">
+                      <span>Узнать больше</span>
+                      <FiArrowRight />
+                    </div>
+                  </div>
+
+                  {uni.worldRank && (
+                    <div className="mt-3 pt-3 border-t border-gray-100">
+                      <span className="text-xs text-gray-500">
+                        🌍 {uni.worldRank} место в мире
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        <div className="text-center mt-12">
+          <Link href="/universities">
+            <button className="px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-xl hover:shadow-xl transition-all text-lg font-semibold">
+              Смотреть все университеты
+            </button>
+          </Link>
+        </div>
+      </div>
+    </section>
+  )
+}
+
