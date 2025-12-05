@@ -201,6 +201,77 @@ function AboutTab({ university }: { university: University }) {
           </div>
         </div>
       </section>
+
+      {university.faculties && university.faculties.length > 0 && (
+        <section>
+          <h3 className="text-xl font-bold mb-3">Факультеты и школы</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            {university.faculties.map((faculty, index) => (
+              <div key={index} className="flex items-center space-x-2 text-gray-700 p-2 bg-gray-50 rounded-lg">
+                <span className="text-primary-500">✓</span>
+                <span>{faculty}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {university.researchAreas && university.researchAreas.length > 0 && (
+        <section>
+          <h3 className="text-xl font-bold mb-3">Области исследований</h3>
+          <div className="flex flex-wrap gap-2">
+            {university.researchAreas.map((area, index) => (
+              <span key={index} className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm">
+                {area}
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {university.partners && university.partners.length > 0 && (
+        <section>
+          <h3 className="text-xl font-bold mb-3">Партнерские университеты</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            {university.partners.map((partner, index) => (
+              <div key={index} className="flex items-center space-x-2 text-gray-700 p-2 bg-blue-50 rounded-lg">
+                <span className="text-secondary-500">🌍</span>
+                <span>{partner}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {university.alumni && university.alumni.length > 0 && (
+        <section>
+          <h3 className="text-xl font-bold mb-3">Известные выпускники</h3>
+          <ul className="space-y-2">
+            {university.alumni.map((alumnus, index) => (
+              <li key={index} className="flex items-start space-x-2 text-gray-700 p-2 bg-yellow-50 rounded-lg">
+                <span className="text-accent-500 mt-1">⭐</span>
+                <span>{alumnus}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {university.employmentRate && (
+        <section>
+          <div className="p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border-2 border-green-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-xl font-bold mb-2">Трудоустройство выпускников</h3>
+                <p className="text-gray-600 text-sm">Процент выпускников, нашедших работу в течение года после окончания</p>
+              </div>
+              <div className="text-right">
+                <div className="text-5xl font-bold text-green-600">{university.employmentRate}%</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   )
 }

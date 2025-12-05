@@ -68,8 +68,15 @@ ${prompt}
   }
 
   if (university) {
-    fullPrompt += `Университет: ${university.name}
-Рейтинг: ${university.rating}/5.0
+    fullPrompt += `УНИВЕРСИТЕТ:
+- Название: ${university.name}
+- Рейтинг: ${university.rating}/5.0
+${university.worldRank ? `- Мировое место: #${university.worldRank}` : ''}
+- Город: ${university.city}
+- Тип: ${university.type === 'national' ? 'Национальный' : university.type === 'state' ? 'Государственный' : 'Частный'}
+${university.employmentRate ? `- Трудоустройство: ${university.employmentRate}%` : ''}
+${university.faculties?.length > 0 ? `- Факультеты: ${university.faculties.join(', ')}` : ''}
+${university.researchAreas?.length > 0 ? `- Области исследований: ${university.researchAreas.join(', ')}` : ''}
 
 `
   }
