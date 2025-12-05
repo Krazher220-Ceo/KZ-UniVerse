@@ -560,31 +560,10 @@ function MyChancesTab({ university, programs }: { university: University, progra
       const program = programs.find(p => p.id === selectedProgram)
       if (!program) return
 
-      // Используем API расчета шансов
-      const response = await fetch('/api/admission-chance', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          portfolio: userPortfolio,
-          universityId: university.id,
-          programId: selectedProgram
-        })
-      })
-
-      if (response.ok) {
-        const data = await response.json()
-        if (data.chance) {
-          setChances([data.chance])
-        } else {
-          // Fallback на локальный расчет
-          const chance = calculateLocalChance(userPortfolio, program, university)
-          setChances([chance])
-        }
-      } else {
-        // Fallback на локальный расчет
-        const chance = calculateLocalChance(userPortfolio, program, university)
-        setChances([chance])
-      }
+      // Используем client-side API
+      const { admissionChanceAPI } = await import('@/lib/api-client')
+      const chance = await admissionChanceAPI(userPortfolio, university.id, selectedProgram)
+      setChances([chance])
     } catch (error) {
       console.error('Error:', error)
       const program = programs.find(p => p.id === selectedProgram)

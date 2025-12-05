@@ -52,19 +52,11 @@ export default function AIChat() {
         }
       }
 
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          message: input, 
-          history: messages,
-          portfolio: portfolio
-        })
-      })
-
-      if (!response.ok) throw new Error('API error')
-
-      const data = await response.json()
+      // Используем client-side API
+      const { chatAPI } = await import('@/lib/api-client')
+      const response = await chatAPI(input, messages, portfolio)
+      
+      const data = { response }
 
       const aiMessage: AIMessage = {
         id: (Date.now() + 1).toString(),
