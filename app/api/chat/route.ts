@@ -15,18 +15,11 @@ export async function POST(request: NextRequest) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [
-            ...(history?.slice(-5).map((h: any) => ({
-              role: h.role === 'user' ? 'user' : 'model',
-              parts: [{ text: h.content }]
-            })) || []),
-            {
-              role: 'user',
-              parts: [{
-                text: buildGeminiPrompt(message, portfolio, universitiesData, programsData)
-              }]
-            }
-          ]
+          contents: [{
+            parts: [{
+              text: buildGeminiPrompt(message, portfolio, universitiesData, programsData)
+            }]
+          }]
         })
       })
 

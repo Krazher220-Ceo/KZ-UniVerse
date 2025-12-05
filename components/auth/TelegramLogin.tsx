@@ -92,7 +92,9 @@ export default function TelegramLogin() {
         // Создаем пользователя в системе
         const user = login(
           data.user.email,
-          data.user.name
+          data.user.name,
+          initData.user.id,
+          initData.user.username
         )
 
         router.push('/profile')

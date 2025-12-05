@@ -635,24 +635,52 @@ function MyChancesTab({ university, programs }: { university: University, progra
   }
 
   const calculateLocalChance = (portfolio: any, program: any, university: any): AdmissionChance => {
-    const entScore = portfolio.entScore ? (portfolio.entScore / program.requirements?.minENT || 140) * 100 : 50
-    const gpa = portfolio.gpa ? (portfolio.gpa / 5.0) * 100 : 50
-    const achievements = Math.min(100, (portfolio.achievements?.length || 0) * 10 + (portfolio.olympiads?.length || 0) * 15)
+    const minENT = program.requirements?.minENT || 50
+    const entScore = portfolio.entScore 
+      ? Math.min(100, Math.max(0, (portfolio.entScore / minENT) * 100))
+      : 0
+    const gpa = portfolio.gpa 
+      ? Math.min(100, (portfolio.gpa / 5.0) * 100)
+      : 0
+    const achievements = Math.min(100, 
+      (portfolio.achievements?.length || 0) * 5 + 
+      (portfolio.olympiads?.length || 0) * 15
+    )
+    const competition = university.rating * 20
     
-    const chance = (entScore * 0.4 + gpa * 0.2 + achievements * 0.3) - (university.rating * 10 - 50) * 0.1
+    // Улучшенный расчет шансов
+    const baseChance = (entScore * 0.4 + gpa * 0.2 + achievements * 0.3)
+    const competitionPenalty = Math.max(0, (competition - 50) * 0.1)
+    const chance = Math.max(0, Math.min(100, baseChance - competitionPenalty))
+
+    const recommendations: string[] = []
+    if (portfolio.entScore && portfolio.entScore < minENT) {
+      recommendations.push(`Повысить ЕНТ до ${minENT}+`)
+    }
+    if (!portfolio.entScore) {
+      recommendations.push('Указать балл ЕНТ для точного расчета')
+    }
+    if (portfolio.gpa && portfolio.gpa < 4.0) {
+      recommendations.push('Улучшить средний балл до 4.0+')
+    }
+    if (!portfolio.olympiads || portfolio.olympiads.length === 0) {
+      recommendations.push('Участвовать в олимпиадах')
+    }
+    if (chance < 50) {
+      recommendations.push('Рассмотреть альтернативные программы')
+    }
 
     return {
       universityId: university.id,
       programId: program.id,
-      chance: Math.max(0, Math.min(100, Math.round(chance))),
-      factors: { entScore, gpa, achievements, competition: university.rating * 20 },
-      recommendations: [
-        portfolio.entScore && portfolio.entScore < (program.requirements?.minENT || 100) 
-          ? `Повысить ЕНТ до ${program.requirements.minENT}+` 
-          : 'ЕНТ соответствует требованиям',
-        portfolio.olympiads?.length === 0 ? 'Участвовать в олимпиадах' : 'Отличные достижения!',
-        'Подготовить портфолио проектов'
-      ]
+      chance: Math.round(chance),
+      factors: { 
+        entScore: Math.round(entScore), 
+        gpa: Math.round(gpa), 
+        achievements: Math.round(achievements), 
+        competition: Math.round(competition) 
+      },
+      recommendations: recommendations.length > 0 ? recommendations : ['Ваш профиль соответствует требованиям!']
     }
   }
 
