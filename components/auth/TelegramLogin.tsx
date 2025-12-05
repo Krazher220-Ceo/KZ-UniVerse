@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { FiSend } from 'react-icons/fi'
-import { login, isAuthenticated } from '@/lib/auth'
+import { loginTelegram, isAuthenticated } from '@/lib/auth'
 import { saveTelegramUser, getTelegramUser } from '@/lib/telegram'
 
 declare global {
@@ -127,7 +127,7 @@ export default function TelegramLogin() {
         ? `${user.first_name} ${user.last_name}` 
         : user.first_name
 
-      login(email, fullName, user.id, user.username)
+      loginTelegram(email, fullName, user.id, user.username)
 
       router.push('/profile')
     } catch (error) {

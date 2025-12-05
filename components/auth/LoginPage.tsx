@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { FiMail, FiUser, FiLock, FiArrowRight } from 'react-icons/fi'
-import { login, isAuthenticated } from '@/lib/auth'
+import { FiMail, FiUser, FiLock, FiArrowRight, FiEye, FiEyeOff } from 'react-icons/fi'
+import { login, register, isAuthenticated } from '@/lib/auth'
 import TelegramLogin from './TelegramLogin'
 
 export default function LoginPage() {
@@ -11,6 +11,10 @@ export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true)
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [error, setError] = useState('')
 
   useEffect(() => {
@@ -28,17 +32,48 @@ export default function LoginPage() {
       return
     }
 
-    if (!isLogin && !name) {
-      setError('Введите имя')
+    if (!password) {
+      setError('Введите пароль')
       return
     }
 
-    try {
-      const user = login(email, name || email.split('@')[0])
-      router.push('/profile')
-    } catch (err) {
-      setError('Ошибка входа. Попробуйте снова.')
+    if (password.length < 6) {
+      setError('Пароль должен содержать минимум 6 символов')
+      return
     }
+
+    if (!isLogin) {
+      if (!name) {
+        setError('Введите имя')
+        return
+      }
+
+      if (password !== confirmPassword) {
+        setError('Пароли не совпадают')
+        return
+      }
+
+      try {
+        const user = register(email, name, password)
+        router.push('/profile')
+      } catch (err: any) {
+        setError(err.message || 'Ошибка регистрации. Попробуйте снова.')
+      }
+    } else {
+      try {
+        const user = login(email, password)
+        router.push('/profile')
+      } catch (err: any) {
+        setError(err.message || 'Неверный email или пароль.')
+      }
+    }
+  }
+
+  const handleToggleMode = () => {
+    setIsLogin(!isLogin)
+    setError('')
+    setPassword('')
+    setConfirmPassword('')
   }
 
   return (
@@ -91,6 +126,50 @@ export default function LoginPage() {
               </div>
             </div>
 
+            <div>
+              <label className="block text-sm font-medium mb-2">Пароль</label>
+              <div className="relative">
+                <FiLock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder={isLogin ? 'Введите пароль' : 'Минимум 6 символов'}
+                  className="w-full pl-12 pr-12 py-3 border border-gray-200 rounded-lg outline-none focus:border-primary-500"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  {showPassword ? <FiEyeOff /> : <FiEye />}
+                </button>
+              </div>
+            </div>
+
+            {!isLogin && (
+              <div>
+                <label className="block text-sm font-medium mb-2">Подтвердите пароль</label>
+                <div className="relative">
+                  <FiLock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <input
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Повторите пароль"
+                    className="w-full pl-12 pr-12 py-3 border border-gray-200 rounded-lg outline-none focus:border-primary-500"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+                  </button>
+                </div>
+              </div>
+            )}
+
             {error && (
               <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
                 {error}
@@ -108,7 +187,7 @@ export default function LoginPage() {
 
           <div className="mt-6 text-center">
             <button
-              onClick={() => setIsLogin(!isLogin)}
+              onClick={handleToggleMode}
               className="text-primary-600 hover:text-primary-700 text-sm"
             >
               {isLogin 

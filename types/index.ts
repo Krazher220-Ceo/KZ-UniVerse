@@ -19,8 +19,43 @@ export interface University {
   internationalStudents: number; // процент
   description: string;
   mission: string;
+  vision: string; // Добавлено поле видения
+  values: string[]; // Добавлены ценности
   achievements: string[];
-  infrastructure: string[];
+  accreditations: {
+    organization: string;
+    type?: string;
+    year?: number;
+  }[]; // Добавлены аккредитации
+  infrastructure: {
+    dormitories?: {
+      available: boolean;
+      capacity?: number;
+      costPerMonth?: number;
+      costPerYear?: number;
+      types?: string[];
+      amenities?: string[];
+    };
+    library?: {
+      name?: string;
+      books?: number;
+      electronicResources?: string[];
+      readingHalls?: number;
+      seats?: number;
+    };
+    laboratories?: {
+      total?: number;
+      scientific?: number;
+      computer?: number;
+      specialized?: number;
+    };
+    sports?: {
+      stadium?: boolean;
+      gym?: number;
+      pool?: boolean;
+      sections?: string[];
+    };
+  };
   website: string;
   email: string;
   phone: string;
@@ -43,9 +78,18 @@ export interface University {
   };
   dormitory: boolean;
   dormitoryCost?: number;
-  faculties?: string[]; // факультеты
+  faculties?: (string | {
+    name: string;
+    nameKz?: string;
+    nameEn?: string;
+    description?: string;
+  })[]; // факультеты (могут быть строками или объектами)
   researchAreas?: string[]; // области исследований
-  partners?: string[]; // партнерские университеты
+  partners?: (string | {
+    name: string;
+    country?: string;
+    type?: string;
+  })[]; // партнерские университеты (могут быть строками или объектами)
   alumni?: string[]; // известные выпускники
   employmentRate?: number; // процент трудоустройства
 }

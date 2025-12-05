@@ -157,6 +157,42 @@ function AboutTab({ university }: { university: University }) {
         <p className="text-gray-700 leading-relaxed">{university.mission}</p>
       </section>
 
+      {university.vision && (
+        <section>
+          <h3 className="text-xl font-bold mb-3">Видение</h3>
+          <p className="text-gray-700 leading-relaxed">{university.vision}</p>
+        </section>
+      )}
+
+      {university.values && university.values.length > 0 && (
+        <section>
+          <h3 className="text-xl font-bold mb-3">Ценности</h3>
+          <div className="flex flex-wrap gap-2">
+            {university.values.map((value, index) => (
+              <span key={index} className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm">
+                {value}
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {university.accreditations && university.accreditations.length > 0 && (
+        <section>
+          <h3 className="text-xl font-bold mb-3">Аккредитации</h3>
+          <ul className="space-y-2">
+            {university.accreditations.map((acc, i) => (
+              <li key={i} className="flex items-start space-x-3">
+                <span className="text-secondary-500 mt-1">★</span>
+                <span className="text-gray-700">
+                  {acc.organization} {acc.year ? `(${acc.year})` : ''} {acc.type ? `(${acc.type})` : ''}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <section>
         <h3 className="text-xl font-bold mb-3">Достижения</h3>
         <ul className="space-y-2">
@@ -167,18 +203,6 @@ function AboutTab({ university }: { university: University }) {
             </li>
           ))}
         </ul>
-      </section>
-
-      <section>
-        <h3 className="text-xl font-bold mb-3">Инфраструктура</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {university.infrastructure.map((item, i) => (
-            <div key={i} className="flex items-start space-x-2 p-3 bg-gray-50 rounded-lg">
-              <span className="text-secondary-500">●</span>
-              <span className="text-gray-700 text-sm">{item}</span>
-            </div>
-          ))}
-        </div>
       </section>
 
       <section>
@@ -200,6 +224,24 @@ function AboutTab({ university }: { university: University }) {
             <div className="text-3xl font-bold text-green-600">{university.rating}</div>
             <div className="text-sm text-gray-600">Рейтинг</div>
           </div>
+          {university.rankings?.qs?.position && (
+            <div className="p-4 bg-indigo-50 rounded-lg">
+              <div className="text-3xl font-bold text-indigo-600">{university.rankings.qs.position}</div>
+              <div className="text-sm text-gray-600">QS World Rank {university.rankings.qs.year}</div>
+            </div>
+          )}
+          {university.rankings?.the?.position && (
+            <div className="p-4 bg-pink-50 rounded-lg">
+              <div className="text-3xl font-bold text-pink-600">{university.rankings.the.position}</div>
+              <div className="text-sm text-gray-600">THE Rank {university.rankings.the.year}</div>
+            </div>
+          )}
+          {university.rankings?.national?.position && (
+            <div className="p-4 bg-teal-50 rounded-lg">
+              <div className="text-3xl font-bold text-teal-600">{university.rankings.national.position}</div>
+              <div className="text-sm text-gray-600">Национальный рейтинг {university.rankings.national.year}</div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -207,12 +249,22 @@ function AboutTab({ university }: { university: University }) {
         <section>
           <h3 className="text-xl font-bold mb-3">Факультеты и школы</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {university.faculties.map((faculty, index) => (
-              <div key={index} className="flex items-center space-x-2 text-gray-700 p-2 bg-gray-50 rounded-lg">
-                <span className="text-primary-500">✓</span>
-                <span>{faculty}</span>
-              </div>
-            ))}
+            {university.faculties.map((faculty, index) => {
+              const facultyName = typeof faculty === 'string' ? faculty : faculty.name || faculty.nameRu || '';
+              const facultyDescription = typeof faculty === 'object' && faculty.description ? faculty.description : null;
+              
+              return (
+                <div key={index} className="flex items-start space-x-2 text-gray-700 p-2 bg-gray-50 rounded-lg">
+                  <span className="text-primary-500 mt-1">✓</span>
+                  <div className="flex-1">
+                    <span className="font-medium">{facultyName}</span>
+                    {facultyDescription && (
+                      <p className="text-sm text-gray-500 mt-1">{facultyDescription}</p>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </section>
       )}
@@ -234,12 +286,21 @@ function AboutTab({ university }: { university: University }) {
         <section>
           <h3 className="text-xl font-bold mb-3">Партнерские университеты</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {university.partners.map((partner, index) => (
-              <div key={index} className="flex items-center space-x-2 text-gray-700 p-2 bg-blue-50 rounded-lg">
-                <span className="text-secondary-500">🌍</span>
-                <span>{partner}</span>
-              </div>
-            ))}
+            {university.partners.map((partner, index) => {
+              const partnerName = typeof partner === 'string' 
+                ? partner 
+                : (partner as any).name || '';
+              const partnerCountry = typeof partner === 'object' && (partner as any).country 
+                ? ` (${(partner as any).country})` 
+                : '';
+              
+              return (
+                <div key={index} className="flex items-center space-x-2 text-gray-700 p-2 bg-blue-50 rounded-lg">
+                  <span className="text-secondary-500">🌍</span>
+                  <span>{partnerName}{partnerCountry}</span>
+                </div>
+              );
+            })}
           </div>
         </section>
       )}
@@ -495,6 +556,54 @@ function TourTab({ university }: { university: University }) {
               Нажмите на точки интереса, чтобы узнать больше о помещениях и инфраструктуре.
             </p>
           </div>
+
+          <section className="p-6 bg-white rounded-xl border border-gray-100">
+            <h3 className="text-xl font-bold mb-4">Объекты инфраструктуры</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {university.infrastructure.dormitories?.available && (
+                <div className="flex items-start space-x-2 p-3 bg-gray-50 rounded-lg">
+                  <span className="text-secondary-500">●</span>
+                  <span className="text-gray-700 text-sm">Общежитие {university.infrastructure.dormitories.costPerYear && ` (${(university.infrastructure.dormitories.costPerYear / 1000).toFixed(0)}K ₸/год)`}</span>
+                </div>
+              )}
+              {university.infrastructure.library?.name && (
+                <div className="flex items-start space-x-2 p-3 bg-gray-50 rounded-lg">
+                  <span className="text-secondary-500">●</span>
+                  <span className="text-gray-700 text-sm">Библиотека {university.infrastructure.library.name && `(${university.infrastructure.library.name})`}</span>
+                </div>
+              )}
+              {university.infrastructure.laboratories?.total && university.infrastructure.laboratories.total > 0 && (
+                <div className="flex items-start space-x-2 p-3 bg-gray-50 rounded-lg">
+                  <span className="text-secondary-500">●</span>
+                  <span className="text-gray-700 text-sm">Лаборатории ({university.infrastructure.laboratories.total})</span>
+                </div>
+              )}
+              {university.infrastructure.sports?.stadium && (
+                <div className="flex items-start space-x-2 p-3 bg-gray-50 rounded-lg">
+                  <span className="text-secondary-500">●</span>
+                  <span className="text-gray-700 text-sm">Стадион</span>
+                </div>
+              )}
+              {university.infrastructure.sports?.gym && university.infrastructure.sports.gym > 0 && (
+                <div className="flex items-start space-x-2 p-3 bg-gray-50 rounded-lg">
+                  <span className="text-secondary-500">●</span>
+                  <span className="text-gray-700 text-sm">Спортзалы ({university.infrastructure.sports.gym})</span>
+                </div>
+              )}
+              {university.infrastructure.sports?.pool && (
+                <div className="flex items-start space-x-2 p-3 bg-gray-50 rounded-lg">
+                  <span className="text-secondary-500">●</span>
+                  <span className="text-gray-700 text-sm">Бассейн</span>
+                </div>
+              )}
+              {university.infrastructure.dormitories?.amenities && university.infrastructure.dormitories.amenities.length > 0 && (
+                <div className="flex items-start space-x-2 p-3 bg-gray-50 rounded-lg">
+                  <span className="text-secondary-500">●</span>
+                  <span className="text-gray-700 text-sm">Удобства в общежитии: {university.infrastructure.dormitories.amenities.join(', ')}</span>
+                </div>
+              )}
+            </div>
+          </section>
         </div>
       ) : (
         <div className="text-center py-20">

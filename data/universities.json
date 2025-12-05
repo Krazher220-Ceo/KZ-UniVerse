@@ -3,18 +3,48 @@
     "id": "nu",
     "name": "Nazarbayev University",
     "nameKz": "Назарбаев Университеті",
+    "nameEn": "Nazarbayev University",
     "shortName": "NU",
     "logo": "https://placehold.co/200x200/0066FF/white?text=NU",
     "cover": "https://images.unsplash.com/photo-1562774053-701939374585?w=1200",
     "city": "Астана",
     "region": "Акмолинская область",
+    "address": "Кабанбай батыр 53, Астана, 010000",
+    "coordinates": {
+      "lat": 51.090555,
+      "lng": 71.397777
+    },
     "rating": 4.9,
-    "worldRank": 295,
     "founded": 2010,
-    "students": 6000,
-    "internationalStudents": 15,
-    "description": "Nazarbayev University (NU) - первый в Казахстане автономный исследовательский университет, созданный по инициативе Первого Президента РК Н.А. Назарбаева в 2010 году. Университет является флагманом высшего образования в Центральной Азии и входит в топ-300 лучших университетов мира по версии Times Higher Education (THE) и QS World University Rankings. Все программы обучения ведутся на английском языке по международным стандартам. Университет имеет партнерские соглашения с ведущими мировыми университетами, включая University of Cambridge, Stanford University, National University of Singapore.",
-    "mission": "Миссия Назарбаев Университета - стать моделью высшего образования в Казахстане и регионе, способствовать развитию науки, технологий и инноваций, готовить конкурентоспособных специалистов мирового уровня для экономики знаний.",
+    "type": "national",
+    "status": "autonomous",
+    "students": 7089,
+    "studentsBreakdown": {
+      "bachelor": 4790,
+      "master": 1652,
+      "phd": 0
+    },
+    "internationalStudents": 10,
+    "internationalStudentsCount": 709,
+    "faculty": {
+      "total": 520,
+      "professors": 42,
+      "associateProfessors": 120,
+      "doctors": 0,
+      "candidates": 0,
+      "international": 354
+    },
+    "facultiesCount": 8,
+    "programsCount": {
+      "total": 0,
+      "bachelor": 0,
+      "master": 0,
+      "phd": 0
+    },
+    "description": "Nazarbayev University (NU) – ведущий флагманский ВУЗ Центральной Азии, стремящийся к мировому признанию как университет с передовыми научными исследованиями. Расположенный в самом сердце Евразии, в столице Казахстана, Астане, NU отличается полностью меритократической системой поступления, которая объединяет преподавание и исследования под руководством профессоров с первого дня обучения студентов. NU – это не просто новая образовательная модель, а университет, ориентированный на подготовку выпускников, готовых к успеху в эпоху глобализации и технологического прогресса.",
+    "mission": "Стать моделью проведения реформ в системе высшего образования и науки Казахстана и внести вклад в становление Астаны международным центром инноваций, знаний и медицины, и готовить студентов к миру, в котором возросли нестабильность, неопределенность, комплексность и неоднозначность",
+    "vision": "Готовить ученых и специалистов, руководителей и предпринимателей, необходимых для развития и процветания Казахстана и мира",
+    "values": [],
     "achievements": [
       "№1 университет Казахстана в международных рейтингах (THE, QS)",
       "150 место в Times Higher Education Asia University Rankings 2025",
@@ -24,50 +54,206 @@
       "100% программ на английском языке",
       "Международная аккредитация всех образовательных программ"
     ],
-    "infrastructure": [
-      "Современные научные лаборатории с оборудованием мирового уровня",
-      "Библиотека с доступом к международным базам данных",
-      "Спортивный комплекс олимпийского стандарта",
-      "Студенческие резиденции европейского уровня",
-      "Коворкинг-пространства и инновационный хаб"
+    "accreditations": [
+      {
+        "organization": "Европейская ассоциация по аккредитации программ в области государственного и муниципального управления (EAPAA)",
+        "type": "международная",
+        "year": 2019
+      },
+      {
+        "organization": "Сеть школ государственной политики, дел и управления (NASPAA)",
+        "type": "международная",
+        "year": 2023
+      },
+      {
+        "organization": "Британская ассоциация преподавателей английского языка для академических целей (BALEAP)",
+        "type": "международная",
+        "year": 2020
+      },
+      {
+        "organization": "Евразийский центр аккредитации и обеспечения качества в высшем образовании и здравоохранении (ECAQA)",
+        "type": "международная",
+        "year": 2024
+      }
     ],
+    "rankings": {
+      "qs": {
+        "year": 0,
+        "position": 0
+      },
+      "the": {
+        "year": 2025,
+        "position": 501
+      },
+      "national": {
+        "year": 0,
+        "position": 1
+      }
+    },
+    "infrastructure": {
+      "dormitories": {
+        "available": true,
+        "capacity": 0,
+        "costPerMonth": 0,
+        "costPerYear": 150000,
+        "types": [],
+        "amenities": ["интернет", "кухня", "прачечная", "спортзал"]
+      },
+      "library": {
+        "name": "Библиотека Назарбаев Университета",
+        "books": 0,
+        "electronicResources": [],
+        "readingHalls": 0,
+        "seats": 0
+      },
+      "laboratories": {
+        "total": 0,
+        "scientific": 0,
+        "computer": 0,
+        "specialized": 0
+      },
+      "sports": {
+        "stadium": true,
+        "gym": 0,
+        "pool": true,
+        "sections": []
+      }
+    },
     "website": "https://nu.edu.kz",
     "email": "nu@nu.edu.kz",
     "phone": "+7 (7172) 70-66-88",
-    "address": "Кабанбай батыр 53, Астана, 010000",
+    "admission": {
+      "email": "info_admissions@nu.edu.kz",
+      "phone": "+7 (7172) 64 25 84",
+      "address": "Республика Казахстан, г. Астана, пр. Кабанбай батыра, 53, блок 1, кабинет 1111."
+    },
     "socialMedia": {
       "facebook": "https://facebook.com/NazarbayevUniversity",
       "instagram": "https://instagram.com/nazarbayevuniversity",
-      "youtube": "https://youtube.com/@NazarbayevUniversity"
-    },
-    "tour3D": "https://www.google.com/maps/@51.090555,71.397777,3a,75y,h,90t/data=!3m7!1e1!3m5!1s",
-    "coordinates": {
-      "lat": 51.090555,
-      "lng": 71.397777
-    },
-    "stats": {
-      "views": 8420,
-      "uniqueVisitors": 5200,
-      "avgTimeOnPage": 520,
-      "favorites": 1890,
-      "tour3DClicks": 2230,
-      "comparisonCount": 1450,
-      "applicationClicks": 890
+      "youtube": "https://youtube.com/@NazarbayevUniversity",
+      "telegram": "https://t.me/nu_edu_kz",
+      "linkedin": "https://www.linkedin.com/company/aoe-nazarbayev-university/"
     },
     "tuitionRange": {
       "min": 7000,
-      "max": 9000
+      "max": 9000,
+      "currency": "USD",
+      "note": "Стоимость указана в долларах США за год"
     },
     "dormitory": true,
     "dormitoryCost": 150000,
-    "type": "national",
+    "dormitoryCostCurrency": "KZT",
+    "scholarships": {
+      "available": true,
+      "types": []
+    },
+    "grants": {
+      "available": true,
+      "types": [],
+      "conditions": ""
+    },
     "faculties": [
-      "Школа инженерии и цифровых наук (School of Engineering and Digital Sciences)",
-      "Школа наук и технологий (School of Sciences and Humanities)",
-      "Школа гуманитарных и социальных наук (School of Humanities and Social Sciences)",
-      "Высшая школа бизнеса (Graduate School of Business)",
-      "Школа медицины (School of Medicine)"
+      {
+        "name": "Подготовительная школа",
+        "nameKz": "",
+        "nameEn": "School of Foundation Studies",
+        "description": "Программа Предуниверситетской Подготовки"
+      },
+      {
+        "name": "Школа инженерии и цифровых наук",
+        "nameKz": "",
+        "nameEn": "School of Engineering and Digital Sciences",
+        "description": ""
+      },
+      {
+        "name": "Школа естественных, социальных и гуманитарных наук",
+        "nameKz": "",
+        "nameEn": "School of Sciences and Humanities",
+        "description": ""
+      },
+      {
+        "name": "Высшая школа бизнеса",
+        "nameKz": "",
+        "nameEn": "Graduate School of Business",
+        "description": ""
+      },
+      {
+        "name": "Школа горного дела и наук о Земле",
+        "nameKz": "",
+        "nameEn": "School of Mining and Geosciences",
+        "description": ""
+      },
+      {
+        "name": "Школа медицины",
+        "nameKz": "",
+        "nameEn": "School of Medicine",
+        "description": ""
+      },
+      {
+        "name": "Высшая школа государственной политики",
+        "nameKz": "",
+        "nameEn": "Graduate School of Public Policy",
+        "description": ""
+      },
+      {
+        "name": "Высшая школа образования",
+        "nameKz": "",
+        "nameEn": "Graduate School of Education",
+        "description": ""
+      }
     ],
+    "programs": {
+      "fields": ["IT", "Engineering", "Business", "Medicine"],
+      "languages": {
+        "kazakh": 0,
+        "russian": 0,
+        "english": 100
+      },
+      "degrees": {
+        "bachelor": {
+          "duration": 4,
+          "types": []
+        },
+        "master": {
+          "duration": 2,
+          "types": []
+        },
+        "phd": {
+          "duration": 0,
+          "types": []
+        }
+      }
+    },
+    "admissionRequirements": {
+      "minENT": 0,
+      "minENTByProgram": {},
+      "ielts": {
+        "required": true,
+        "minScore": 6
+      },
+      "toefl": {
+        "required": true,
+        "minScore": 0
+      },
+      "portfolio": {
+        "required": false,
+        "forPrograms": []
+      },
+      "interview": {
+        "required": false,
+        "forPrograms": []
+      },
+      "additionalExams": [],
+      "documents": [],
+      "applicationDeadline": {
+        "start": "2025-09-27",
+        "end": ""
+      },
+      "applicationFee": {
+        "amount": 0,
+        "currency": "KZT"
+      }
+    },
     "researchAreas": [
       "Искусственный интеллект",
       "Нанотехнологии",
@@ -76,102 +262,361 @@
       "Социальные науки",
       "Квантовые технологии"
     ],
+    "researchCenters": [],
+    "publications": {
+      "totalPerYear": 0,
+      "webOfScience": 0,
+      "scopus": 0,
+      "hIndex": 0
+    },
     "partners": [
-      "University of Cambridge",
-      "Stanford University",
-      "MIT",
-      "National University of Singapore",
-      "University of Pennsylvania"
+      {
+        "name": "University of Cambridge",
+        "country": "UK",
+        "type": ""
+      },
+      {
+        "name": "Stanford University",
+        "country": "USA",
+        "type": ""
+      },
+      {
+        "name": "MIT",
+        "country": "USA",
+        "type": ""
+      },
+      {
+        "name": "National University of Singapore",
+        "country": "Singapore",
+        "type": ""
+      },
+      {
+        "name": "University of Pennsylvania",
+        "country": "USA",
+        "type": ""
+      }
     ],
-    "alumni": [
-      "Выпускники работают в Google, Microsoft, Amazon",
-      "Основатели успешных стартапов",
-      "Исследователи в ведущих лабораториях мира",
-      "Аналитики в международных организациях"
-    ],
-    "employmentRate": 98
+    "internationalPrograms": {
+      "exchange": {
+        "available": true,
+        "programs": [],
+        "countries": [],
+        "studentsPerYear": 0
+      },
+      "doubleDegree": {
+        "available": false,
+        "programs": []
+      }
+    },
+    "employmentRate": 98,
+    "employmentRateByField": {},
+    "averageSalary": {
+      "amount": 0,
+      "currency": "KZT",
+      "note": ""
+    },
+    "topEmployers": [],
+    "careerCenter": {
+      "available": true,
+      "services": [],
+      "partners": []
+    },
+    "alumni": [],
+    "famousAlumni": [],
+    "tour3D": "https://www.google.com/maps/@51.090555,71.397777,3a,75y,h,90t/data=!3m7!1e1!3m5!1s",
+    "virtualTour": "",
+    "stats": {
+      "views": 8420,
+      "uniqueVisitors": 5200,
+      "avgTimeOnPage": 520,
+      "favorites": 1890,
+      "tour3DClicks": 2230,
+      "comparisonCount": 1450,
+      "applicationClicks": 890
+    }
   },
   {
     "id": "kaznu",
     "name": "Al-Farabi Kazakh National University",
     "nameKz": "Әл-Фараби атындағы Қазақ ұлттық университеті",
+    "nameEn": "Al-Farabi Kazakh National University",
     "shortName": "КазНУ",
     "logo": "https://placehold.co/200x200/DC143C/white?text=KazNU",
     "cover": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200",
     "city": "Алматы",
     "region": "Алматинская область",
-    "rating": 4.7,
-    "worldRank": 165,
-    "founded": 1934,
-    "students": 20000,
-    "internationalStudents": 8,
-    "description": "Казахский национальный университет имени аль-Фараби (КазНУ) - старейший и крупнейший университет Казахстана, основанный в 1934 году. Университет является флагманом национального высшего образования и входит в топ-200 лучших университетов мира по версии QS World University Rankings (165 место в 2024 году). КазНУ имеет 17 факультетов, более 200 специальностей бакалавриата, магистратуры и докторантуры. Университет активно развивает международное сотрудничество с более чем 1000 партнерами из 60 стран мира. Научная библиотека КазНУ является одной из крупнейших в Центральной Азии с фондом более 2 миллионов книг.",
-    "mission": "Миссия КазНУ - подготовка высококвалифицированных специалистов для всех сфер экономики и социальной жизни Казахстана, развитие фундаментальных и прикладных научных исследований, сохранение и развитие национальных культурных традиций, интеграция в мировое образовательное пространство.",
-    "achievements": [
-      "165 место в QS World University Rankings 2024",
-      "17 факультетов и более 200 образовательных программ",
-      "Более 1000 международных партнеров из 60 стран",
-      "Крупнейшая научная библиотека в Центральной Азии (2+ млн книг)",
-      "90% трудоустройство выпускников в течение года",
-      "Более 20,000 студентов, включая 1,600+ иностранных студентов",
-      "Аккредитация программ международными агентствами"
-    ],
-    "infrastructure": [
-      "19 учебных корпусов в центре Алматы",
-      "Научная библиотека с фондом 2+ млн книг",
-      "Центр инновационных технологий",
-      "Спортивный комплекс и стадион",
-      "7 студенческих общежитий"
-    ],
-    "website": "https://kaznu.kz",
-    "email": "admission@kaznu.kz",
-    "phone": "+7 (727) 377-33-30",
     "address": "пр. Аль-Фараби 71, Алматы, 050040",
-    "socialMedia": {
-      "facebook": "https://facebook.com/KazNU",
-      "instagram": "https://instagram.com/kaznu_university",
-      "telegram": "https://t.me/kaznukz"
-    },
-    "tour3D": "https://tour.kaznu.kz",
     "coordinates": {
       "lat": 43.238949,
       "lng": 76.945627
     },
-    "stats": {
-      "views": 12500,
-      "uniqueVisitors": 8100,
-      "avgTimeOnPage": 485,
-      "favorites": 2450,
-      "tour3DClicks": 1890,
-      "comparisonCount": 2100,
-      "applicationClicks": 1450
+    "rating": 4.7,
+    "founded": 1934,
+    "type": "national",
+    "status": "research",
+    "students": 25000,
+    "studentsBreakdown": {
+      "bachelor": 0,
+      "master": 0,
+      "phd": 0
+    },
+    "internationalStudents": 8,
+    "internationalStudentsCount": 2000,
+    "faculty": {
+      "total": 2500,
+      "professors": 0,
+      "associateProfessors": 0,
+      "doctors": 0,
+      "candidates": 0,
+      "international": 0
+    },
+    "facultiesCount": 16,
+    "programsCount": {
+      "total": 200,
+      "bachelor": 0,
+      "master": 0,
+      "phd": 0
+    },
+    "description": "Казахский национальный университет имени аль-Фараби (КазНУ) - ведущий многопрофильный вуз Казахстана. За 90-летнюю историю университет прошел большой путь и внес весомый вклад в развитие страны, образования и науки, в становление и укрепление государственности. Сегодня КазНУ – это крупный научно-образовательный и инновационный центр, успешно реализующий модель исследовательского университета мирового уровня.",
+    "mission": "Миссия КазНУ - подготовка высококвалифицированных специалистов для всех сфер экономики и социальной жизни Казахстана, развитие фундаментальных и прикладных научных исследований, сохранение и развитие национальных культурных традиций, интеграция в мировое образовательное пространство.",
+    "vision": "Трансформация в исследовательский университет мирового уровня.",
+    "values": [],
+    "achievements": [
+      "150 место в QS World University Rankings 2024",
+      "16 факультетов и более 200 образовательных программ",
+      "Более 1000 международных партнеров из 60 стран",
+      "Крупнейшая научная библиотека в Центральной Азии (2+ млн книг)",
+      "90% трудоустройство выпускников в течение года",
+      "Более 25,000 студентов, включая 2,000+ иностранных студентов",
+      "Аккредитация программ международными агентствами"
+    ],
+    "accreditations": [],
+    "rankings": {
+      "qs": {
+        "year": 2024,
+        "position": 150
+      },
+      "the": {
+        "year": 0,
+        "position": 0
+      },
+      "national": {
+        "year": 0,
+        "position": 2
+      }
+    },
+    "infrastructure": {
+        "dormitories": {
+            "available": true,
+            "capacity": 5000,
+            "costPerMonth": 0,
+            "costPerYear": 90000,
+            "types": [],
+            "amenities": []
+        },
+        "library": {
+            "name": "Научная библиотека Аль-Фараби",
+            "books": 2000000,
+            "electronicResources": [],
+            "readingHalls": 0,
+            "seats": 0
+        },
+        "laboratories": {
+            "total": 0,
+            "scientific": 0,
+            "computer": 0,
+            "specialized": 0
+        },
+        "sports": {
+            "stadium": true,
+            "gym": 0,
+            "pool": true,
+            "sections": []
+        }
+    },
+    "website": "https://farabi.university",
+    "email": "info@kaznu.edu.kz",
+    "phone": "+7 (727) 377-33-30",
+    "admission": {
+        "email": "",
+        "phone": "+7 (727) 377-33-30",
+        "address": ""
+    },
+    "socialMedia": {
+      "facebook": "https://www.facebook.com/FarabiKaznu/",
+      "instagram": "https://instagram.com/farabi_university",
+      "youtube": "https://youtube.com/channel/UCr6RCYKPPbHFKwOmqZXBi2w",
+      "telegram": "https://t.me/kaznu34",
+      "linkedin": ""
     },
     "tuitionRange": {
       "min": 600000,
-      "max": 1800000
+      "max": 1800000,
+      "currency": "KZT",
+      "note": ""
     },
     "dormitory": true,
     "dormitoryCost": 90000,
-    "type": "state",
+    "dormitoryCostCurrency": "KZT",
+    "scholarships": {
+        "available": true,
+        "types": []
+    },
+    "grants": {
+        "available": true,
+        "types": [],
+        "conditions": ""
+    },
     "faculties": [
-      "Факультет информационных технологий",
-      "Механико-математический факультет",
-      "Физико-технический факультет",
-      "Химический факультет",
-      "Биологический факультет",
-      "Факультет географии и природопользования",
-      "Факультет филологии, литературоведения и мировых языков",
-      "Исторический факультет",
-      "Философско-политологический факультет",
-      "Экономический факультет",
-      "Юридический факультет",
-      "Факультет журналистики",
-      "Факультет востоковедения",
-      "Факультет международных отношений",
-      "Факультет социальных наук",
-      "Факультет предвузовского образования",
-      "Факультет повышения квалификации"
+      {
+        "name": "Факультет биологии и биотехнологии",
+        "nameKz": "",
+        "nameEn": "",
+        "description": ""
+      },
+      {
+        "name": "Высшая школа экономики и бизнеса",
+        "nameKz": "",
+        "nameEn": "",
+        "description": ""
+      },
+      {
+        "name": "Факультет географии и природопользования",
+        "nameKz": "",
+        "nameEn": "",
+        "description": ""
+      },
+      {
+        "name": "Факультет журналистики",
+        "nameKz": "",
+        "nameEn": "",
+        "description": ""
+      },
+      {
+        "name": "Факультет информационных технологий",
+        "nameKz": "",
+        "nameEn": "",
+        "description": ""
+      },
+      {
+        "name": "Факультет истории",
+        "nameKz": "",
+        "nameEn": "",
+        "description": ""
+      },
+      {
+        "name": "Факультет международных отношений",
+        "nameKz": "",
+        "nameEn": "",
+        "description": ""
+      },
+      {
+        "name": "Механико-математический факультет",
+        "nameKz": "",
+        "nameEn": "",
+        "description": ""
+      },
+      {
+        "name": "Факультет востоковедения",
+        "nameKz": "",
+        "nameEn": "",
+        "description": ""
+      },
+      {
+        "name": "Факультет филологии",
+        "nameKz": "",
+        "nameEn": "",
+        "description": ""
+      },
+      {
+        "name": "Факультет философии и политологии",
+        "nameKz": "",
+        "nameEn": "",
+        "description": ""
+      },
+      {
+        "name": "Физико-технический факультет",
+        "nameKz": "",
+        "nameEn": "",
+        "description": ""
+      },
+      {
+        "name": "Факультет химии и химической технологии",
+        "nameKz": "",
+        "nameEn": "",
+        "description": ""
+      },
+      {
+        "name": "Юридический факультет",
+        "nameKz": "",
+        "nameEn": "",
+        "description": ""
+      },
+      {
+        "name": "Факультет медицины и здравоохранения",
+        "nameKz": "",
+        "nameEn": "",
+        "description": ""
+      },
+      {
+        "name": "Факультет довузовского образования",
+        "nameKz": "",
+        "nameEn": "",
+        "description": ""
+      }
     ],
+    "programs": {
+        "fields": [],
+        "languages": {
+            "kazakh": 0,
+            "russian": 0,
+            "english": 0
+        },
+        "degrees": {
+            "bachelor": {
+                "duration": 4,
+                "types": []
+            },
+            "master": {
+                "duration": 2,
+                "types": []
+            },
+            "phd": {
+                "duration": 3,
+                "types": []
+            }
+        }
+    },
+    "admissionRequirements": {
+        "minENT": 0,
+        "minENTByProgram": {},
+        "ielts": {
+            "required": false,
+            "minScore": 0
+        },
+        "toefl": {
+            "required": false,
+            "minScore": 0
+        },
+        "portfolio": {
+            "required": false,
+            "forPrograms": []
+        },
+        "interview": {
+            "required": false,
+            "forPrograms": []
+        },
+        "additionalExams": [],
+        "documents": [],
+        "applicationDeadline": {
+            "start": "",
+            "end": ""
+        },
+        "applicationFee": {
+            "amount": 0,
+            "currency": ""
+        }
+    },
     "researchAreas": [
       "Математика и информатика",
       "Физика и астрономия",
@@ -180,13 +625,39 @@
       "Экономика и право",
       "Восточное языкознание"
     ],
-    "partners": [
-      "МГУ им. Ломоносова",
-      "Санкт-Петербургский университет",
-      "Пекинский университет",
-      "Университеты Европы и США",
-      "Токийский университет"
-    ],
+    "researchCenters": [],
+    "publications": {
+        "totalPerYear": 0,
+        "webOfScience": 0,
+        "scopus": 0,
+        "hIndex": 0
+    },
+    "partners": [],
+    "internationalPrograms": {
+        "exchange": {
+            "available": true,
+            "programs": [],
+            "countries": [],
+            "studentsPerYear": 0
+        },
+        "doubleDegree": {
+            "available": true,
+            "programs": []
+        }
+    },
+    "employmentRate": 90,
+    "employmentRateByField": {},
+    "averageSalary": {
+        "amount": 0,
+        "currency": "KZT",
+        "note": ""
+    },
+    "topEmployers": [],
+    "careerCenter": {
+        "available": true,
+        "services": [],
+        "partners": []
+    },
     "alumni": [
       "Государственные деятели",
       "Ученые с мировым именем",
@@ -194,53 +665,373 @@
       "Писатели и деятели культуры",
       "Дипломаты"
     ],
-    "employmentRate": 90
+    "famousAlumni": [],
+    "tour3D": "https://tour.kaznu.kz",
+    "virtualTour": "",
+    "stats": {
+      "views": 12500,
+      "uniqueVisitors": 8100,
+      "avgTimeOnPage": 485,
+      "favorites": 2450,
+      "tour3DClicks": 1890,
+      "comparisonCount": 2100,
+      "applicationClicks": 1450
+    }
   },
   {
     "id": "kbtu",
     "name": "Kazakh-British Technical University",
     "nameKz": "Қазақ-Британ техникалық университеті",
+    "nameEn": "Kazakh-British Technical University",
     "shortName": "КБТУ",
     "logo": "https://placehold.co/200x200/003366/white?text=KBTU",
     "cover": "https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=1200",
     "city": "Алматы",
     "region": "Алматинская область",
-    "rating": 4.6,
-    "worldRank": 401,
-    "founded": 2001,
-    "students": 5500,
-    "internationalStudents": 10,
-    "description": "Казахстанско-Британский технический университет (КБТУ) - ведущий технический университет Казахстана, основанный в 2001 году. Университет специализируется на подготовке инженеров и специалистов в области нефтегазовой инженерии, информационных технологий, экономики и бизнеса. КБТУ имеет партнерские соглашения с ведущими британскими университетами, включая Heriot-Watt University, University of Aberdeen, University of London. Все программы аккредитованы международными агентствами. Университет активно сотрудничает с крупнейшими нефтегазовыми компаниями Казахстана.",
-    "mission": "Подготовка конкурентоспособных специалистов в области технологий и инженерии по международным стандартам, интеграция образования, науки и бизнеса.",
-    "achievements": [
-      "401-450 место в QS World University Rankings",
-      "Партнерство с Heriot-Watt University (Великобритания)",
-      "Двойные дипломы с британскими университетами",
-      "95% трудоустройство выпускников",
-      "Аккредитация ABET (США) для инженерных программ",
-      "Сотрудничество с крупнейшими нефтегазовыми компаниями"
-    ],
-    "infrastructure": [
-      "Современные инженерные лаборатории",
-      "Центр робототехники и AI",
-      "Нефтегазовый симулятор",
-      "Коворкинг и стартап-инкубатор",
-      "Общежития в шаговой доступности"
-    ],
-    "website": "https://kbtu.edu.kz",
-    "email": "admission@kbtu.kz",
-    "phone": "+7 (727) 355-24-83",
-    "address": "ул. Толе би 59, Алматы, 050000",
-    "socialMedia": {
-      "instagram": "https://instagram.com/kbtu.university",
-      "facebook": "https://facebook.com/kbtukz",
-      "telegram": "https://t.me/kbtukz"
-    },
-    "tour3D": "",
+    "address": "Республика Казахстан, г. Алматы, ул. Толе би, 59",
     "coordinates": {
       "lat": 43.251732,
       "lng": 76.945255
     },
+    "rating": 4.6,
+    "founded": 2001,
+    "type": "state",
+    "status": "technical",
+    "students": 7746,
+    "studentsBreakdown": {},
+    "internationalStudents": 0,
+    "internationalStudentsCount": 0,
+    "faculty": {
+      "total": 0,
+      "professors": 0,
+      "associateProfessors": 0,
+      "doctors": 0,
+      "candidates": 0,
+      "international": 0
+    },
+    "facultiesCount": 10,
+    "programsCount": {
+      "total": 0,
+      "bachelor": 0,
+      "master": 0,
+      "phd": 0
+    },
+    "description": "Казахстанско-Британский технический университет - один из ведущих технических университетов региона. Мы работаем в партнерстве с мировым академическим сообществом, корпоративным и государственным секторами над фундаментальными ценностями качества, академической честности и открытости. КБТУ - университет мирового уровня, занимающийся научными исследованиями, обучением и подготовкой научной элиты и высококвалифицированных кадров для различных сфер мировой экономики.",
+    "mission": "Быть университетом мирового уровня, занимающимся научными исследованиями, обучением и подготовкой научной элиты и высококвалифицированных кадров для различных сфер мировой экономики.",
+    "vision": "Наводить мост знаний между обществом и наукой, между Казахстаном и остальным миром в таких областях, как технологии и бизнес. Стремиться к повышению качества, академической успеваемости.",
+    "values": ["Качество", "академическая честность", "открытость", "новаторский и творческий подход"],
+    "achievements": [
+      "401-450 место в QS World University Rankings",
+      "Партнерство с Heriot-Watt University (Великобритания)",
+      "Двойные дипломы с британскими университетами",
+      "90% трудоустройство выпускников",
+      "Аккредитация ABET (США) для инженерных программ",
+      "Сотрудничество с крупнейшими нефтегазовыми компаниями"
+    ],
+    "accreditations": [
+      {
+        "name": "ABET"
+      },
+      {
+        "name": "ACBSP"
+      },
+      {
+        "name": "IQAA"
+      },
+      {
+        "name": "CIMA"
+      },
+      {
+        "name": "ACCA"
+      },
+      {
+        "name": "CFA"
+      }
+    ],
+    "rankings": {
+      "qs": {
+        "year": 2025,
+        "position": "Top 30% in Central Asia and Eastern Europe"
+      },
+      "the": {
+        "year": 0,
+        "position": 0
+      },
+      "national": {
+        "year": 2025,
+        "position": "Top 5 in Kazakhstan"
+      }
+    },
+    "infrastructure": {
+      "dormitories": {
+        "available": true,
+        "capacity": 0,
+        "costPerMonth": 0,
+        "costPerYear": 120000,
+        "types": [],
+        "amenities": []
+      },
+      "library": {
+        "name": "",
+        "books": 0,
+        "electronicResources": [],
+        "readingHalls": 0,
+        "seats": 0
+      },
+      "laboratories": {
+        "total": 0,
+        "scientific": 0,
+        "computer": 0,
+        "specialized": 0
+      },
+      "sports": {
+        "stadium": false,
+        "gym": 0,
+        "pool": false,
+        "sections": []
+      }
+    },
+    "website": "https://kbtu.edu.kz",
+    "email": "kense@kbtu.kz",
+    "phone": "+7 (727) 357 42 42",
+    "admission": {
+      "email": "admission@kbtu.kz",
+      "phone": "+7 (727) 357 42 51",
+      "address": "Республика Казахстан, г. Алматы, ул. Толе би 59 (вход в Приемную комиссию со стороны Казыбек би)"
+    },
+    "socialMedia": {
+      "facebook": "https://www.facebook.com/share/16h9YWYh4a/?mibextid=wwXIfr",
+      "instagram": "https://www.instagram.com/kbtu_official?igsh=MXZjNHlxamU3bGYyYQ%3D%3D&utm_source=qr",
+      "youtube": "https://youtube.com/@kbtuofficialchannel?si=2owNsMTSAeAFez-G",
+      "telegram": "https://t.me/kbtuadmission",
+      "tiktok": "https://www.tiktok.com/@kbtu_official?_t=ZM-8xMCIALO88c&_r=1"
+    },
+    "tuitionRange": {
+      "min": 1500000,
+      "max": 2500000,
+      "currency": "KZT",
+      "note": ""
+    },
+    "dormitory": true,
+    "dormitoryCost": 120000,
+    "dormitoryCostCurrency": "KZT",
+    "scholarships": {
+      "available": false,
+      "types": []
+    },
+    "grants": {
+      "available": false,
+      "types": [],
+      "conditions": ""
+    },
+    "faculties": [
+      {
+        "name": "Школа энергетики и нефтегазовой индустрии",
+        "nameKz": "",
+        "nameEn": "School of Energy and Oil and Gas Industry",
+        "description": ""
+      },
+      {
+        "name": "Школа материаловедения и зеленых технологий",
+        "nameKz": "",
+        "nameEn": "School of Materials Science and Green Technologies",
+        "description": ""
+      },
+      {
+        "name": "Школа геологии",
+        "nameKz": "",
+        "nameEn": "School of Geology",
+        "description": ""
+      },
+      {
+        "name": "Школа информационных технологий и инженерии",
+        "nameKz": "",
+        "nameEn": "School of Information Technologies and Engineering",
+        "description": ""
+      },
+      {
+        "name": "Казахстанская морская академия",
+        "nameKz": "",
+        "nameEn": "Kazakhstan Maritime Academy",
+        "description": ""
+      },
+      {
+        "name": "Международная школа экономики",
+        "nameKz": "",
+        "nameEn": "International School of Economics",
+        "description": ""
+      },
+      {
+        "name": "Школа прикладной математики",
+        "nameKz": "",
+        "nameEn": "School of Applied Mathematics",
+        "description": ""
+      },
+      {
+        "name": "Бизнес-школа",
+        "nameKz": "",
+        "nameEn": "Business School",
+        "description": ""
+      },
+      {
+        "name": "Школа химической инженерии",
+        "nameKz": "",
+        "nameEn": "School of Chemical Engineering",
+        "description": ""
+      },
+      {
+        "name": "Школа естественных и социальных наук",
+        "nameKz": "",
+        "nameEn": "School of Natural and Social Sciences",
+        "description": ""
+      }
+    ],
+    "programs": {
+      "fields": [],
+      "languages": {
+        "kazakh": 0,
+        "russian": 0,
+        "english": 0
+      },
+      "degrees": {
+        "bachelor": {
+          "duration": 4,
+          "types": []
+        },
+        "master": {
+          "duration": 2,
+          "types": []
+        },
+        "phd": {
+          "duration": 3,
+          "types": []
+        }
+      }
+    },
+    "admissionRequirements": {
+      "minENT": 0,
+      "minENTByProgram": {},
+      "ielts": {
+        "required": false,
+        "minScore": 0
+      },
+      "toefl": {
+        "required": false,
+        "minScore": 0
+      },
+      "portfolio": {
+        "required": false,
+        "forPrograms": []
+      },
+      "interview": {
+        "required": false,
+        "forPrograms": []
+      },
+      "additionalExams": [],
+      "documents": [],
+      "applicationDeadline": {
+        "start": "",
+        "end": ""
+      },
+      "applicationFee": {
+        "amount": 0,
+        "currency": ""
+      }
+    },
+    "researchAreas": [],
+    "researchCenters": [],
+    "publications": {
+      "totalPerYear": 0,
+      "webOfScience": 0,
+      "scopus": 0,
+      "hIndex": 0
+    },
+    "partners": [],
+    "internationalPrograms": {
+      "exchange": {
+        "available": true,
+        "programs": [
+          {
+            "name": "Программы обмена и сотрудничества",
+            "partners": [
+              "Университет Лондона"
+            ],
+            "description": "Сотрудничество с Университет Лондона"
+          },
+          {
+            "name": "Программы обмена и сотрудничества",
+            "partners": [
+              "Гарвардская школа бизнеса"
+            ],
+            "description": "Сотрудничество с Гарвардская школа бизнеса"
+          },
+          {
+            "name": "Программы обмена и сотрудничества",
+            "partners": [
+              "Киотский технологический институт"
+            ],
+            "description": "Сотрудничество с Киотский технологический институт"
+          },
+          {
+            "name": "Программы обмена и сотрудничества",
+            "partners": [
+              "Российский государственный университет нефти и газа им. В.И. Губкина"
+            ],
+            "description": "Сотрудничество с Российский государственный университет нефти и газа им. В.И. Губкина"
+          },
+          {
+            "name": "Программы обмена и сотрудничества",
+            "partners": [
+              "Университет Рединга"
+            ],
+            "description": "Сотрудничество с Университет Рединга"
+          },
+          {
+            "name": "Программы обмена и сотрудничества",
+            "partners": [
+              "Университет Нортгемптона"
+            ],
+            "description": "Сотрудничество с Университет Нортгемптона"
+          },
+          {
+            "name": "Программы обмена и сотрудничества",
+            "partners": [
+              "Университет Козьминского"
+            ],
+            "description": "Сотрудничество с Университет Козьминского"
+          }
+        ],
+        "countries": [
+          "Великобритания",
+          "США",
+          "Япония",
+          "Россия",
+          "Польша"
+        ],
+        "studentsPerYear": 0
+      },
+      "doubleDegree": {
+        "available": false,
+        "programs": []
+      }
+    },
+    "employmentRate": 90,
+    "employmentRateByField": {},
+    "averageSalary": {
+      "amount": 0,
+      "currency": "KZT",
+      "note": ""
+    },
+    "topEmployers": [],
+    "careerCenter": {
+      "available": true,
+      "services": [],
+      "partners": []
+    },
+    "alumni": [],
+    "famousAlumni": [],
+    "tour3D": "https://embed-3dwarehouse-classic.sketchup.com/model/98ffa233823ee07ca8afb2c869486f8b/KBTU",
+    "virtualTour": "",
     "stats": {
       "views": 7890,
       "uniqueVisitors": 4900,
@@ -249,26 +1040,7 @@
       "tour3DClicks": 890,
       "comparisonCount": 1580,
       "applicationClicks": 980
-    },
-    "tuitionRange": {
-      "min": 1500000,
-      "max": 2500000
-    },
-    "dormitory": true,
-    "dormitoryCost": 120000,
-    "type": "state",
-    "faculties": [
-      "Факультет энергетики и нефтегазовой инженерии",
-      "Факультет информационных технологий",
-      "Факультет геологии и геофизики",
-      "Факультет химической инженерии",
-      "Факультет экономики и бизнеса",
-      "Факультет морских технологий"
-    ],
-    "researchAreas": [],
-    "partners": [],
-    "alumni": [],
-    "employmentRate": 85
+    }
   },
   {
     "id": "aitu",
