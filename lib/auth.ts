@@ -6,6 +6,9 @@ export interface User {
   name: string
   avatar?: string
   createdAt: Date
+  telegramId?: number
+  telegramUsername?: string
+  source?: 'web' | 'telegram'
 }
 
 export function isAuthenticated(): boolean {
@@ -28,12 +31,15 @@ export function getCurrentUser(): User | null {
   }
 }
 
-export function login(email: string, name: string): User {
+export function login(email: string, name: string, telegramId?: number, telegramUsername?: string): User {
   const user: User = {
-    id: `user_${Date.now()}`,
+    id: telegramId ? `tg_${telegramId}` : `user_${Date.now()}`,
     email,
     name,
-    createdAt: new Date()
+    createdAt: new Date(),
+    telegramId,
+    telegramUsername,
+    source: telegramId ? 'telegram' : 'web'
   }
   localStorage.setItem('kz_universe_user', JSON.stringify(user))
   return user

@@ -33,12 +33,15 @@ export async function POST(request: NextRequest) {
       if (geminiResponse.ok) {
         const data = await geminiResponse.json()
         const text = data.candidates?.[0]?.content?.parts?.[0]?.text
-        if (text) {
+        if (text && text.trim()) {
           return NextResponse.json({ response: text })
         }
+      } else {
+        const errorText = await geminiResponse.text()
+        console.error('Gemini API error response:', errorText)
       }
-    } catch (geminiError) {
-      console.error('Gemini API error:', geminiError)
+    } catch (geminiError: any) {
+      console.error('Gemini API error:', geminiError?.message || geminiError)
     }
 
     // Fallback на локальную логику только если Gemini недоступен

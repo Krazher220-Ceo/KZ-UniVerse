@@ -560,24 +560,26 @@ function MyChancesTab({ university, programs }: { university: University, progra
       const program = programs.find(p => p.id === selectedProgram)
       if (!program) return
 
-      // Используем Gemini API
-      const response = await fetch('/api/gemini', {
+      // Используем API расчета шансов
+      const response = await fetch('/api/admission-chance', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          prompt: `Рассчитай шансы поступления студента в программу "${program.nameRu}" университета "${university.name}". 
-          Дай детальный анализ с процентами и рекомендациями.`,
           portfolio: userPortfolio,
-          program,
-          university
+          universityId: university.id,
+          programId: selectedProgram
         })
       })
 
       if (response.ok) {
         const data = await response.json()
-        // Парсим ответ от Gemini и создаем структурированные данные
-        const chance = parseGeminiResponse(data.response, university.id, selectedProgram, userPortfolio, program)
-        setChances([chance])
+        if (data.chance) {
+          setChances([data.chance])
+        } else {
+          // Fallback на локальный расчет
+          const chance = calculateLocalChance(userPortfolio, program, university)
+          setChances([chance])
+        }
       } else {
         // Fallback на локальный расчет
         const chance = calculateLocalChance(userPortfolio, program, university)

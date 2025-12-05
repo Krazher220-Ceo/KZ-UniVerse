@@ -134,9 +134,13 @@ function calculateAdmissionChance(
   }
 
   // Фактор ЕНТ (40% веса)
-  if (portfolio.entScore && program.requirements.minENT) {
-    const entRatio = portfolio.entScore / program.requirements.minENT
-    factors.entScore = Math.min(100, entRatio * 100)
+  if (portfolio.entScore && program.requirements?.minENT) {
+    const minENT = program.requirements.minENT || 50
+    const entRatio = portfolio.entScore / minENT
+    factors.entScore = Math.min(100, Math.max(0, entRatio * 100))
+  } else if (portfolio.entScore) {
+    // Если нет требований, используем абсолютную оценку
+    factors.entScore = (portfolio.entScore / 140) * 100
   }
 
   // Фактор GPA (20% веса)
@@ -146,14 +150,18 @@ function calculateAdmissionChance(
 
   // Фактор достижений (30% веса)
   let achievementScore = 0
-  achievementScore += portfolio.achievements.length * 5
-  achievementScore += portfolio.olympiads.length * 10
-  portfolio.olympiads.forEach(ol => {
-    if (ol.level === 'international') achievementScore += 20
-    else if (ol.level === 'republican') achievementScore += 15
-    else achievementScore += 10
-  })
-  factors.achievements = Math.min(100, achievementScore)
+  if (portfolio.achievements) {
+    achievementScore += portfolio.achievements.length * 5
+  }
+  if (portfolio.olympiads) {
+    achievementScore += portfolio.olympiads.length * 10
+    portfolio.olympiads.forEach(ol => {
+      if (ol.level === 'international') achievementScore += 20
+      else if (ol.level === 'republican') achievementScore += 15
+      else achievementScore += 10
+    })
+  }
+  factors.achievements = Math.min(100, Math.max(0, achievementScore))
 
   // Фактор конкуренции (10% веса)
   // Чем выше рейтинг университета, тем выше конкуренция
@@ -171,24 +179,30 @@ function calculateAdmissionChance(
   // Рекомендации
   const recommendations: string[] = []
   
-  if (portfolio.entScore && portfolio.entScore < program.requirements.minENT) {
+  if (portfolio.entScore && program.requirements?.minENT && portfolio.entScore < program.requirements.minENT) {
     recommendations.push(`Повысить балл ЕНТ до ${program.requirements.minENT}+`)
+  } else if (!portfolio.entScore) {
+    recommendations.push('Указать балл ЕНТ для более точного расчета')
   }
   
   if (portfolio.gpa && portfolio.gpa < 4.0) {
-    recommendations.push('Улучшить средний балл аттестата')
+    recommendations.push('Улучшить средний балл аттестата до 4.0+')
+  } else if (!portfolio.gpa) {
+    recommendations.push('Указать средний балл аттестата (GPA)')
   }
   
-  if (portfolio.olympiads.length === 0) {
+  if (!portfolio.olympiads || portfolio.olympiads.length === 0) {
     recommendations.push('Участвовать в олимпиадах для повышения шансов')
   }
   
-  if (portfolio.achievements.length < 3) {
+  if (!portfolio.achievements || portfolio.achievements.length < 3) {
     recommendations.push('Добавить больше достижений в портфолио')
   }
 
   if (chance < 50) {
     recommendations.push('Рассмотреть альтернативные программы или университеты')
+  } else if (chance >= 70) {
+    recommendations.push('Отличные шансы! Продолжайте готовиться к поступлению')
   }
 
   return {

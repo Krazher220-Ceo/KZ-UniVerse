@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { FiMail, FiUser, FiLock, FiArrowRight } from 'react-icons/fi'
 import { login, isAuthenticated } from '@/lib/auth'
+import TelegramLogin from './TelegramLogin'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -116,6 +117,8 @@ export default function LoginPage() {
               }
             </button>
           </div>
+
+          <TelegramLogin />
 
           <div className="mt-6 pt-6 border-t border-gray-200">
             <p className="text-xs text-gray-500 text-center">
