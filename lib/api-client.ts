@@ -72,7 +72,18 @@ export async function admissionChanceAPI(portfolio: any, universityId: string, p
   }
   
   // Fallback на локальный расчет
-  return calculateLocalChance(portfolio, program, university)
+  if (university && program) {
+    return calculateLocalChance(portfolio, program, university)
+  }
+  
+  // Если нет данных, возвращаем базовый результат
+  return {
+    universityId,
+    programId,
+    chance: 50,
+    factors: { entScore: 0, gpa: 0, achievements: 0, competition: 50 },
+    recommendations: ['Заполните профиль для точного расчета']
+  }
 }
 
 function buildChatPrompt(message: string, portfolio?: any): string {
