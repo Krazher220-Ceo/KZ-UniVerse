@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -455,7 +455,7 @@ function MyChancesTab({ university, programs }: { university: University, progra
   const [userPortfolio, setUserPortfolio] = useState<any>(null)
   const router = useRouter()
 
-  useState(() => {
+  useEffect(() => {
     if (typeof window !== 'undefined') {
       import('@/lib/auth').then(m => {
         setIsAuth(m.isAuthenticated())
@@ -465,7 +465,7 @@ function MyChancesTab({ university, programs }: { university: University, progra
         setUserPortfolio(portfolio)
       })
     }
-  })
+  }, [])
 
   const calculateChances = async () => {
     if (!isAuth) {
