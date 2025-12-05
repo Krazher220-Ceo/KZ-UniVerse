@@ -20,27 +20,50 @@ export default function ProfilePage() {
   const [admissionChances, setAdmissionChances] = useState<AdmissionChance[]>([])
 
   const calculateChances = async () => {
-    // TODO: Интеграция с API для расчета шансов
-    // Пока используем простую логику
-    const mockChances: AdmissionChance[] = [
-      {
-        universityId: 'nu',
-        programId: 'cs-nu',
-        chance: 75,
-        factors: {
-          entScore: 80,
-          gpa: 70,
-          achievements: 90,
-          competition: 60
-        },
-        recommendations: [
-          'Повысить балл ЕНТ до 130+',
-          'Участвовать в олимпиадах',
-          'Подготовить портфолио проектов'
-        ]
+    if (!portfolio.entScore && !portfolio.gpa) {
+      alert('Заполните хотя бы балл ЕНТ или GPA для расчета шансов')
+      return
+    }
+
+    try {
+      // Пример расчета для NU Computer Science
+      const response = await fetch('/api/admission-chance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          portfolio,
+          universityId: 'nu',
+          programId: 'cs-nu'
+        })
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setAdmissionChances([data.chance])
+      } else {
+        // Fallback на локальный расчет
+        const mockChance: AdmissionChance = {
+          universityId: 'nu',
+          programId: 'cs-nu',
+          chance: portfolio.entScore ? Math.min(95, (portfolio.entScore / 140) * 100) : 50,
+          factors: {
+            entScore: portfolio.entScore ? (portfolio.entScore / 140) * 100 : 0,
+            gpa: portfolio.gpa ? (portfolio.gpa / 5.0) * 100 : 0,
+            achievements: Math.min(100, portfolio.achievements.length * 10 + portfolio.olympiads.length * 15),
+            competition: 70
+          },
+          recommendations: [
+            portfolio.entScore && portfolio.entScore < 125 ? 'Повысить балл ЕНТ до 125+' : 'Балл ЕНТ соответствует требованиям',
+            portfolio.olympiads.length === 0 ? 'Участвовать в олимпиадах' : 'Отличные достижения!',
+            'Подготовить портфолио проектов'
+          ]
+        }
+        setAdmissionChances([mockChance])
       }
-    ]
-    setAdmissionChances(mockChances)
+    } catch (error) {
+      console.error('Error calculating chances:', error)
+      alert('Ошибка при расчете шансов. Попробуйте позже.')
+    }
   }
 
   return (

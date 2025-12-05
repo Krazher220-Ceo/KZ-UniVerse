@@ -41,12 +41,13 @@ export default function AIChat() {
     setIsLoading(true)
 
     try {
-      // Simulate AI response (replace with actual API call)
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: input, history: messages })
       })
+
+      if (!response.ok) throw new Error('API error')
 
       const data = await response.json()
 
@@ -59,6 +60,7 @@ export default function AIChat() {
 
       setMessages(prev => [...prev, aiMessage])
     } catch (error) {
+      console.error('Chat error:', error)
       // Fallback to simulated response
       const aiMessage: AIMessage = {
         id: (Date.now() + 1).toString(),
