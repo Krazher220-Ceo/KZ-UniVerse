@@ -51,18 +51,28 @@ ${prompt}
 `
 
   if (portfolio) {
-    fullPrompt += `Портфолио студента:
+    fullPrompt += `ПОРТФОЛИО СТУДЕНТА:
 - ЕНТ: ${portfolio.entScore || 'не указано'}
 - GPA: ${portfolio.gpa || 'не указано'}
+- IELTS: ${portfolio.ieltsScore || 'не указано'}
+- TOEFL: ${portfolio.toeflScore || 'не указано'}
 - Достижения: ${portfolio.achievements?.length || 0}
 - Олимпиады: ${portfolio.olympiads?.length || 0}
+${portfolio.olympiads?.length > 0 ? `  Уровни: ${portfolio.olympiads.map((o: any) => o.level).join(', ')}` : ''}
 
 `
   }
 
   if (program) {
-    fullPrompt += `Программа: ${program.nameRu}
-Требования: ЕНТ ${program.requirements?.minENT || 'N/A'}
+    fullPrompt += `ПРОГРАММА:
+- Название: ${program.nameRu || program.name}
+- Поле: ${program.field || 'не указано'}
+- Стоимость: ${program.tuitionPerYear ? (program.tuitionPerYear / 1000000).toFixed(1) + 'M₸/год' : 'не указано'}
+${program.requirements ? `
+ТРЕБОВАНИЯ:
+- Минимальный ЕНТ: ${program.requirements.minENT || 'не указано'}
+- Предметы: ${program.requirements.requiredSubjects?.join(', ') || 'не указано'}
+` : ''}
 
 `
   }
@@ -81,7 +91,7 @@ ${university.researchAreas?.length > 0 ? `- Области исследован�
 `
   }
 
-  fullPrompt += `Отвечай на русском языке, будь дружелюбным и конкретным.`
+  fullPrompt += `Отвечай детально, профессионально и на русском языке.`
 
   return fullPrompt
 }
