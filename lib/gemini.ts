@@ -1,6 +1,6 @@
 // Gemini AI клиент - использует прямой fetch для надежности
 
-const GEMINI_API_KEY = 'AIzaSyCIhH-3VKldhugzLWxf4UWQ6tCrcksrjdA';
+const GEMINI_API_KEY = 'AIzaSyB-V2bE9E3WaGhLFFns584x7xygyipqaco';
 
 // Используем стабильную модель вместо экспериментальной
 const GEMINI_MODEL = 'gemini-1.5-flash';
