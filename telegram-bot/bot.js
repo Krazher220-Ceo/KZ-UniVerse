@@ -4,219 +4,639 @@
 const TelegramBot = require('node-telegram-bot-api');
 const fetch = require('node-fetch');
 
+// Конфигурация
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8552407784:AAHHb30Zi5N4Na6AEAoe2S6_7UUHMmiQlA4';
-const GEMINI_API_KEY = 'AIzaSyCIhH-3VKldhugzLWxf4UWQ6tCrcksrjdA';
-const API_URL = process.env.API_URL || 'http://localhost:3000';
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyCIhH-3VKldhugzLWxf4UWQ6tCrcksrjdA';
+const API_URL = process.env.API_URL || 'https://kz-universe.vercel.app';
 
-const bot = new TelegramBot(BOT_TOKEN, { polling: true });
-
-// Команды
-bot.onText(/\/start/, (msg) => {
-  const chatId = msg.chat.id;
-  bot.sendMessage(chatId, `👋 Добро пожаловать в KZ UniVerse Bot!
-
-Я помогу вам:
-🎓 Найти подходящий университет
-📊 Рассчитать шансы поступления
-💬 Получить консультацию по выбору вуза
-
-Команды:
-/universities - Список университетов
-/search <название> - Поиск университета
-/chances - Рассчитать шансы поступления
-/help - Помощь
-
-Или просто задайте вопрос!`);
-});
-
-bot.onText(/\/universities/, async (msg) => {
-  const chatId = msg.chat.id;
-  
-  try {
-    // Импортируем данные напрямую (в production нужно через API)
-    const universities = [
-      { shortName: 'NU', name: 'Nazarbayev University', rating: 4.9, city: 'Астана' },
-      { shortName: 'КазНУ', name: 'Al-Farabi Kazakh National University', rating: 4.7, city: 'Алматы' },
-      { shortName: 'AITU', name: 'Astana IT University', rating: 4.6, city: 'Астана' },
-      { shortName: 'КБТУ', name: 'Kazakh-British Technical University', rating: 4.5, city: 'Алматы' },
-      { shortName: 'KIMEP', name: 'KIMEP University', rating: 4.4, city: 'Алматы' },
-      { shortName: 'SDU', name: 'Suleyman Demirel University', rating: 4.3, city: 'Алматы' },
-      { shortName: 'МУИТ', name: 'Международный университет информационных технологий', rating: 4.5, city: 'Алматы' },
-      { shortName: 'IITU', name: 'International IT University', rating: 4.4, city: 'Алматы' },
-      { shortName: 'КЭУ', name: 'Карагандинский экономический университет', rating: 4.2, city: 'Караганда' },
-      { shortName: 'КарТУ', name: 'Карагандинский технический университет', rating: 4.1, city: 'Караганда' }
-    ];
-    
-    let text = '🏛️ *Топ университетов Казахстана:*\n\n';
-    universities.forEach((uni, index) => {
-      text += `${index + 1}. ${uni.shortName} - ${uni.name}\n`;
-      text += `   Рейтинг: ${uni.rating}/5.0\n`;
-      text += `   Город: ${uni.city}\n\n`;
-    });
-    
-    bot.sendMessage(chatId, text, { parse_mode: 'Markdown' });
-  } catch (error) {
-    bot.sendMessage(chatId, 'Ошибка при загрузке данных');
+// Полная база данных университетов
+const UNIVERSITIES_DB = [
+  {
+    id: 'nu',
+    shortName: 'NU',
+    name: 'Nazarbayev University',
+    nameRu: 'Назарбаев Университет',
+    rating: 4.9,
+    worldRank: 295,
+    city: 'Астана',
+    founded: 2010,
+    students: 6000,
+    type: 'national',
+    tuition: '7,000 - 9,000 USD/год',
+    website: 'https://nu.edu.kz',
+    description: 'Первый автономный исследовательский университет Казахстана. Входит в топ-300 лучших университетов мира (THE, QS). Все программы на английском языке. Партнерство с Cambridge, Stanford, MIT.',
+    programs: ['Computer Science', 'Engineering', 'Business', 'Medicine', 'Law'],
+    achievements: ['№1 в Казахстане', 'Топ-300 мировых рейтингов', '100% на английском', '98% трудоустройство'],
+    contacts: { phone: '+7 (7172) 70-66-88', email: 'nu@nu.edu.kz' }
+  },
+  {
+    id: 'kaznu',
+    shortName: 'КазНУ',
+    name: 'Al-Farabi Kazakh National University',
+    nameRu: 'КазНУ им. аль-Фараби',
+    rating: 4.7,
+    worldRank: 165,
+    city: 'Алматы',
+    founded: 1934,
+    students: 20000,
+    type: 'state',
+    tuition: '600,000 - 1,800,000 ₸/год',
+    website: 'https://kaznu.kz',
+    description: 'Старейший и крупнейший университет Казахстана. 165 место в QS World Rankings. 17 факультетов, более 200 программ. Более 1000 международных партнеров.',
+    programs: ['IT', 'Математика', 'Физика', 'Химия', 'Экономика', 'Право', 'Журналистика'],
+    achievements: ['165 место QS', 'Крупнейший вуз РК', '20,000+ студентов', '90% трудоустройство'],
+    contacts: { phone: '+7 (727) 377-33-30', email: 'admission@kaznu.kz' }
+  },
+  {
+    id: 'aitu',
+    shortName: 'AITU',
+    name: 'Astana IT University',
+    nameRu: 'Астана IT Университет',
+    rating: 4.6,
+    city: 'Астана',
+    founded: 2017,
+    students: 3500,
+    type: 'state',
+    tuition: '1,800,000 - 2,200,000 ₸/год',
+    website: 'https://aitu.edu.kz',
+    description: 'Специализированный IT-университет Казахстана. Партнерство с Google, Microsoft, AWS. Современные лаборатории AI и Data Science. 99% трудоустройство выпускников.',
+    programs: ['AI', 'Data Science', 'Cybersecurity', 'Software Engineering', 'Big Data'],
+    achievements: ['Топ IT-вуз РК', 'Партнер Google/Microsoft', '99% трудоустройство', 'Современный кампус'],
+    contacts: { phone: '+7 (7172) 64-58-58', email: 'info@aitu.edu.kz' }
+  },
+  {
+    id: 'kbtu',
+    shortName: 'КБТУ',
+    name: 'Kazakh-British Technical University',
+    nameRu: 'Казахстанско-Британский Технический Университет',
+    rating: 4.5,
+    worldRank: 401,
+    city: 'Алматы',
+    founded: 2001,
+    students: 5500,
+    type: 'state',
+    tuition: '1,500,000 - 2,500,000 ₸/год',
+    website: 'https://kbtu.edu.kz',
+    description: 'Ведущий технический университет с британскими стандартами. Партнерство с Heriot-Watt University. Специализация на нефтегазовой инженерии и IT.',
+    programs: ['Petroleum Engineering', 'IT', 'Economics', 'Geology', 'Chemical Engineering'],
+    achievements: ['Двойные дипломы UK', 'ABET аккредитация', '95% трудоустройство'],
+    contacts: { phone: '+7 (727) 355-24-83', email: 'admission@kbtu.kz' }
+  },
+  {
+    id: 'kimep',
+    shortName: 'KIMEP',
+    name: 'KIMEP University',
+    nameRu: 'КИМЭП Университет',
+    rating: 4.6,
+    worldRank: 601,
+    city: 'Алматы',
+    founded: 1992,
+    students: 4500,
+    type: 'private',
+    tuition: '2,200,000 - 3,500,000 ₸/год',
+    website: 'https://kimep.kz',
+    description: 'Лучшая бизнес-школа Центральной Азии с аккредитацией AACSB. 100% программ на английском. Партнерство с 100+ университетами мира.',
+    programs: ['Business Administration', 'Finance', 'Marketing', 'Law', 'Media'],
+    achievements: ['AACSB аккредитация', '100% на английском', 'Топ бизнес-школа ЦА'],
+    contacts: { phone: '+7 (727) 270-42-52', email: 'admission@kimep.kz' }
+  },
+  {
+    id: 'sdu',
+    shortName: 'SDU',
+    name: 'Suleyman Demirel University',
+    nameRu: 'Университет Сулеймана Демиреля',
+    rating: 4.4,
+    worldRank: 751,
+    city: 'Алматы',
+    founded: 1996,
+    students: 7000,
+    type: 'private',
+    tuition: '1,400,000 - 2,800,000 ₸/год',
+    website: 'https://sdu.edu.kz',
+    description: 'Международный университет с турецкими традициями. Сильные программы по медицине, инженерии и гуманитарным наукам. Трехъязычное образование.',
+    programs: ['Medicine', 'Engineering', 'Philology', 'Economics', 'Law'],
+    achievements: ['Международный вуз', 'Сильная медицина', 'Обмены с 50+ странами'],
+    contacts: { phone: '+7 (727) 269-63-26', email: 'admission@sdu.edu.kz' }
+  },
+  {
+    id: 'iitu',
+    shortName: 'МУИТ',
+    name: 'International IT University',
+    nameRu: 'Международный Университет Информационных Технологий',
+    rating: 4.4,
+    worldRank: 801,
+    city: 'Алматы',
+    founded: 2009,
+    students: 2500,
+    type: 'state',
+    tuition: '1,600,000 - 2,000,000 ₸/год',
+    website: 'https://iitu.edu.kz',
+    description: 'Специализированный IT-университет в Алматы. Партнерство с Kaspersky, EPAM, Yandex. 98% выпускников работают в IT-индустрии.',
+    programs: ['Software Engineering', 'Data Science', 'Cybersecurity', 'AI'],
+    achievements: ['Топ-3 IT вуз РК', 'Партнер Kaspersky/EPAM', '98% в IT-индустрии'],
+    contacts: { phone: '+7 (727) 330-09-00', email: 'info@iitu.edu.kz' }
+  },
+  {
+    id: 'enu',
+    shortName: 'ЕНУ',
+    name: 'L.N. Gumilyov Eurasian National University',
+    nameRu: 'ЕНУ им. Л.Н. Гумилева',
+    rating: 4.5,
+    worldRank: 501,
+    city: 'Астана',
+    founded: 1996,
+    students: 16000,
+    type: 'state',
+    tuition: '550,000 - 1,200,000 ₸/год',
+    website: 'https://enu.kz',
+    description: 'Крупнейший классический университет столицы. 80+ программ обучения. Сильная научная школа и филологическое направление.',
+    programs: ['Филология', 'История', 'Математика', 'Экономика', 'Право'],
+    achievements: ['Крупнейший вуз столицы', '80+ программ', 'Научная школа'],
+    contacts: { phone: '+7 (7172) 70-95-00', email: 'rector@enu.kz' }
   }
-});
+];
 
-bot.onText(/\/search (.+)/, async (msg, match) => {
-  const chatId = msg.chat.id;
-  const query = match[1].toLowerCase();
-  
-  try {
-    const allUniversities = [
-      { shortName: 'NU', name: 'Nazarbayev University', rating: 4.9, city: 'Астана' },
-      { shortName: 'КазНУ', name: 'Al-Farabi Kazakh National University', rating: 4.7, city: 'Алматы' },
-      { shortName: 'AITU', name: 'Astana IT University', rating: 4.6, city: 'Астана' },
-      { shortName: 'КБТУ', name: 'Kazakh-British Technical University', rating: 4.5, city: 'Алматы' },
-      { shortName: 'KIMEP', name: 'KIMEP University', rating: 4.4, city: 'Алматы' },
-      { shortName: 'SDU', name: 'Suleyman Demirel University', rating: 4.3, city: 'Алматы' },
-      { shortName: 'МУИТ', name: 'Международный университет информационных технологий', rating: 4.5, city: 'Алматы' },
-      { shortName: 'IITU', name: 'International IT University', rating: 4.4, city: 'Алматы' }
-    ];
-    
-    const universities = allUniversities.filter(uni => 
-      uni.shortName.toLowerCase().includes(query) ||
-      uni.name.toLowerCase().includes(query) ||
-      uni.city.toLowerCase().includes(query)
-    );
-    
-    if (universities.length === 0) {
-      bot.sendMessage(chatId, 'Университеты не найдены');
-      return;
+// Создаем бота
+const bot = new TelegramBot(BOT_TOKEN, { 
+  polling: {
+    interval: 300,
+    autoStart: true,
+    params: {
+      timeout: 10
     }
-    
-    let text = `🔍 *Результаты поиска:*\n\n`;
-    universities.slice(0, 5).forEach(uni => {
-      text += `🏛️ ${uni.shortName}\n`;
-      text += `   ${uni.name}\n`;
-      text += `   Рейтинг: ${uni.rating}/5.0\n`;
-      text += `   Город: ${uni.city}\n\n`;
-    });
-    
-    bot.sendMessage(chatId, text, { parse_mode: 'Markdown' });
-  } catch (error) {
-    bot.sendMessage(chatId, 'Ошибка при поиске');
   }
 });
 
-bot.onText(/\/chances/, (msg) => {
-  const chatId = msg.chat.id;
-  bot.sendMessage(chatId, `📊 Для расчета шансов поступления:
-
-1. Укажите ваш балл ЕНТ
-2. Выберите университет
-3. Выберите программу
-
-Или используйте веб-версию: ${API_URL}/profile`);
+// Обработка ошибок polling
+bot.on('polling_error', (error) => {
+  console.error('Polling error:', error.code, error.message);
 });
 
-bot.onText(/\/help/, (msg) => {
-  const chatId = msg.chat.id;
-  bot.sendMessage(chatId, `📚 *Справка по командам KZ UniVerse Bot:*
-
-*Основные команды:*
-/start - Начать работу с ботом
-/universities - Показать список университетов
-/search <название> - Найти университет
-/chances - Информация о расчете шансов
-/help - Показать эту справку
-
-*Как использовать:*
-• Просто напишите вопрос, и я отвечу с помощью AI
-• Например: "Какие IT университеты в Алматы?"
-• Или: "Расскажи про Nazarbayev University"
-
-*Веб-версия:*
-Для полного функционала используйте веб-версию: ${API_URL}
-
-*Поддержка:*
-Если возникли проблемы, напишите /start`, { parse_mode: 'Markdown' });
+bot.on('error', (error) => {
+  console.error('Bot error:', error);
 });
 
-// Обработка текстовых сообщений (AI чат через Gemini)
-bot.on('message', async (msg) => {
-  const chatId = msg.chat.id;
-  const text = msg.text;
-  
-  // Пропускаем команды
-  if (text?.startsWith('/')) return;
-  
-  if (!text) return;
-  
-  try {
-    // Показываем индикатор печати
-    bot.sendChatAction(chatId, 'typing');
-    
-    const prompt = `Ты AI-помощник платформы KZ UniVerse - единой платформы для выбора университетов в Казахстане.
+// AI функция с несколькими fallback
+async function getAIResponse(userMessage, context = '') {
+  const fullPrompt = `Ты AI-помощник платформы KZ UniVerse - единой платформы для выбора университетов в Казахстане.
 
-В базе данных 15 университетов и 18 программ обучения.
+ПОЛНАЯ БАЗА ДАННЫХ УНИВЕРСИТЕТОВ:
+${UNIVERSITIES_DB.map(u => `
+📍 ${u.shortName} (${u.name})
+   Город: ${u.city} | Рейтинг: ${u.rating}/5.0 ${u.worldRank ? `| Мировой рейтинг: ${u.worldRank}` : ''}
+   Тип: ${u.type === 'national' ? 'Национальный' : u.type === 'state' ? 'Государственный' : 'Частный'}
+   Стоимость: ${u.tuition}
+   Студентов: ${u.students}
+   Основан: ${u.founded}
+   Описание: ${u.description}
+   Программы: ${u.programs.join(', ')}
+   Достижения: ${u.achievements.join(', ')}
+   Сайт: ${u.website}
+`).join('\n')}
 
-Топ университеты:
-- NU (Nazarbayev University): рейтинг 4.9/5.0, город Астана, стоимость от 7-9K USD/год
-- КазНУ (Al-Farabi Kazakh National University): рейтинг 4.7/5.0, город Алматы, стоимость от 0.6-1.8M₸/год
-- AITU (Astana IT University): рейтинг 4.6/5.0, город Астана, стоимость от 1.8-2.2M₸/год
-- КБТУ (Kazakh-British Technical University): рейтинг 4.5/5.0, город Алматы, стоимость от 1.5-2.5M₸/год
-- KIMEP University: рейтинг 4.4/5.0, город Алматы, стоимость от 2.2-3.5M₸/год
+${context}
 
-ВОПРОС ПОЛЬЗОВАТЕЛЯ: ${text}
+ВОПРОС ПОЛЬЗОВАТЕЛЯ: ${userMessage}
 
 ИНСТРУКЦИИ:
-1. Отвечай на русском языке
-2. Будь дружелюбным и профессиональным
-3. Используй конкретные данные из базы
-4. Давай детальные рекомендации
-5. Если спрашивают про конкретный университет - используй данные о нем
-6. Предлагай альтернативы если нужно
-7. Форматируй ответ с эмодзи и структурированно
+1. Отвечай ТОЛЬКО на русском языке
+2. Используй КОНКРЕТНЫЕ данные из базы выше
+3. Будь дружелюбным и профессиональным
+4. Давай детальные рекомендации с цифрами
+5. Форматируй ответ с эмодзи
+6. Если спрашивают про конкретный вуз - дай полную информацию
+7. Сравнивай университеты если просят
+8. Рекомендуй альтернативы
 
 ОТВЕТ:`;
-    
-    // Используем прямой fetch для надежности
-    const apiResponse = await fetch(
+
+  // Попытка 1: Gemini API
+  try {
+    const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [{
-            parts: [{ text: prompt }]
-          }]
+          contents: [{ parts: [{ text: fullPrompt }] }],
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 1024
+          }
         })
       }
     );
-    
-    if (!apiResponse.ok) {
-      const errorText = await apiResponse.text();
-      console.error('Gemini API error:', apiResponse.status, errorText);
-      throw new Error(`API error: ${apiResponse.status}`);
+
+    if (response.ok) {
+      const data = await response.json();
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (text) {
+        console.log('✅ Gemini API успешно');
+        return text;
+      }
     }
-    
-    const data = await apiResponse.json();
-    
-    // Проверяем блокировки безопасности
-    if (data.promptFeedback?.blockReason) {
-      console.warn('Content blocked:', data.promptFeedback.blockReason);
-      throw new Error(`Content blocked: ${data.promptFeedback.blockReason}`);
+    console.log('⚠️ Gemini API не дал ответ, пробуем fallback...');
+  } catch (error) {
+    console.error('❌ Gemini error:', error.message);
+  }
+
+  // Попытка 2: Локальная умная логика
+  return getSmartLocalResponse(userMessage);
+}
+
+// Умная локальная логика ответов
+function getSmartLocalResponse(message) {
+  const lower = message.toLowerCase();
+  
+  // Поиск конкретного университета
+  for (const uni of UNIVERSITIES_DB) {
+    if (lower.includes(uni.shortName.toLowerCase()) || 
+        lower.includes(uni.name.toLowerCase()) ||
+        lower.includes(uni.nameRu.toLowerCase())) {
+      return `🏛️ *${uni.name}* (${uni.shortName})
+${uni.nameRu}
+
+📍 Город: ${uni.city}
+⭐ Рейтинг: ${uni.rating}/5.0
+${uni.worldRank ? `🌍 Мировой рейтинг: ${uni.worldRank}` : ''}
+📅 Основан: ${uni.founded}
+👥 Студентов: ${uni.students.toLocaleString()}
+💰 Стоимость: ${uni.tuition}
+
+📝 *Описание:*
+${uni.description}
+
+🎓 *Программы:*
+${uni.programs.map(p => `• ${p}`).join('\n')}
+
+🏆 *Достижения:*
+${uni.achievements.map(a => `✅ ${a}`).join('\n')}
+
+📞 *Контакты:*
+📱 ${uni.contacts.phone}
+📧 ${uni.contacts.email}
+🌐 ${uni.website}`;
     }
+  }
+
+  // IT программы
+  if (lower.includes('it') || lower.includes('программирование') || lower.includes('компьютер') || lower.includes('айти')) {
+    const itUnis = UNIVERSITIES_DB.filter(u => 
+      u.programs.some(p => p.toLowerCase().includes('it') || 
+                          p.toLowerCase().includes('computer') || 
+                          p.toLowerCase().includes('software') ||
+                          p.toLowerCase().includes('ai') ||
+                          p.toLowerCase().includes('data'))
+    );
+    return `💻 *Лучшие IT-университеты Казахстана:*
+
+${itUnis.slice(0, 5).map((u, i) => `${i+1}. *${u.shortName}* - ${u.name}
+   📍 ${u.city} | ⭐ ${u.rating}/5.0
+   💰 ${u.tuition}
+   🎓 ${u.programs.filter(p => p.toLowerCase().includes('it') || p.toLowerCase().includes('ai') || p.toLowerCase().includes('software') || p.toLowerCase().includes('data')).join(', ')}
+`).join('\n')}
+
+💡 *Рекомендация:* Для IT-специальностей лучший выбор - AITU (специализированный IT-вуз) или NU (мировой уровень).`;
+  }
+
+  // Бизнес программы
+  if (lower.includes('бизнес') || lower.includes('экономика') || lower.includes('финанс') || lower.includes('менеджмент')) {
+    return `💼 *Лучшие бизнес-программы:*
+
+1. *KIMEP* - Лучшая бизнес-школа ЦА с AACSB аккредитацией
+   💰 2.2-3.5M₸/год | 📍 Алматы
+
+2. *NU Graduate School of Business* - Международный уровень
+   💰 $7,000-9,000/год | 📍 Астана
+
+3. *КБТУ* - Экономика и бизнес с британскими стандартами
+   💰 1.5-2.5M₸/год | 📍 Алматы
+
+💡 *Совет:* KIMEP - единственный вуз в ЦА с престижной аккредитацией AACSB!`;
+  }
+
+  // Гранты
+  if (lower.includes('грант') || lower.includes('стипенди') || lower.includes('бесплатно')) {
+    return `🎓 *Гранты и стипендии:*
+
+📋 *Государственные гранты:*
+• Выделяются по результатам ЕНТ
+• Покрывают 100% стоимости обучения
+• Проходной балл: 110-130 (зависит от специальности)
+
+🏛️ *Университетские гранты:*
+• *NU* - полные гранты для топ-абитуриентов
+• *AITU* - гранты до 100% для IT-талантов
+• *KIMEP* - стипендии за успеваемость
+
+💰 *Стипендии:*
+• Государственная: 36,000₸/мес
+• NU: до 100,000₸/мес
+• За отличную учебу: +20-50%
+
+💡 *Совет:* Набирайте 120+ баллов ЕНТ для гарантированного гранта!`;
+  }
+
+  // Сравнение
+  if (lower.includes('сравн') || lower.includes('лучш') || lower.includes('выбор')) {
+    return `📊 *Сравнение топ-университетов:*
+
+| Университет | Рейтинг | Город | Стоимость |
+|-------------|---------|-------|-----------|
+| NU          | 4.9 ⭐  | Астана | $7-9K    |
+| КазНУ       | 4.7 ⭐  | Алматы | 0.6-1.8M₸|
+| AITU        | 4.6 ⭐  | Астана | 1.8-2.2M₸|
+| KIMEP       | 4.6 ⭐  | Алматы | 2.2-3.5M₸|
+| КБТУ        | 4.5 ⭐  | Алматы | 1.5-2.5M₸|
+
+🎯 *По направлениям:*
+• IT: AITU, МУИТ, NU
+• Бизнес: KIMEP, NU
+• Инженерия: КБТУ, КазНУ
+• Медицина: SDU, NU
+
+Хотите подробное сравнение? Напишите названия вузов!`;
+  }
+
+  // Город Астана
+  if (lower.includes('астана') || lower.includes('нур-султан')) {
+    const astanaUnis = UNIVERSITIES_DB.filter(u => u.city === 'Астана');
+    return `🏙️ *Университеты в Астане:*
+
+${astanaUnis.map((u, i) => `${i+1}. *${u.shortName}* - ${u.name}
+   ⭐ ${u.rating}/5.0 | 💰 ${u.tuition}
+   ${u.description.substring(0, 100)}...
+`).join('\n')}
+
+💡 В столице расположены ведущие вузы страны, включая Nazarbayev University!`;
+  }
+
+  // Город Алматы
+  if (lower.includes('алматы') || lower.includes('алма-ата')) {
+    const almatyUnis = UNIVERSITIES_DB.filter(u => u.city === 'Алматы');
+    return `🏙️ *Университеты в Алматы:*
+
+${almatyUnis.map((u, i) => `${i+1}. *${u.shortName}* - ${u.name}
+   ⭐ ${u.rating}/5.0 | 💰 ${u.tuition}
+   ${u.description.substring(0, 100)}...
+`).join('\n')}
+
+💡 Алматы - студенческая столица с богатым выбором вузов!`;
+  }
+
+  // Поступление
+  if (lower.includes('поступ') || lower.includes('документ') || lower.includes('ент')) {
+    return `📝 *Процесс поступления:*
+
+1️⃣ *Сдать ЕНТ* (июнь-июль)
+   • Проходной балл: 50-130 (зависит от вуза)
+   • Для грантов: 110+
+
+2️⃣ *Подготовить документы:*
+   • Аттестат
+   • Удостоверение личности
+   • Фотографии 3x4
+   • Сертификат ЕНТ
+
+3️⃣ *Подать заявление:*
+   • Онлайн или лично
+   • Дедлайн: 10-20 августа
+
+4️⃣ *Пройти собеседование* (для некоторых вузов)
+
+5️⃣ *Получить результаты* (конец августа)
+
+📅 *Важные даты:*
+• ЕНТ: июнь-июль
+• Прием документов: 1 июля - 20 августа
+• Зачисление: 25 августа`;
+  }
+
+  // Дефолтный ответ
+  return `👋 Привет! Я AI-помощник KZ UniVerse.
+
+🎓 Я могу помочь с:
+• Информацией о университетах Казахстана
+• Выбором программы обучения
+• Сравнением вузов
+• Информацией о грантах и стипендиях
+• Процессом поступления
+
+📝 *Примеры вопросов:*
+• "Расскажи про Nazarbayev University"
+• "Какие IT университеты в Алматы?"
+• "Сравни AITU и КБТУ"
+• "Как получить грант?"
+
+Задайте ваш вопрос! 😊`;
+}
+
+// Команда /start
+bot.onText(/\/start/, async (msg) => {
+  const chatId = msg.chat.id;
+  const firstName = msg.from.first_name || 'друг';
+  
+  await bot.sendMessage(chatId, `👋 Привет, ${firstName}! Добро пожаловать в *KZ UniVerse Bot*!
+
+🎓 Я твой персональный помощник по выбору университета в Казахстане.
+
+*Что я умею:*
+📚 Информация о 15+ университетах
+📊 Сравнение вузов
+💰 Гранты и стипендии
+🎯 Расчет шансов поступления
+💬 Ответы на любые вопросы
+
+*Команды:*
+/universities - Список всех университетов
+/top5 - Топ-5 лучших вузов
+/it - IT-университеты
+/grants - Информация о грантах
+/compare - Сравнить университеты
+/help - Помощь
+
+🌐 *Веб-версия:* ${API_URL}
+
+Или просто напиши свой вопрос! 😊`, { parse_mode: 'Markdown' });
+});
+
+// Команда /universities
+bot.onText(/\/universities/, async (msg) => {
+  const chatId = msg.chat.id;
+  
+  let text = '🏛️ *Университеты Казахстана:*\n\n';
+  UNIVERSITIES_DB.forEach((uni, index) => {
+    const typeEmoji = uni.type === 'national' ? '🏛️' : uni.type === 'state' ? '🏫' : '💼';
+    text += `${index + 1}. ${typeEmoji} *${uni.shortName}* - ${uni.name}\n`;
+    text += `   📍 ${uni.city} | ⭐ ${uni.rating}/5.0\n`;
+    text += `   💰 ${uni.tuition}\n\n`;
+  });
+  
+  text += `\n📝 Напишите название университета для подробной информации!`;
+  
+  await bot.sendMessage(chatId, text, { parse_mode: 'Markdown' });
+});
+
+// Команда /top5
+bot.onText(/\/top5/, async (msg) => {
+  const chatId = msg.chat.id;
+  
+  const top5 = [...UNIVERSITIES_DB].sort((a, b) => b.rating - a.rating).slice(0, 5);
+  
+  let text = '🏆 *Топ-5 университетов Казахстана:*\n\n';
+  top5.forEach((uni, index) => {
+    text += `${['🥇', '🥈', '🥉', '4️⃣', '5️⃣'][index]} *${uni.shortName}* - ${uni.name}\n`;
+    text += `   ⭐ Рейтинг: ${uni.rating}/5.0\n`;
+    text += `   📍 ${uni.city}\n`;
+    text += `   💰 ${uni.tuition}\n`;
+    if (uni.worldRank) text += `   🌍 Мировой рейтинг: ${uni.worldRank}\n`;
+    text += '\n';
+  });
+  
+  await bot.sendMessage(chatId, text, { parse_mode: 'Markdown' });
+});
+
+// Команда /it
+bot.onText(/\/it/, async (msg) => {
+  const chatId = msg.chat.id;
+  
+  const itUnis = UNIVERSITIES_DB.filter(u => 
+    u.programs.some(p => 
+      p.toLowerCase().includes('it') || 
+      p.toLowerCase().includes('computer') || 
+      p.toLowerCase().includes('software') ||
+      p.toLowerCase().includes('ai') ||
+      p.toLowerCase().includes('data')
+    )
+  );
+  
+  let text = '💻 *IT-университеты Казахстана:*\n\n';
+  itUnis.forEach((uni, index) => {
+    text += `${index + 1}. *${uni.shortName}* - ${uni.name}\n`;
+    text += `   📍 ${uni.city} | ⭐ ${uni.rating}/5.0\n`;
+    text += `   💰 ${uni.tuition}\n`;
+    text += `   🎓 ${uni.programs.filter(p => p.toLowerCase().includes('it') || p.toLowerCase().includes('ai') || p.toLowerCase().includes('software') || p.toLowerCase().includes('data') || p.toLowerCase().includes('computer')).join(', ')}\n\n`;
+  });
+  
+  text += `\n💡 *Рекомендация:* AITU - специализированный IT-вуз с партнерством Google и Microsoft!`;
+  
+  await bot.sendMessage(chatId, text, { parse_mode: 'Markdown' });
+});
+
+// Команда /grants
+bot.onText(/\/grants/, async (msg) => {
+  const chatId = msg.chat.id;
+  
+  const text = `🎓 *Гранты и стипендии в Казахстане:*
+
+📋 *Государственные гранты:*
+• Выделяются по результатам ЕНТ
+• Покрывают 100% стоимости обучения
+• Проходной балл: 110-130 баллов
+
+🏛️ *Университетские гранты:*
+• *NU* - полные гранты для топ-абитуриентов
+• *AITU* - гранты до 100% для IT-талантов
+• *KIMEP* - стипендии за успеваемость до 50%
+• *КБТУ* - гранты для инженеров
+
+💰 *Размер стипендий:*
+• Государственная: 36,000₸/мес
+• NU: до 100,000₸/мес
+• За отличную учебу: +20-50%
+
+📝 *Как получить грант:*
+1. Набрать высокий балл ЕНТ (120+)
+2. Подать документы до дедлайна
+3. Пройти собеседование (если требуется)
+
+💡 *Совет:* Начните подготовку к ЕНТ заранее!`;
+  
+  await bot.sendMessage(chatId, text, { parse_mode: 'Markdown' });
+});
+
+// Команда /compare
+bot.onText(/\/compare/, async (msg) => {
+  const chatId = msg.chat.id;
+  
+  const text = `📊 *Сравнение университетов:*
+
+Напишите названия 2-3 университетов для сравнения.
+
+*Пример:*
+"Сравни NU и AITU"
+"КБТУ vs KIMEP"
+"NU, AITU, КБТУ"
+
+*Доступные университеты:*
+${UNIVERSITIES_DB.map(u => `• ${u.shortName}`).join('\n')}`;
+  
+  await bot.sendMessage(chatId, text, { parse_mode: 'Markdown' });
+});
+
+// Команда /help
+bot.onText(/\/help/, async (msg) => {
+  const chatId = msg.chat.id;
+  
+  const text = `📚 *Справка KZ UniVerse Bot:*
+
+*Основные команды:*
+/start - Начать работу
+/universities - Все университеты
+/top5 - Топ-5 лучших вузов
+/it - IT-университеты
+/grants - Гранты и стипендии
+/compare - Сравнить вузы
+/help - Эта справка
+
+*Как использовать:*
+• Напишите название вуза для информации
+• Задайте вопрос на русском языке
+• Попросите сравнить университеты
+
+*Примеры вопросов:*
+• "Расскажи про Nazarbayev University"
+• "Какие IT вузы в Астане?"
+• "Как поступить в AITU?"
+• "Сравни КБТУ и KIMEP"
+
+🌐 *Веб-версия:* ${API_URL}
+
+Если бот не отвечает, попробуйте /start`;
+  
+  await bot.sendMessage(chatId, text, { parse_mode: 'Markdown' });
+});
+
+// Обработка текстовых сообщений
+bot.on('message', async (msg) => {
+  const chatId = msg.chat.id;
+  const text = msg.text;
+  
+  // Пропускаем команды
+  if (!text || text.startsWith('/')) return;
+  
+  try {
+    // Показываем индикатор печати
+    await bot.sendChatAction(chatId, 'typing');
     
-    const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Не удалось получить ответ';
+    // Получаем ответ от AI
+    const response = await getAIResponse(text);
     
-    // Разбиваем длинные ответы на части (Telegram лимит 4096 символов)
-    if (aiResponse.length > 4000) {
-      const chunks = aiResponse.match(/.{1,4000}/g) || [];
+    // Разбиваем длинные ответы
+    if (response.length > 4000) {
+      const chunks = response.match(/.{1,4000}/gs) || [];
       for (const chunk of chunks) {
-        await bot.sendMessage(chatId, chunk);
+        await bot.sendMessage(chatId, chunk, { parse_mode: 'Markdown' });
       }
     } else {
-      await bot.sendMessage(chatId, aiResponse);
+      await bot.sendMessage(chatId, response, { parse_mode: 'Markdown' });
     }
   } catch (error) {
-    console.error('Bot error:', error);
-    bot.sendMessage(chatId, 'Произошла ошибка при обработке запроса. Попробуйте позже или переформулируйте вопрос.');
+    console.error('Message error:', error);
+    await bot.sendMessage(chatId, '❌ Произошла ошибка. Попробуйте переформулировать вопрос или используйте /help');
   }
 });
 
-console.log('🤖 Telegram Bot запущен!');
-
+console.log('🤖 KZ UniVerse Telegram Bot запущен!');
+console.log('📱 Токен:', BOT_TOKEN.substring(0, 10) + '...');
+console.log('🌐 API URL:', API_URL);
