@@ -82,16 +82,37 @@ export async function admissionChanceAPI(portfolio: any, universityId: string, p
 }
 
 function buildChatPrompt(message: string, portfolio?: any): string {
-  return `Ты AI-помощник платформы KZ UniVerse. Помогаешь студентам выбрать университет в Казахстане.
+  return `Ты AI-помощник платформы KZ UniVerse - единой платформы для выбора университетов в Казахстане.
 
-${portfolio ? `Портфолио студента:
+В базе данных 15 университетов и 18 программ обучения.
+
+Топ университеты:
+- NU (Nazarbayev University): рейтинг 4.9/5.0, город Астана, стоимость от 7-9K USD/год
+- КазНУ (Al-Farabi Kazakh National University): рейтинг 4.7/5.0, город Алматы, стоимость от 0.6-1.8M₸/год
+- AITU (Astana IT University): рейтинг 4.6/5.0, город Астана, стоимость от 1.8-2.2M₸/год
+- КБТУ (Kazakh-British Technical University): рейтинг 4.5/5.0, город Алматы, стоимость от 1.5-2.5M₸/год
+- KIMEP University: рейтинг 4.4/5.0, город Алматы, стоимость от 2.2-3.5M₸/год
+
+${portfolio ? `ПОРТФОЛИО СТУДЕНТА:
 - ЕНТ: ${portfolio.entScore || 'не указано'}
 - GPA: ${portfolio.gpa || 'не указано'}
+- IELTS: ${portfolio.ieltsScore || 'не указано'}
+- Достижения: ${portfolio.achievements?.length || 0}
+- Олимпиады: ${portfolio.olympiads?.length || 0}
 ` : ''}
 
-Вопрос: ${message}
+ВОПРОС ПОЛЬЗОВАТЕЛЯ: ${message}
 
-Отвечай на русском языке, будь дружелюбным и конкретным.`
+ИНСТРУКЦИИ:
+1. Отвечай на русском языке
+2. Будь дружелюбным и профессиональным
+3. Используй конкретные данные из базы
+4. Давай детальные рекомендации
+5. Если спрашивают про конкретный университет - используй данные о нем
+6. Предлагай альтернативы если нужно
+7. Форматируй ответ с эмодзи и структурированно
+
+ОТВЕТ:`
 }
 
 function buildAdmissionPrompt(portfolio: any, program: any, university: any): string {

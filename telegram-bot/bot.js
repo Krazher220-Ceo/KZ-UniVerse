@@ -32,11 +32,22 @@ bot.onText(/\/universities/, async (msg) => {
   const chatId = msg.chat.id;
   
   try {
-    const response = await fetch(`${API_URL}/api/universities`);
-    const universities = await response.json();
+    // Импортируем данные напрямую (в production нужно через API)
+    const universities = [
+      { shortName: 'NU', name: 'Nazarbayev University', rating: 4.9, city: 'Астана' },
+      { shortName: 'КазНУ', name: 'Al-Farabi Kazakh National University', rating: 4.7, city: 'Алматы' },
+      { shortName: 'AITU', name: 'Astana IT University', rating: 4.6, city: 'Астана' },
+      { shortName: 'КБТУ', name: 'Kazakh-British Technical University', rating: 4.5, city: 'Алматы' },
+      { shortName: 'KIMEP', name: 'KIMEP University', rating: 4.4, city: 'Алматы' },
+      { shortName: 'SDU', name: 'Suleyman Demirel University', rating: 4.3, city: 'Алматы' },
+      { shortName: 'МУИТ', name: 'Международный университет информационных технологий', rating: 4.5, city: 'Алматы' },
+      { shortName: 'IITU', name: 'International IT University', rating: 4.4, city: 'Алматы' },
+      { shortName: 'КЭУ', name: 'Карагандинский экономический университет', rating: 4.2, city: 'Караганда' },
+      { shortName: 'КарТУ', name: 'Карагандинский технический университет', rating: 4.1, city: 'Караганда' }
+    ];
     
-    let text = '🏛️ **Топ университетов Казахстана:**\n\n';
-    universities.slice(0, 10).forEach((uni, index) => {
+    let text = '🏛️ *Топ университетов Казахстана:*\n\n';
+    universities.forEach((uni, index) => {
       text += `${index + 1}. ${uni.shortName} - ${uni.name}\n`;
       text += `   Рейтинг: ${uni.rating}/5.0\n`;
       text += `   Город: ${uni.city}\n\n`;
@@ -50,18 +61,32 @@ bot.onText(/\/universities/, async (msg) => {
 
 bot.onText(/\/search (.+)/, async (msg, match) => {
   const chatId = msg.chat.id;
-  const query = match[1];
+  const query = match[1].toLowerCase();
   
   try {
-    const response = await fetch(`${API_URL}/api/universities?q=${encodeURIComponent(query)}`);
-    const universities = await response.json();
+    const allUniversities = [
+      { shortName: 'NU', name: 'Nazarbayev University', rating: 4.9, city: 'Астана' },
+      { shortName: 'КазНУ', name: 'Al-Farabi Kazakh National University', rating: 4.7, city: 'Алматы' },
+      { shortName: 'AITU', name: 'Astana IT University', rating: 4.6, city: 'Астана' },
+      { shortName: 'КБТУ', name: 'Kazakh-British Technical University', rating: 4.5, city: 'Алматы' },
+      { shortName: 'KIMEP', name: 'KIMEP University', rating: 4.4, city: 'Алматы' },
+      { shortName: 'SDU', name: 'Suleyman Demirel University', rating: 4.3, city: 'Алматы' },
+      { shortName: 'МУИТ', name: 'Международный университет информационных технологий', rating: 4.5, city: 'Алматы' },
+      { shortName: 'IITU', name: 'International IT University', rating: 4.4, city: 'Алматы' }
+    ];
+    
+    const universities = allUniversities.filter(uni => 
+      uni.shortName.toLowerCase().includes(query) ||
+      uni.name.toLowerCase().includes(query) ||
+      uni.city.toLowerCase().includes(query)
+    );
     
     if (universities.length === 0) {
       bot.sendMessage(chatId, 'Университеты не найдены');
       return;
     }
     
-    let text = `🔍 **Результаты поиска:**\n\n`;
+    let text = `🔍 *Результаты поиска:*\n\n`;
     universities.slice(0, 5).forEach(uni => {
       text += `🏛️ ${uni.shortName}\n`;
       text += `   ${uni.name}\n`;
@@ -86,7 +111,7 @@ bot.onText(/\/chances/, (msg) => {
 Или используйте веб-версию: ${API_URL}/profile`);
 });
 
-// Обработка текстовых сообщений (AI чат)
+// Обработка текстовых сообщений (AI чат через Gemini)
 bot.on('message', async (msg) => {
   const chatId = msg.chat.id;
   const text = msg.text;
@@ -97,23 +122,35 @@ bot.on('message', async (msg) => {
   if (!text) return;
   
   try {
-    // Отправляем в AI API
-    const response = await fetch(`${API_URL}/api/chat`, {
+    // Прямой вызов Gemini API
+    const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyCIhH-3VKldhugzLWxf4UWQ6tCrcksrjdA';
+    const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+    
+    const prompt = `Ты AI-помощник платформы KZ UniVerse. Помогаешь студентам выбрать университет в Казахстане.
+
+Вопрос: ${text}
+
+Отвечай на русском языке, будь дружелюбным и конкретным.`;
+    
+    const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        message: text,
-        history: []
+        contents: [{
+          parts: [{ text: prompt }]
+        }]
       })
     });
     
     if (response.ok) {
       const data = await response.json();
-      bot.sendMessage(chatId, data.response || 'Не удалось получить ответ');
+      const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Не удалось получить ответ';
+      bot.sendMessage(chatId, aiResponse);
     } else {
-      bot.sendMessage(chatId, 'Ошибка при обработке запроса');
+      bot.sendMessage(chatId, 'Ошибка при обработке запроса. Попробуйте позже.');
     }
   } catch (error) {
+    console.error('Bot error:', error);
     bot.sendMessage(chatId, 'Произошла ошибка. Попробуйте позже.');
   }
 });
