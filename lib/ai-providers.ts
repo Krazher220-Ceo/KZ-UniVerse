@@ -47,19 +47,30 @@ ${uni.worldRank ? `Мировой рейтинг: ${uni.worldRank}` : ''}
 Миссия: ${uni.mission}
 
 Факультеты:
-${uni.faculties?.map((f: string) => `- ${f}`).join('\n') || 'Не указано'}
+${uni.faculties?.map((f: any) => {
+  if (typeof f === 'string') return `- ${f}`;
+  return `- ${f.name || f.nameRu || f.nameEn || 'Не указано'}`;
+}).join('\n') || 'Не указано'}
 
 Направления исследований:
 ${uni.researchAreas?.map((r: string) => `- ${r}`).join('\n') || 'Не указано'}
 
 Партнеры:
-${uni.partners?.map((p: string) => `- ${p}`).join('\n') || 'Не указано'}
+${uni.partners?.map((p: any) => {
+  if (typeof p === 'string') return `- ${p}`;
+  return `- ${p.name || 'Не указано'}${p.country ? ` (${p.country})` : ''}`;
+}).join('\n') || 'Не указано'}
 
 Достижения:
 ${uni.achievements?.map((a: string) => `- ${a}`).join('\n') || 'Не указано'}
 
 Инфраструктура:
-${uni.infrastructure?.map((i: string) => `- ${i}`).join('\n') || 'Не указано'}
+${typeof uni.infrastructure === 'object' && !Array.isArray(uni.infrastructure) 
+  ? `Общежитие: ${uni.infrastructure.dormitories?.available ? 'Да' : 'Нет'}
+Библиотека: ${uni.infrastructure.library?.name || 'Есть'}
+Лаборатории: ${uni.infrastructure.laboratories?.total || 0}
+Спорт: ${uni.infrastructure.sports?.stadium ? 'Стадион' : ''} ${uni.infrastructure.sports?.pool ? 'Бассейн' : ''}`
+  : (Array.isArray(uni.infrastructure) ? uni.infrastructure.map((i: string) => `- ${i}`).join('\n') : 'Не указано')}
 
 Выпускники:
 ${uni.alumni?.map((a: string) => `- ${a}`).join('\n') || 'Не указано'}
@@ -127,29 +138,35 @@ export async function getAIResponse(prompt: string, type: AIType): Promise<strin
   let response = '';
   let errorMessages: string[] = [];
 
-  // Загружаем базу знаний
-  const { universities, programs } = await loadKnowledgeBase();
-  const knowledgeContext = buildKnowledgeContext(universities, programs);
-
-  // Формируем полный промпт с контекстом
-  const fullPrompt = type === 'chat' 
-    ? buildChatPrompt(prompt, knowledgeContext)
-    : buildAdmissionPrompt(prompt, knowledgeContext);
-
-  // 1. Try Gemini
   try {
-    response = await generateGeminiContent(fullPrompt);
-    if (response && response.trim().length > 10) {
-      return response;
-    }
-  } catch (error: any) {
-    console.error('Gemini API failed:', error.message);
-    errorMessages.push(`Gemini failed: ${error.message}`);
-  }
+    // Загружаем базу знаний
+    const { universities, programs } = await loadKnowledgeBase();
+    const knowledgeContext = buildKnowledgeContext(universities, programs);
 
-  // 2. Fallback to local logic with real data
-  console.warn('All external AI providers failed. Falling back to local logic with real data.');
-  return getLocalFallbackResponse(prompt, type, errorMessages, universities, programs);
+    // Формируем полный промпт с контекстом
+    const fullPrompt = type === 'chat' 
+      ? buildChatPrompt(prompt, knowledgeContext)
+      : buildAdmissionPrompt(prompt, knowledgeContext);
+
+    // 1. Try Gemini
+    try {
+      response = await generateGeminiContent(fullPrompt);
+      if (response && response.trim().length > 10) {
+        return response.trim();
+      }
+    } catch (error: any) {
+      console.error('Gemini API failed:', error.message);
+      errorMessages.push(`Gemini failed: ${error.message}`);
+    }
+
+    // 2. Fallback to local logic with real data
+    console.warn('Using local fallback with real data from knowledge base.');
+    return getLocalFallbackResponse(prompt, type, errorMessages, universities, programs);
+  } catch (error: any) {
+    // Если даже загрузка базы знаний не удалась, возвращаем базовый ответ
+    console.error('Failed to load knowledge base:', error);
+    return getLocalFallbackResponse(prompt, type, [`Failed to load data: ${error.message}`], [], []);
+  }
 }
 
 function buildChatPrompt(userMessage: string, knowledgeContext: string): string {
@@ -227,7 +244,7 @@ ${uniPrograms.slice(0, 5).map(p => `• ${p.nameRu || p.name} - ${p.tuitionPerYe
 ${uniPrograms.length > 5 ? `\n... и ещё ${uniPrograms.length - 5} программ` : ''}
 
 🏆 *Достижения:*
-${uni.achievements?.slice(0, 3).map(a => `✅ ${a}`).join('\n') || 'Не указано'}
+${uni.achievements?.slice(0, 3).map((a: string) => `✅ ${a}`).join('\n') || 'Не указано'}
 
 📞 *Контакты:*
 📱 ${uni.phone}
@@ -291,6 +308,22 @@ ${businessUnis.slice(0, 3).map(uni => {
 Задайте конкретный вопрос, и я дам детальный ответ на основе базы данных! 😊`;
   }
   
-  return `Извините, AI-помощник временно недоступен. (Ошибки: ${errors.join('; ')})`;
+  // Всегда возвращаем полезный ответ, даже если база знаний пуста
+  return `👋 Привет! Я AI-помощник KZ UniVerse.
+
+🎓 Я могу помочь с:
+• Информацией о университетах Казахстана
+• Выбором программы обучения
+• Сравнением вузов
+• Грантами и стипендиями
+• Процессом поступления
+
+📝 *Примеры вопросов:*
+• "Расскажи про Nazarbayev University"
+• "Какие IT программы в Астане?"
+• "Сравни NU и AITU"
+• "Как поступить в KIMEP?"
+
+Задайте конкретный вопрос, и я дам детальный ответ! 😊`;
 }
 

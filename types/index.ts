@@ -14,6 +14,20 @@ export interface University {
   region: string;
   rating: number;
   worldRank?: number;
+  rankings?: {
+    qs?: {
+      year?: number;
+      position?: number | string;
+    };
+    the?: {
+      year?: number;
+      position?: number | string;
+    };
+    national?: {
+      year?: number;
+      position?: number | string;
+    };
+  };
   founded: number;
   students: number;
   internationalStudents: number; // процент

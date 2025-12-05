@@ -250,7 +250,7 @@ function AboutTab({ university }: { university: University }) {
           <h3 className="text-xl font-bold mb-3">Факультеты и школы</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             {university.faculties.map((faculty, index) => {
-              const facultyName = typeof faculty === 'string' ? faculty : faculty.name || faculty.nameRu || '';
+              const facultyName = typeof faculty === 'string' ? faculty : (faculty as any).name || (faculty as any).nameRu || '';
               const facultyDescription = typeof faculty === 'object' && faculty.description ? faculty.description : null;
               
               return (
