@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { FiMenu, FiX, FiHome, FiBook, FiCompass, FiBarChart2, FiUser, FiLogOut } from 'react-icons/fi'
+import { FiMenu, FiX, FiHome, FiBook, FiCompass, FiBarChart2, FiUser, FiLogOut, FiZap } from 'react-icons/fi'
 import { isAuthenticated, getCurrentUser, logout } from '@/lib/auth'
 
 export default function Header() {
@@ -55,6 +55,11 @@ export default function Header() {
             <Link href="/analytics" className="flex items-center space-x-1 text-gray-700 hover:text-primary-600 transition-colors">
               <FiBarChart2 />
               <span>Аналитика</span>
+            </Link>
+            <Link href="/innovations" className="flex items-center space-x-1 text-gray-700 hover:text-primary-600 transition-colors relative">
+              <FiZap />
+              <span>Инновации</span>
+              <span className="absolute -top-1 -right-2 w-2 h-2 bg-gradient-to-r from-violet-500 to-purple-500 rounded-full animate-pulse"></span>
             </Link>
             <Link href="/profile" className="flex items-center space-x-1 text-gray-700 hover:text-primary-600 transition-colors">
               <FiUser />
@@ -116,9 +121,13 @@ export default function Header() {
               <FiBarChart2 />
               <span>Аналитика</span>
             </Link>
-            <button className="w-full px-6 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg">
+            <Link href="/innovations" className="flex items-center space-x-2 text-gray-700 hover:text-primary-600 transition-colors">
+              <FiZap />
+              <span>Инновации</span>
+            </Link>
+            <Link href="/innovations" className="w-full px-6 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg text-center">
               Подобрать ВУЗ
-            </button>
+            </Link>
           </div>
         )}
       </nav>

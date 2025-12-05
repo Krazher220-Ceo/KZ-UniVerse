@@ -4,6 +4,7 @@ import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import AIChat from '@/components/AIChat'
+import VoiceAssistant from '@/components/innovations/VoiceAssistant'
 
 const inter = Inter({ subsets: ['latin', 'cyrillic'] })
 
@@ -30,6 +31,7 @@ export default function RootLayout({
         </main>
         <Footer />
         <AIChat />
+        <VoiceAssistant />
       </body>
     </html>
   )

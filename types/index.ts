@@ -34,6 +34,22 @@ export interface University {
   description: string;
   mission: string;
   vision: string; // Добавлено поле видения
+  history?: string; // История университета
+  leadership?: {
+    rector?: {
+      name: string;
+      nameKz?: string;
+      nameEn?: string;
+      position: string;
+      bio?: string;
+      photo?: string;
+    };
+    viceRectors?: Array<{
+      name: string;
+      position: string;
+      bio?: string;
+    }>;
+  }; // Информация о лидерстве/руководстве
   values: string[]; // Добавлены ценности
   achievements: string[];
   accreditations: {
