@@ -298,57 +298,85 @@ export async function analyzeAdmissionChance(data: {
 }
 
 // Подбор университетов
-export async function matchUniversities(preferences: {
-  interests: string[]
-  city: string
-  budget: string
-  entScore: number
-  language: string
-}): Promise<{
+export async function matchUniversities(
+  preferences: {
+    interests: string[]
+    city: string
+    budget: string
+    entScore: number
+    language: string
+  },
+  priorities?: {
+    prestige?: number
+    cost?: number
+    location?: number
+    specialization?: number
+  }
+): Promise<{
   universityId: string
   name: string
   matchScore: number
   reasons: string[]
 }[]> {
   const universities = [
-    { id: 'nu', name: 'Nazarbayev University', city: 'астана', budget: 'high', tags: ['it', 'engineering', 'medicine', 'business', 'english'], minENT: 120 },
-    { id: 'aitu', name: 'AITU', city: 'астана', budget: 'medium', tags: ['it', 'ai', 'data-science'], minENT: 90 },
-    { id: 'kaznu', name: 'КазНУ', city: 'алматы', budget: 'low', tags: ['it', 'science', 'humanities', 'economics'], minENT: 85 },
-    { id: 'kbtu', name: 'КБТУ', city: 'алматы', budget: 'medium', tags: ['it', 'engineering', 'petroleum'], minENT: 90 },
-    { id: 'kimep', name: 'KIMEP', city: 'алматы', budget: 'high', tags: ['business', 'finance', 'law', 'english'], minENT: 85 },
-    { id: 'iitu', name: 'МУИТ', city: 'алматы', budget: 'medium', tags: ['it', 'programming'], minENT: 80 },
-    { id: 'sdu', name: 'SDU', city: 'алматы', budget: 'medium', tags: ['medicine', 'engineering'], minENT: 80 },
-    { id: 'enu', name: 'ЕНУ', city: 'астана', budget: 'low', tags: ['humanities', 'science', 'law'], minENT: 75 }
+    { id: 'nu', name: 'Nazarbayev University', city: 'астана', budget: 'high', tags: ['it', 'engineering', 'medicine', 'business', 'english'], minENT: 120, rating: 4.9 },
+    { id: 'aitu', name: 'AITU', city: 'астана', budget: 'medium', tags: ['it', 'ai', 'data-science'], minENT: 90, rating: 4.5 },
+    { id: 'kaznu', name: 'КазНУ', city: 'алматы', budget: 'low', tags: ['it', 'science', 'humanities', 'economics'], minENT: 85, rating: 4.6 },
+    { id: 'kbtu', name: 'КБТУ', city: 'алматы', budget: 'medium', tags: ['it', 'engineering', 'petroleum'], minENT: 90, rating: 4.4 },
+    { id: 'kimep', name: 'KIMEP', city: 'алматы', budget: 'high', tags: ['business', 'finance', 'law', 'english'], minENT: 85, rating: 4.3 },
+    { id: 'iitu', name: 'МУИТ', city: 'алматы', budget: 'medium', tags: ['it', 'programming'], minENT: 80, rating: 4.2 },
+    { id: 'sdu', name: 'SDU', city: 'алматы', budget: 'medium', tags: ['medicine', 'engineering'], minENT: 80, rating: 4.3 },
+    { id: 'enu', name: 'ЕНУ', city: 'астана', budget: 'low', tags: ['humanities', 'science', 'law'], minENT: 75, rating: 4.1 }
   ]
   
   const results = universities.map(uni => {
     let score = 0
     const reasons: string[] = []
     
-    // Интересы (40%)
+    // Базовые веса (если приоритеты не указаны)
+    const prestigeWeight = priorities?.prestige ? priorities.prestige / 100 : 0.25
+    const costWeight = priorities?.cost ? priorities.cost / 100 : 0.25
+    const locationWeight = priorities?.location ? priorities.location / 100 : 0.25
+    const specializationWeight = priorities?.specialization ? priorities.specialization / 100 : 0.25
+    
+    // Интересы/Специализация (зависит от приоритета специализации)
     const interestMatch = preferences.interests.filter(i => uni.tags.includes(i)).length
-    score += (interestMatch / Math.max(preferences.interests.length, 1)) * 40
+    const specializationScore = (interestMatch / Math.max(preferences.interests.length, 1)) * 100
+    score += specializationScore * specializationWeight * 40
     if (interestMatch > 0) reasons.push(`${interestMatch} совпадений по интересам`)
     
-    // Город (15%)
+    // Престиж (рейтинг университета)
+    const prestigeScore = uni.rating ? ((uni.rating - 4) * 20) : 50 // 0-20 для рейтинга 4.0-5.0, по умолчанию 50
+    score += prestigeScore * prestigeWeight * 30
+    if (uni.rating && uni.rating >= 4.7) reasons.push(`Высокий рейтинг (${uni.rating})`)
+    
+    // Город/Локация (зависит от приоритета локации)
     if (preferences.city === 'any' || preferences.city === uni.city) {
-      score += 15
+      const locationScore = preferences.city === 'any' ? 50 : 100
+      score += locationScore * locationWeight * 20
       if (preferences.city !== 'any') reasons.push(`Город: ${uni.city}`)
     }
     
-    // Бюджет (20%)
+    // Бюджет/Стоимость (зависит от приоритета стоимости)
+    let costScore = 0
     if (preferences.budget === 'any' || preferences.budget === uni.budget) {
-      score += 20
+      costScore = 100
       reasons.push('Подходит по бюджету')
+    } else if (
+      (preferences.budget === 'medium' && uni.budget === 'low') ||
+      (preferences.budget === 'high' && uni.budget !== 'high')
+    ) {
+      costScore = 50
     }
+    score += costScore * costWeight * 20
     
-    // ЕНТ (15%)
+    // ЕНТ (базовый фактор)
     if (preferences.entScore >= uni.minENT) {
-      score += 15
+      score += 10
       reasons.push(`ЕНТ выше минимума (${uni.minENT})`)
     }
     
-    // Язык (10%)
+    // Язык
     if (preferences.language === 'english' && uni.tags.includes('english')) {
       score += 10
       reasons.push('Обучение на английском')

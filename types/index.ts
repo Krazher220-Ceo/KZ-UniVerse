@@ -315,6 +315,13 @@ export interface UserPortfolio {
     language: string;
     level: 'basic' | 'intermediate' | 'advanced' | 'native';
   }[];
+  // Приоритеты при выборе университета
+  priorities?: {
+    prestige?: number; // 0-100 приоритет престижа
+    cost?: number; // 0-100 приоритет стоимости (чем выше, тем важнее низкая стоимость)
+    location?: number; // 0-100 приоритет локации
+    specialization?: number; // 0-100 приоритет специализации
+  };
 }
 
 export interface AdmissionChance {

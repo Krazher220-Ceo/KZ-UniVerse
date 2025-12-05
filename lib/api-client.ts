@@ -5,18 +5,25 @@ import { getAIResponse } from './ai-providers';
 
 export async function chatAPI(message: string, history: any[], portfolio?: any) {
   try {
-    // Формируем контекст портфолио если есть
-    let portfolioContext = '';
-    if (portfolio) {
-      portfolioContext = `
+      // Формируем контекст портфолио если есть
+      let portfolioContext = '';
+      if (portfolio) {
+        portfolioContext = `
 ПОРТФОЛИО СТУДЕНТА:
 - ЕНТ: ${portfolio.entScore || 'не указано'}
 - GPA: ${portfolio.gpa || 'не указано'}
 - IELTS: ${portfolio.ieltsScore || 'не указано'}
 - Достижения: ${portfolio.achievements?.length || 0}
 - Олимпиады: ${portfolio.olympiads?.length || 0}
+${portfolio.priorities ? `
+ПРИОРИТЕТЫ ПРИ ВЫБОРЕ УНИВЕРСИТЕТА:
+- Престиж: ${portfolio.priorities.prestige || 50}% (чем выше, тем важнее рейтинг)
+- Стоимость: ${portfolio.priorities.cost || 50}% (чем выше, тем важнее низкая стоимость)
+- Локация: ${portfolio.priorities.location || 50}% (чем выше, тем важнее конкретный город)
+- Специализация: ${portfolio.priorities.specialization || 50}% (чем выше, тем важнее программа)
+` : ''}
 `;
-    }
+      }
 
     const fullMessage = portfolioContext ? `${portfolioContext}\n\nВОПРОС: ${message}` : message;
     

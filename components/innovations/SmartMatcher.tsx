@@ -144,6 +144,18 @@ export default function SmartMatcher() {
     setIsCalculating(true)
     
     try {
+      // Загружаем приоритеты из профиля если есть
+      let userPriorities = null
+      try {
+        const portfolioModule = await import('@/lib/portfolio')
+        const portfolio = portfolioModule.getPortfolio()
+        if (portfolio?.priorities) {
+          userPriorities = portfolio.priorities
+        }
+      } catch (e) {
+        console.warn('Failed to load priorities:', e)
+      }
+
       // Используем AI для подбора
       const aiModule = await import('@/lib/ai')
       const aiResults = await aiModule.matchUniversities({
@@ -152,7 +164,7 @@ export default function SmartMatcher() {
         budget: answers.budget,
         entScore: parseInt(answers.entScore) || 0,
         language: answers.language
-      })
+      }, userPriorities)
       
       // Объединяем с локальными данными для полной информации
       const results: MatchResult[] = aiResults.map(aiResult => {
