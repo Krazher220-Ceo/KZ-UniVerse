@@ -1,6 +1,9 @@
 // Telegram Bot для KZ UniVerse
 // Использование: node bot.js
 
+// Отключаем проверку SSL для разработки (не использовать в production!)
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 const TelegramBot = require('node-telegram-bot-api');
 const fetch = require('node-fetch');
 
