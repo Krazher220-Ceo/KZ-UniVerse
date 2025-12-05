@@ -6,6 +6,8 @@ import { UserPortfolio, AdmissionChance } from '@/types'
 const GEMINI_API_KEY = 'AIzaSyCIhH-3VKldhugzLWxf4UWQ6tCrcksrjdA'
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(request: NextRequest) {
   try {
     const { portfolio, universityId, programId } = await request.json()

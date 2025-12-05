@@ -3,6 +3,8 @@ import { validateTelegramAuth, getTelegramUserFromData } from '@/lib/telegram'
 
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || ''
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json()
