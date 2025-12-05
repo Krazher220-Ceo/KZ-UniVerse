@@ -39,12 +39,44 @@ export async function chatAPI(message: string, history: any[], portfolio?: any) 
 }
 
 export async function admissionChanceAPI(portfolio: any, universityId: string, programId: string) {
-  // Импортируем данные
-  const universities = await import('@/data/universities.json');
-  const programs = await import('@/data/programs.json');
+  // Импортируем данные с обработкой ошибок
+  let universitiesArray: any[] = [];
+  let programsArray: any[] = [];
   
-  const university = universities.default.find((u: any) => u.id === universityId);
-  const program = programs.default.find((p: any) => p.id === programId);
+  try {
+    const universitiesModule = await import('@/data/universities.json');
+    if (universitiesModule) {
+      if (Array.isArray(universitiesModule.default)) {
+        universitiesArray = universitiesModule.default;
+      } else if (Array.isArray(universitiesModule)) {
+        universitiesArray = universitiesModule;
+      } else if (typeof universitiesModule === 'object' && 'default' in universitiesModule) {
+        const data = (universitiesModule as any).default;
+        universitiesArray = Array.isArray(data) ? data : [];
+      }
+    }
+  } catch (e) {
+    console.error('Failed to load universities:', e);
+  }
+  
+  try {
+    const programsModule = await import('@/data/programs.json');
+    if (programsModule) {
+      if (Array.isArray(programsModule.default)) {
+        programsArray = programsModule.default;
+      } else if (Array.isArray(programsModule)) {
+        programsArray = programsModule;
+      } else if (typeof programsModule === 'object' && 'default' in programsModule) {
+        const data = (programsModule as any).default;
+        programsArray = Array.isArray(data) ? data : [];
+      }
+    }
+  } catch (e) {
+    console.error('Failed to load programs:', e);
+  }
+  
+  const university = universitiesArray.find((u: any) => u.id === universityId);
+  const program = programsArray.find((p: any) => p.id === programId);
   
   if (!university || !program) {
     return {

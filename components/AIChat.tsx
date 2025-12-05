@@ -47,15 +47,21 @@ export default function AIChat() {
       if (typeof window !== 'undefined') {
         try {
           const portfolioModule = await import('@/lib/portfolio')
-          portfolio = portfolioModule.getPortfolio()
+          if (portfolioModule && typeof portfolioModule.getPortfolio === 'function') {
+            portfolio = portfolioModule.getPortfolio()
+          }
         } catch (e) {
+          console.warn('Failed to load portfolio:', e)
           // Игнорируем ошибку
         }
       }
 
       // Используем client-side API с реальными данными
-      const { chatAPI } = await import('@/lib/api-client')
-      const response = await chatAPI(userQuery, messages, portfolio)
+      const apiClient = await import('@/lib/api-client')
+      if (!apiClient || typeof apiClient.chatAPI !== 'function') {
+        throw new Error('chatAPI function not found')
+      }
+      const response = await apiClient.chatAPI(userQuery, messages, portfolio)
 
       const aiMessage: AIMessage = {
         id: (Date.now() + 1).toString(),

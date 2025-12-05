@@ -1,21 +1,49 @@
 // Централизованный модуль для работы с AI провайдерами
 // Использует реальные данные из базы для контекста
 
-import { generateContent as generateGeminiContent } from './gemini';
+import { generateContent as generateGeminiContent } from './gemini'
 
 type AIType = 'chat' | 'admission';
 
 // Загружаем данные университетов и программ для контекста
 async function loadKnowledgeBase() {
   try {
+    // Используем динамический импорт с правильной обработкой
     const [universitiesModule, programsModule] = await Promise.all([
-      import('@/data/universities.json'),
-      import('@/data/programs.json')
+      import('@/data/universities.json').catch(() => ({ default: [] })),
+      import('@/data/programs.json').catch(() => ({ default: [] }))
     ]);
     
+    // В Next.js JSON импорты могут быть как default, так и именованными экспортами
+    // Также проверяем все возможные варианты
+    let universities: any[] = [];
+    let programs: any[] = [];
+    
+    if (universitiesModule) {
+      if (Array.isArray(universitiesModule.default)) {
+        universities = universitiesModule.default;
+      } else if (Array.isArray(universitiesModule)) {
+        universities = universitiesModule;
+      } else if (typeof universitiesModule === 'object' && 'default' in universitiesModule) {
+        const data = (universitiesModule as any).default;
+        universities = Array.isArray(data) ? data : [];
+      }
+    }
+    
+    if (programsModule) {
+      if (Array.isArray(programsModule.default)) {
+        programs = programsModule.default;
+      } else if (Array.isArray(programsModule)) {
+        programs = programsModule;
+      } else if (typeof programsModule === 'object' && 'default' in programsModule) {
+        const data = (programsModule as any).default;
+        programs = Array.isArray(data) ? data : [];
+      }
+    }
+    
     return {
-      universities: universitiesModule.default,
-      programs: programsModule.default
+      universities: Array.isArray(universities) ? universities : [],
+      programs: Array.isArray(programs) ? programs : []
     };
   } catch (error) {
     console.error('Failed to load knowledge base:', error);
