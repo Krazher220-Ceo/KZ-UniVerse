@@ -35,5 +35,6 @@ next-env.d.ts
 
 # documentation (except README.md)
 
-.docs/ - включено для сохранения документации
+.docs/
+
 
