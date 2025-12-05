@@ -34,18 +34,24 @@ export async function chatAPI(message: string, history: any[], portfolio?: any) 
 }
 
 export async function admissionChanceAPI(portfolio: any, universityId: string, programId: string) {
-  try {
-    // Импортируем данные
-    const universities = await import('@/data/universities.json')
-    const programs = await import('@/data/programs.json')
-    
-    const university = universities.default.find((u: any) => u.id === universityId)
-    const program = programs.default.find((p: any) => p.id === programId)
-    
-    if (!university || !program) {
-      throw new Error('Not found')
+  // Импортируем данные
+  const universities = await import('@/data/universities.json')
+  const programs = await import('@/data/programs.json')
+  
+  const university = universities.default.find((u: any) => u.id === universityId)
+  const program = programs.default.find((p: any) => p.id === programId)
+  
+  if (!university || !program) {
+    return {
+      universityId,
+      programId,
+      chance: 0,
+      factors: { entScore: 0, gpa: 0, achievements: 0, competition: 0 },
+      recommendations: ['Университет или программа не найдены']
     }
+  }
 
+  try {
     // Используем Gemini для расчета
     const GEMINI_API_KEY = 'AIzaSyCIhH-3VKldhugzLWxf4UWQ6tCrcksrjdA'
     const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent'
@@ -72,18 +78,7 @@ export async function admissionChanceAPI(portfolio: any, universityId: string, p
   }
   
   // Fallback на локальный расчет
-  if (university && program) {
-    return calculateLocalChance(portfolio, program, university)
-  }
-  
-  // Если нет данных, возвращаем базовый результат
-  return {
-    universityId,
-    programId,
-    chance: 50,
-    factors: { entScore: 0, gpa: 0, achievements: 0, competition: 50 },
-    recommendations: ['Заполните профиль для точного расчета']
-  }
+  return calculateLocalChance(portfolio, program, university)
 }
 
 function buildChatPrompt(message: string, portfolio?: any): string {
