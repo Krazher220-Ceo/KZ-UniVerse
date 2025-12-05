@@ -1,13 +1,22 @@
 /** @type {import('next').NextConfig} */
+// Определяем платформу: Vercel или GitHub Pages
+const isVercel = !!process.env.VERCEL;
+const isGitHubPages = process.env.GITHUB_PAGES === 'true' || (!isVercel && process.env.NODE_ENV === 'production');
+
 const nextConfig = {
   images: {
     domains: ['images.unsplash.com', 'placehold.co'],
-    unoptimized: true, // Для static export
+    // На Vercel используем оптимизацию, на GitHub Pages - нет
+    unoptimized: isGitHubPages,
   },
-  output: 'export', // Для GitHub Pages
+  // Static export только для GitHub Pages
+  ...(isGitHubPages && !isVercel ? { output: 'export' } : {}),
   trailingSlash: true,
-  basePath: process.env.NODE_ENV === 'production' ? '/KZ-UniVerse' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/KZ-UniVerse' : '',
+  // basePath только для GitHub Pages
+  ...(isGitHubPages && !isVercel ? {
+    basePath: '/KZ-UniVerse',
+    assetPrefix: '/KZ-UniVerse',
+  } : {}),
   // Оптимизация
   compress: true,
   poweredByHeader: false,
