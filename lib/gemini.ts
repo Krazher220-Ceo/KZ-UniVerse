@@ -7,7 +7,6 @@ const GEMINI_MODEL = 'gemini-1.5-flash';
 
 export async function generateContent(prompt: string): Promise<string> {
   try {
-    // Используем прямой fetch для всех случаев (более надежно)
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`,
       {
@@ -16,7 +15,19 @@ export async function generateContent(prompt: string): Promise<string> {
         body: JSON.stringify({
           contents: [{
             parts: [{ text: prompt }]
-          }]
+          }],
+          generationConfig: {
+            temperature: 0.7,
+            topK: 40,
+            topP: 0.95,
+            maxOutputTokens: 2048,
+          },
+          safetySettings: [
+            { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
+            { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
+            { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
+            { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
+          ],
         })
       }
     );
@@ -48,3 +59,4 @@ export async function generateContent(prompt: string): Promise<string> {
     throw error;
   }
 }
+
