@@ -213,29 +213,53 @@ ${context}
 
 ОТВЕТ:`;
 
-  // Попытка 1: Gemini API
+  // Попытка 1: Gemini API (новый формат)
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
+      `https://aiplatform.googleapis.com/v1/publishers/google/models/gemini-2.5-flash-lite:streamGenerateContent?key=${GEMINI_API_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: fullPrompt }] }],
+          contents: [{
+            role: 'user',
+            parts: [{ text: fullPrompt }]
+          }],
           generationConfig: {
             temperature: 0.7,
-            maxOutputTokens: 1024
-          }
+            topK: 40,
+            topP: 0.95,
+            maxOutputTokens: 2048
+          },
+          safetySettings: [
+            { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
+            { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
+            { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
+            { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' }
+          ]
         })
       }
     );
 
     if (response.ok) {
       const data = await response.json();
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (text) {
+      
+      // Обрабатываем stream ответ (может быть массивом chunks)
+      let text = '';
+      if (Array.isArray(data)) {
+        // Если ответ - массив chunks из stream
+        text = data
+          .map(chunk => chunk.candidates?.[0]?.content?.parts?.[0]?.text || '')
+          .filter(Boolean)
+          .join('');
+      } else {
+        // Обычный ответ
+        text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      }
+      
+      if (text && text.trim().length > 0) {
         console.log('✅ Gemini API успешно');
-        return text;
+        return text.trim();
       }
     }
     console.log('⚠️ Gemini API не дал ответ, пробуем fallback...');

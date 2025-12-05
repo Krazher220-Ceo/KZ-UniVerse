@@ -2,18 +2,20 @@
 
 const GEMINI_API_KEY = 'AQ.Ab8RN6I6fN37ba1DTn4XeUB4uw3cwBJAuce0U6wh9MwjXypUbA';
 
-// Используем стабильную модель вместо экспериментальной
-const GEMINI_MODEL = 'gemini-1.5-flash';
+// Используем новую модель gemini-2.5-flash-lite
+const GEMINI_MODEL = 'gemini-2.5-flash-lite';
 
 export async function generateContent(prompt: string): Promise<string> {
   try {
+    // Используем новый эндпоинт aiplatform.googleapis.com
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`,
+      `https://aiplatform.googleapis.com/v1/publishers/google/models/${GEMINI_MODEL}:streamGenerateContent?key=${GEMINI_API_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{
+            role: 'user',
             parts: [{ text: prompt }]
           }],
           generationConfig: {
@@ -38,6 +40,7 @@ export async function generateContent(prompt: string): Promise<string> {
       throw new Error(`API request failed: ${response.status} - ${errorText}`);
     }
 
+    // Для streamGenerateContent ответ может быть потоком или обычным JSON
     const data = await response.json();
     
     // Проверяем наличие блокировок безопасности
@@ -46,14 +49,25 @@ export async function generateContent(prompt: string): Promise<string> {
       throw new Error(`Content blocked: ${data.promptFeedback.blockReason}`);
     }
     
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    // Обрабатываем stream ответ (может быть массивом chunks)
+    let text = '';
+    if (Array.isArray(data)) {
+      // Если ответ - массив chunks из stream
+      text = data
+        .map((chunk: any) => chunk.candidates?.[0]?.content?.parts?.[0]?.text || '')
+        .filter(Boolean)
+        .join('');
+    } else {
+      // Обычный ответ
+      text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    }
     
-    if (!text) {
+    if (!text || text.trim().length === 0) {
       console.error('No text in response:', JSON.stringify(data, null, 2));
       throw new Error('No text in response');
     }
 
-    return text;
+    return text.trim();
   } catch (error: any) {
     console.error('Gemini API error:', error?.message || error);
     throw error;
