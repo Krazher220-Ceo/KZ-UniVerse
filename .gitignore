@@ -34,5 +34,5 @@ yarn-error.log*
 next-env.d.ts
 
 # documentation (except README.md)
-.docs/
+# .docs/ - включено для сохранения документации
 

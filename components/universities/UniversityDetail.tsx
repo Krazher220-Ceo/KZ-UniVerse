@@ -131,6 +131,7 @@ export default function UniversityDetail({ university, programs }: Props) {
             {activeTab === 'international' && <InternationalTab university={university} />}
             {activeTab === 'admission' && <AdmissionTab university={university} />}
             {activeTab === 'tour' && <TourTab university={university} />}
+            {activeTab === 'mychances' && <MyChancesTab university={university} programs={programs} />}
           </div>
 
           {/* Sidebar */}

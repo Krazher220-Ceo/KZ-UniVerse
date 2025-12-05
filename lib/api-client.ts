@@ -36,9 +36,14 @@ export async function admissionChanceAPI(portfolio: any, universityId: string, p
     // Используем Gemini для расчета
     const prompt = buildAdmissionPrompt(portfolio, program, university)
     const text = await generateContent(prompt)
-    return parseAdmissionResponse(text, portfolio, program, university)
+    const result = parseAdmissionResponse(text, portfolio, program, university)
+    // Проверяем, что результат валидный
+    if (result && result.chance !== undefined) {
+      return result
+    }
   } catch (error) {
     console.error('Admission API error:', error)
+    // Продолжаем к fallback
   }
   
   // Fallback на локальный расчет
@@ -105,39 +110,126 @@ function buildAdmissionPrompt(portfolio: any, program: any, university: any): st
 
 function parseAdmissionResponse(text: string, portfolio: any, program: any, university: any): any {
   try {
+    // Пытаемся найти JSON в ответе
     const jsonMatch = text.match(/\{[\s\S]*\}/)
     if (jsonMatch) {
       const parsed = JSON.parse(jsonMatch[0])
+      // Проверяем, что есть все необходимые поля
+      if (parsed.chance !== undefined) {
+        return {
+          universityId: university.id,
+          programId: program.id,
+          chance: Math.max(0, Math.min(100, Number(parsed.chance) || 50)),
+          factors: {
+            entScore: Number(parsed.factors?.entScore) || 0,
+            gpa: Number(parsed.factors?.gpa) || 0,
+            achievements: Number(parsed.factors?.achievements) || 0,
+            competition: Number(parsed.factors?.competition) || 0
+          },
+          recommendations: Array.isArray(parsed.recommendations) 
+            ? parsed.recommendations 
+            : ['Улучшить оценки', 'Участвовать в олимпиадах']
+        }
+      }
+    }
+    // Если не нашли JSON, пытаемся извлечь процент из текста
+    const chanceMatch = text.match(/(\d+)%/i)
+    if (chanceMatch) {
+      const chance = parseInt(chanceMatch[1])
       return {
         universityId: university.id,
         programId: program.id,
-        chance: Math.max(0, Math.min(100, parsed.chance || 50)),
-        factors: parsed.factors || {},
-        recommendations: parsed.recommendations || []
+        chance: Math.max(0, Math.min(100, chance)),
+        factors: {
+          entScore: portfolio.entScore ? Math.round((portfolio.entScore / 140) * 100) : 0,
+          gpa: portfolio.gpa ? Math.round((portfolio.gpa / 5.0) * 100) : 0,
+          achievements: Math.round(Math.min(100, (portfolio.achievements?.length || 0) * 10)),
+          competition: Math.round(university.rating * 20)
+        },
+        recommendations: extractRecommendationsFromText(text)
       }
     }
   } catch (e) {
     console.error('Parse error:', e)
   }
-  return calculateLocalChance(portfolio, program, university)
+  // Возвращаем null, чтобы вызвать fallback в admissionChanceAPI
+  return null
+}
+
+function extractRecommendationsFromText(text: string): string[] {
+  const recommendations: string[] = []
+  const lines = text.split('\n').filter(l => l.trim())
+  
+  lines.forEach(line => {
+    const lower = line.toLowerCase()
+    if (lower.includes('рекоменд') || lower.includes('совет') || lower.includes('улучш')) {
+      const clean = line.replace(/[•\-\d\.\*]/g, '').trim()
+      if (clean.length > 10 && clean.length < 200) {
+        recommendations.push(clean)
+      }
+    }
+  })
+  
+  return recommendations.length > 0 
+    ? recommendations.slice(0, 5) 
+    : ['Улучшить оценки', 'Участвовать в олимпиадах', 'Подготовить портфолио']
 }
 
 function calculateLocalChance(portfolio: any, program: any, university: any): any {
-  const minENT = program.requirements?.minENT || 50
-  const entScore = portfolio.entScore 
-    ? Math.min(100, (portfolio.entScore / minENT) * 100)
+  // Безопасная обработка данных
+  const minENT = program?.requirements?.minENT || 50
+  const entScore = portfolio?.entScore 
+    ? Math.min(100, Math.max(0, (portfolio.entScore / Math.max(minENT, 1)) * 100))
     : 0
-  const gpa = portfolio.gpa ? (portfolio.gpa / 5.0) * 100 : 0
-  const achievements = Math.min(100, (portfolio.achievements?.length || 0) * 10)
-  const competition = university.rating * 20
-  
-  const chance = Math.max(0, Math.min(100, 
-    entScore * 0.4 + gpa * 0.2 + achievements * 0.3 - (competition - 50) * 0.1
+  const gpa = portfolio?.gpa 
+    ? Math.min(100, Math.max(0, (portfolio.gpa / 5.0) * 100))
+    : 0
+  const achievements = Math.min(100, Math.max(0, 
+    ((portfolio?.achievements?.length || 0) * 10) + 
+    ((portfolio?.olympiads?.length || 0) * 15)
   ))
+  const competition = (university?.rating || 0) * 20
+  
+  // Улучшенная формула расчета
+  const baseChance = (entScore * 0.4 + gpa * 0.2 + achievements * 0.3)
+  const competitionPenalty = Math.max(0, (competition - 50) * 0.1)
+  const chance = Math.max(0, Math.min(100, baseChance - competitionPenalty))
+
+  const recommendations: string[] = []
+  
+  if (!portfolio?.entScore && !portfolio?.gpa) {
+    recommendations.push('Укажите балл ЕНТ или GPA для точного расчета')
+  } else {
+    if (portfolio?.entScore && portfolio.entScore < minENT) {
+      recommendations.push(`Повысить ЕНТ до ${minENT}+ баллов`)
+    } else if (portfolio?.entScore) {
+      recommendations.push('ЕНТ соответствует требованиям')
+    }
+    
+    if (portfolio?.gpa && portfolio.gpa < 4.0) {
+      recommendations.push('Улучшить средний балл до 4.0+')
+    }
+  }
+  
+  if (!portfolio?.olympiads || portfolio.olympiads.length === 0) {
+    recommendations.push('Участвовать в олимпиадах и конкурсах')
+  }
+  
+  if (!portfolio?.achievements || portfolio.achievements.length === 0) {
+    recommendations.push('Подготовить портфолио проектов и достижений')
+  }
+  
+  if (chance < 50) {
+    recommendations.push('Рассмотреть альтернативные программы или университеты')
+  }
+  
+  if (recommendations.length === 0) {
+    recommendations.push('Ваш профиль соответствует требованиям!')
+  }
 
   return {
-    universityId: university.id,
-    programId: program.id,
+    universityId: university?.id || '',
+    programId: program?.id || '',
     chance: Math.round(chance),
     factors: { 
       entScore: Math.round(entScore), 
@@ -145,13 +237,7 @@ function calculateLocalChance(portfolio: any, program: any, university: any): an
       achievements: Math.round(achievements), 
       competition: Math.round(competition) 
     },
-    recommendations: [
-      portfolio.entScore && portfolio.entScore < minENT 
-        ? `Повысить ЕНТ до ${minENT}+` 
-        : 'ЕНТ соответствует требованиям',
-      'Участвовать в олимпиадах',
-      'Подготовить портфолио проектов'
-    ]
+    recommendations: recommendations.slice(0, 5)
   }
 }
 

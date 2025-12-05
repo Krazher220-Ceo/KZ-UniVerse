@@ -175,7 +175,7 @@ bot.on('message', async (msg) => {
     
     // Используем прямой fetch для надежности
     const apiResponse = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${GEMINI_API_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -188,10 +188,19 @@ bot.on('message', async (msg) => {
     );
     
     if (!apiResponse.ok) {
+      const errorText = await apiResponse.text();
+      console.error('Gemini API error:', apiResponse.status, errorText);
       throw new Error(`API error: ${apiResponse.status}`);
     }
     
     const data = await apiResponse.json();
+    
+    // Проверяем блокировки безопасности
+    if (data.promptFeedback?.blockReason) {
+      console.warn('Content blocked:', data.promptFeedback.blockReason);
+      throw new Error(`Content blocked: ${data.promptFeedback.blockReason}`);
+    }
+    
     const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Не удалось получить ответ';
     
     // Разбиваем длинные ответы на части (Telegram лимит 4096 символов)
