@@ -6,6 +6,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { FiTrendingUp, FiEye, FiHeart, FiUsers } from 'react-icons/fi'
 import universitiesData from '@/data/universities.json'
 import programsData from '@/data/programs.json'
+import { formatNumber } from '@/lib/format'
 
 const COLORS = ['#0066FF', '#00C9A7', '#FF6B35', '#9B59B6', '#F39C12', '#3498DB']
 
@@ -84,7 +85,7 @@ export default function AnalyticsDashboard() {
             </span>
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">
-            {totalViews.toLocaleString()}
+            {formatNumber(totalViews)}
           </div>
           <div className="text-sm text-gray-600">Всего просмотров</div>
         </div>
@@ -100,7 +101,7 @@ export default function AnalyticsDashboard() {
             </span>
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">
-            {totalFavorites.toLocaleString()}
+            {formatNumber(totalFavorites)}
           </div>
           <div className="text-sm text-gray-600">В избранном</div>
         </div>
@@ -116,7 +117,7 @@ export default function AnalyticsDashboard() {
             </span>
           </div>
           <div className="text-3xl font-bold text-gray-900 mb-1">
-            {totalTourClicks.toLocaleString()}
+            {formatNumber(totalTourClicks)}
           </div>
           <div className="text-sm text-gray-600">3D-туры</div>
         </div>
@@ -241,11 +242,11 @@ export default function AnalyticsDashboard() {
               </div>
               <div className="flex items-center space-x-6 text-sm">
                 <div className="text-center">
-                  <div className="font-bold text-primary-600">{uni.views.toLocaleString()}</div>
+                  <div className="font-bold text-primary-600">{formatNumber(uni.views)}</div>
                   <div className="text-gray-500">просмотров</div>
                 </div>
                 <div className="text-center">
-                  <div className="font-bold text-secondary-600">{uni.favorites.toLocaleString()}</div>
+                  <div className="font-bold text-secondary-600">{formatNumber(uni.favorites)}</div>
                   <div className="text-gray-500">в избранном</div>
                 </div>
               </div>

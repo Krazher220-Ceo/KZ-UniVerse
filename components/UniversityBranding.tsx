@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { formatNumber } from '@/lib/format'
 
 // Цвета университетов (официальные или близкие к ним)
 export const UNIVERSITY_COLORS: { [key: string]: { primary: string; secondary: string; accent: string } } = {
@@ -250,7 +251,7 @@ export function UniversityCard({
     if (min >= 1000) {
       return `$${(min/1000).toFixed(0)}-${(max/1000).toFixed(0)}K`
     }
-    return `${min.toLocaleString()}-${max.toLocaleString()}₸`
+    return `${formatNumber(min)}-${formatNumber(max)}₸`
   }
 
   return (

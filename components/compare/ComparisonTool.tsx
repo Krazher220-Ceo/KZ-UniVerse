@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { FiX, FiCheck } from 'react-icons/fi'
 import universitiesData from '@/data/universities.json'
 import { University } from '@/types'
+import { formatNumber } from '@/lib/format'
 
 export default function ComparisonTool() {
   const [selectedUniversities, setSelectedUniversities] = useState<University[]>([])
@@ -40,12 +41,12 @@ export default function ComparisonTool() {
     { key: 'rating', label: 'Рейтинг', format: (v: number) => v.toFixed(1) },
     { key: 'worldRank', label: 'Место в мире', format: (v?: number) => v ? `#${v}` : 'N/A' },
     { key: 'founded', label: 'Год основания', format: (v: number) => v.toString() },
-    { key: 'students', label: 'Студентов', format: (v: number) => v.toLocaleString() },
+    { key: 'students', label: 'Студентов', format: (v: number) => formatNumber(v) },
     { key: 'city', label: 'Город', format: (v: string) => v },
     { key: 'tuitionMin', label: 'Стоимость от', format: (v: number) => `${(v / 1000000).toFixed(1)}M₸` },
     { key: 'tuitionMax', label: 'Стоимость до', format: (v: number) => `${(v / 1000000).toFixed(1)}M₸` },
     { key: 'dormitory', label: 'Общежитие', format: (v: boolean) => v ? 'Есть' : 'Нет' },
-    { key: 'dormitoryCost', label: 'Стоимость общежития', format: (v?: number) => v ? `${v.toLocaleString()}₸/мес` : 'N/A' },
+    { key: 'dormitoryCost', label: 'Стоимость общежития', format: (v?: number) => v ? `${formatNumber(v)}₸/мес` : 'N/A' },
     { key: 'internationalStudents', label: 'Иностранные студенты', format: (v: number) => `${v}%` },
   ]
 

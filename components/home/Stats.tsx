@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { FiBook, FiUsers, FiGlobe, FiTrendingUp } from 'react-icons/fi'
+import { formatNumber } from '@/lib/format'
 
 const stats = [
   {
@@ -74,7 +75,7 @@ export default function Stats() {
                 <stat.icon size={32} />
               </div>
               <div className={`text-4xl md:text-5xl font-bold mb-2 ${stat.color}`}>
-                {counts[index].toLocaleString()}{stat.suffix}
+                {formatNumber(counts[index])}{stat.suffix}
               </div>
               <div className="text-gray-600">{stat.label}</div>
             </div>
