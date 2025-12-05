@@ -1,36 +1,17 @@
-// Client-side API клиент для работы с внешним API
-// В production API должен быть на отдельном сервере
+// Client-side API клиент для работы с Gemini AI
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.kzuniverse.com'
+import { generateContent } from './gemini'
 
 export async function chatAPI(message: string, history: any[], portfolio?: any) {
   try {
-    // Прямой вызов Gemini API с клиента (для MVP)
-    const GEMINI_API_KEY = 'AIzaSyCIhH-3VKldhugzLWxf4UWQ6tCrcksrjdA'
-    const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent'
-    
-    const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{
-            text: buildChatPrompt(message, portfolio)
-          }]
-        }]
-      })
-    })
-
-    if (response.ok) {
-      const data = await response.json()
-      return data.candidates?.[0]?.content?.parts?.[0]?.text || 'Не удалось получить ответ'
-    }
+    const prompt = buildChatPrompt(message, portfolio)
+    const response = await generateContent(prompt)
+    return response
   } catch (error) {
     console.error('Chat API error:', error)
+    // Fallback на локальную логику
+    return getLocalResponse(message)
   }
-  
-  // Fallback на локальную логику
-  return getLocalResponse(message)
 }
 
 export async function admissionChanceAPI(portfolio: any, universityId: string, programId: string) {
@@ -53,26 +34,9 @@ export async function admissionChanceAPI(portfolio: any, universityId: string, p
 
   try {
     // Используем Gemini для расчета
-    const GEMINI_API_KEY = 'AIzaSyCIhH-3VKldhugzLWxf4UWQ6tCrcksrjdA'
-    const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent'
-    
     const prompt = buildAdmissionPrompt(portfolio, program, university)
-    
-    const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{ text: prompt }]
-        }]
-      })
-    })
-
-    if (response.ok) {
-      const data = await response.json()
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text || ''
-      return parseAdmissionResponse(text, portfolio, program, university)
-    }
+    const text = await generateContent(prompt)
+    return parseAdmissionResponse(text, portfolio, program, university)
   } catch (error) {
     console.error('Admission API error:', error)
   }

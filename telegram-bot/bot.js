@@ -5,6 +5,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const fetch = require('node-fetch');
 
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8552407784:AAHHb30Zi5N4Na6AEAoe2S6_7UUHMmiQlA4';
+const GEMINI_API_KEY = 'AIzaSyCIhH-3VKldhugzLWxf4UWQ6tCrcksrjdA';
 const API_URL = process.env.API_URL || 'http://localhost:3000';
 
 const bot = new TelegramBot(BOT_TOKEN, { polling: true });
@@ -122,36 +123,66 @@ bot.on('message', async (msg) => {
   if (!text) return;
   
   try {
-    // Прямой вызов Gemini API
-    const GEMINI_API_KEY = 'AIzaSyCIhH-3VKldhugzLWxf4UWQ6tCrcksrjdA';
-    const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+    // Показываем индикатор печати
+    bot.sendChatAction(chatId, 'typing');
     
-    const prompt = `Ты AI-помощник платформы KZ UniVerse. Помогаешь студентам выбрать университет в Казахстане.
+    const prompt = `Ты AI-помощник платформы KZ UniVerse - единой платформы для выбора университетов в Казахстане.
 
-Вопрос: ${text}
+В базе данных 15 университетов и 18 программ обучения.
 
-Отвечай на русском языке, будь дружелюбным и конкретным.`;
+Топ университеты:
+- NU (Nazarbayev University): рейтинг 4.9/5.0, город Астана, стоимость от 7-9K USD/год
+- КазНУ (Al-Farabi Kazakh National University): рейтинг 4.7/5.0, город Алматы, стоимость от 0.6-1.8M₸/год
+- AITU (Astana IT University): рейтинг 4.6/5.0, город Астана, стоимость от 1.8-2.2M₸/год
+- КБТУ (Kazakh-British Technical University): рейтинг 4.5/5.0, город Алматы, стоимость от 1.5-2.5M₸/год
+- KIMEP University: рейтинг 4.4/5.0, город Алматы, стоимость от 2.2-3.5M₸/год
+
+ВОПРОС ПОЛЬЗОВАТЕЛЯ: ${text}
+
+ИНСТРУКЦИИ:
+1. Отвечай на русском языке
+2. Будь дружелюбным и профессиональным
+3. Используй конкретные данные из базы
+4. Давай детальные рекомендации
+5. Если спрашивают про конкретный университет - используй данные о нем
+6. Предлагай альтернативы если нужно
+7. Форматируй ответ с эмодзи и структурированно
+
+ОТВЕТ:`;
     
-    const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{ text: prompt }]
-        }]
-      })
-    });
+    // Используем прямой fetch для надежности
+    const apiResponse = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${GEMINI_API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{ text: prompt }]
+          }]
+        })
+      }
+    );
     
-    if (response.ok) {
-      const data = await response.json();
-      const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Не удалось получить ответ';
-      bot.sendMessage(chatId, aiResponse);
+    if (!apiResponse.ok) {
+      throw new Error(`API error: ${apiResponse.status}`);
+    }
+    
+    const data = await apiResponse.json();
+    const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Не удалось получить ответ';
+    
+    // Разбиваем длинные ответы на части (Telegram лимит 4096 символов)
+    if (aiResponse.length > 4000) {
+      const chunks = aiResponse.match(/.{1,4000}/g) || [];
+      for (const chunk of chunks) {
+        await bot.sendMessage(chatId, chunk);
+      }
     } else {
-      bot.sendMessage(chatId, 'Ошибка при обработке запроса. Попробуйте позже.');
+      await bot.sendMessage(chatId, aiResponse);
     }
   } catch (error) {
     console.error('Bot error:', error);
-    bot.sendMessage(chatId, 'Произошла ошибка. Попробуйте позже.');
+    bot.sendMessage(chatId, 'Произошла ошибка при обработке запроса. Попробуйте позже или переформулируйте вопрос.');
   }
 });
 

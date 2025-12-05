@@ -11,27 +11,27 @@
     "export": "next build"
   },
   "dependencies": {
-    "next": "^14.0.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "typescript": "^5.3.3",
+    "@google/genai": "^1.31.0",
     "@types/node": "^20.10.6",
     "@types/react": "^18.2.46",
     "@types/react-dom": "^18.2.18",
-    "framer-motion": "^10.16.16",
-    "recharts": "^2.10.3",
-    "react-icons": "^4.12.0",
+    "@types/uuid": "^9.0.7",
     "clsx": "^2.0.0",
     "date-fns": "^3.0.6",
-    "uuid": "^9.0.1",
-    "@types/uuid": "^9.0.7"
+    "framer-motion": "^10.16.16",
+    "next": "^14.0.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.12.0",
+    "recharts": "^2.10.3",
+    "typescript": "^5.3.3",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.0",
-    "postcss": "^8.4.32",
     "autoprefixer": "^10.4.16",
     "eslint": "^8.56.0",
-    "eslint-config-next": "^14.0.4"
+    "eslint-config-next": "^14.0.4",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.0"
   }
 }
-
