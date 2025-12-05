@@ -593,6 +593,296 @@
     },
     "dormitory": true,
     "dormitoryCost": 110000
+  },
+  {
+    "id": "mgimo-astana",
+    "name": "MGIMO-Astana",
+    "nameKz": "МГИМО-Астана",
+    "shortName": "МГИМО-Астана",
+    "logo": "https://placehold.co/200x200/1E3A8A/white?text=MGIMO",
+    "cover": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1200",
+    "city": "Астана",
+    "region": "Акмолинская область",
+    "rating": 4.6,
+    "worldRank": 350,
+    "founded": 2018,
+    "students": 800,
+    "internationalStudents": 25,
+    "description": "MGIMO-Astana - филиал Московского государственного института международных отношений в Казахстане. Готовит дипломатов, политологов и специалистов по международным отношениям.",
+    "mission": "Подготовка высококвалифицированных специалистов в области международных отношений и дипломатии по стандартам МГИМО.",
+    "achievements": [
+      "Филиал топового российского университета",
+      "Сильная школа международных отношений",
+      "Партнерство с МИД РК",
+      "Выпускники работают в дипломатических миссиях",
+      "Двуязычное обучение (русский, английский)"
+    ],
+    "infrastructure": [
+      "Современный кампус в центре Астаны",
+      "Библиотека с международными изданиями",
+      "Лингвистические лаборатории",
+      "Конференц-залы для дипломатических симуляций",
+      "Общежитие для иногородних"
+    ],
+    "website": "https://mgimo-astana.kz",
+    "email": "info@mgimo-astana.kz",
+    "phone": "+7 (7172) 70-00-00",
+    "address": "пр. Кабанбай батыр 8, Астана, 010000",
+    "socialMedia": {
+      "instagram": "https://instagram.com/mgimo_astana",
+      "facebook": "https://facebook.com/mgimoastana"
+    },
+    "tour3D": "",
+    "coordinates": {
+      "lat": 51.125000,
+      "lng": 71.430000
+    },
+    "stats": {
+      "views": 3200,
+      "uniqueVisitors": 2100,
+      "avgTimeOnPage": 480,
+      "favorites": 650,
+      "tour3DClicks": 420,
+      "comparisonCount": 580,
+      "applicationClicks": 320
+    },
+    "tuitionRange": {
+      "min": 2500000,
+      "max": 3500000
+    },
+    "dormitory": true,
+    "dormitoryCost": 160000
+  },
+  {
+    "id": "msu-kz",
+    "name": "Kazakhstan Branch of MSU named after M.V. Lomonosov",
+    "nameKz": "Қазақстандағы М.В. Ломоносов атындағы ММУ филиалы",
+    "shortName": "МГУ-Казахстан",
+    "logo": "https://placehold.co/200x200/0039A6/white?text=MSU",
+    "cover": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200",
+    "city": "Астана",
+    "region": "Акмолинская область",
+    "rating": 4.8,
+    "worldRank": 75,
+    "founded": 2001,
+    "students": 1200,
+    "internationalStudents": 20,
+    "description": "Казахстанский филиал МГУ им. М.В. Ломоносова - филиал одного из ведущих университетов мира. Предлагает программы по математике, физике, химии и гуманитарным наукам.",
+    "mission": "Предоставление образования мирового уровня по стандартам МГУ, подготовка элитных специалистов для Казахстана.",
+    "achievements": [
+      "Филиал МГУ (топ-100 в мире)",
+      "Сильные программы по точным наукам",
+      "Преподаватели из МГУ",
+      "Диплом МГУ",
+      "Высокий уровень трудоустройства"
+    ],
+    "infrastructure": [
+      "Современные лаборатории",
+      "Библиотека с доступом к ресурсам МГУ",
+      "Научные центры",
+      "Спортивные залы",
+      "Общежитие"
+    ],
+    "website": "https://msu.kz",
+    "email": "info@msu.kz",
+    "phone": "+7 (7172) 70-00-11",
+    "address": "ул. Кабанбай батыр 10, Астана, 010000",
+    "socialMedia": {
+      "instagram": "https://instagram.com/msu_kazakhstan",
+      "facebook": "https://facebook.com/msukz"
+    },
+    "tour3D": "",
+    "coordinates": {
+      "lat": 51.130000,
+      "lng": 71.435000
+    },
+    "stats": {
+      "views": 5100,
+      "uniqueVisitors": 3400,
+      "avgTimeOnPage": 550,
+      "favorites": 1200,
+      "tour3DClicks": 680,
+      "comparisonCount": 890,
+      "applicationClicks": 560
+    },
+    "tuitionRange": {
+      "min": 2000000,
+      "max": 3000000
+    },
+    "dormitory": true,
+    "dormitoryCost": 150000
+  },
+  {
+    "id": "synergy-astana",
+    "name": "Synergy University, Astana",
+    "nameKz": "Синергия Университеті, Астана",
+    "shortName": "Синергия",
+    "logo": "https://placehold.co/200x200/FF6B35/white?text=SYN",
+    "cover": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200",
+    "city": "Астана",
+    "region": "Акмолинская область",
+    "rating": 4.3,
+    "founded": 2019,
+    "students": 2500,
+    "internationalStudents": 15,
+    "description": "Университет Синергия в Астане - современный вуз с акцентом на бизнес, менеджмент и цифровые технологии. Практико-ориентированное образование.",
+    "mission": "Подготовка конкурентоспособных специалистов для цифровой экономики через инновационные образовательные программы.",
+    "achievements": [
+      "Современные программы по бизнесу",
+      "Партнерство с IT-компаниями",
+      "Практические стажировки",
+      "Гибкий график обучения",
+      "Доступная стоимость"
+    ],
+    "infrastructure": [
+      "Современный кампус",
+      "IT-лаборатории",
+      "Бизнес-инкубатор",
+      "Коворкинг-пространства",
+      "Общежитие"
+    ],
+    "website": "https://synergy.kz",
+    "email": "info@synergy.kz",
+    "phone": "+7 (7172) 55-00-00",
+    "address": "пр. Кабанбай батыр 15, Астана, 010000",
+    "socialMedia": {
+      "instagram": "https://instagram.com/synergy_astana",
+      "telegram": "https://t.me/synergy_astana"
+    },
+    "tour3D": "",
+    "coordinates": {
+      "lat": 51.135000,
+      "lng": 71.440000
+    },
+    "stats": {
+      "views": 2800,
+      "uniqueVisitors": 1800,
+      "avgTimeOnPage": 420,
+      "favorites": 520,
+      "tour3DClicks": 310,
+      "comparisonCount": 450,
+      "applicationClicks": 280
+    },
+    "tuitionRange": {
+      "min": 1200000,
+      "max": 2000000
+    },
+    "dormitory": true,
+    "dormitoryCost": 100000
+  },
+  {
+    "id": "esil-university",
+    "name": "Esil University",
+    "nameKz": "Есіл Университеті",
+    "shortName": "Есіл",
+    "logo": "https://placehold.co/200x200/8B4513/white?text=ESIL",
+    "cover": "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?w=1200",
+    "city": "Астана",
+    "region": "Акмолинская область",
+    "rating": 4.2,
+    "founded": 1994,
+    "students": 5000,
+    "internationalStudents": 8,
+    "description": "Есіл Университеті - многопрофильный вуз в столице, предлагающий программы по экономике, праву, педагогике и техническим специальностям.",
+    "mission": "Подготовка квалифицированных специалистов для различных отраслей экономики Казахстана.",
+    "achievements": [
+      "Многопрофильный университет",
+      "Доступное образование",
+      "Сильные программы по экономике",
+      "Партнерство с работодателями",
+      "Высокий процент трудоустройства"
+    ],
+    "infrastructure": [
+      "Учебные корпуса",
+      "Библиотека",
+      "Компьютерные классы",
+      "Спортивные залы",
+      "Общежития"
+    ],
+    "website": "https://esil.edu.kz",
+    "email": "info@esil.edu.kz",
+    "phone": "+7 (7172) 50-00-00",
+    "address": "ул. Бейбитшилик 10, Астана, 010000",
+    "socialMedia": {
+      "instagram": "https://instagram.com/esil_university"
+    },
+    "tour3D": "",
+    "coordinates": {
+      "lat": 51.140000,
+      "lng": 71.445000
+    },
+    "stats": {
+      "views": 2100,
+      "uniqueVisitors": 1400,
+      "avgTimeOnPage": 380,
+      "favorites": 380,
+      "tour3DClicks": 210,
+      "comparisonCount": 320,
+      "applicationClicks": 190
+    },
+    "tuitionRange": {
+      "min": 500000,
+      "max": 1000000
+    },
+    "dormitory": true,
+    "dormitoryCost": 70000
+  },
+  {
+    "id": "mnarikbayev",
+    "name": "Maqsut Narikbayev University",
+    "nameKz": "Мәқсұт Нәрікбаев атындағы университет",
+    "shortName": "МНУ",
+    "logo": "https://placehold.co/200x200/2E8B57/white?text=MNU",
+    "cover": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200",
+    "city": "Астана",
+    "region": "Акмолинская область",
+    "rating": 4.4,
+    "founded": 2000,
+    "students": 4000,
+    "internationalStudents": 10,
+    "description": "МНУ - университет с сильными программами по бизнесу, экономике и менеджменту. Фокус на практическом применении знаний.",
+    "mission": "Подготовка бизнес-лидеров и управленцев для экономики Казахстана через качественное образование.",
+    "achievements": [
+      "Сильная бизнес-школа",
+      "Практико-ориентированные программы",
+      "Партнерство с бизнесом",
+      "Стажировки в компаниях",
+      "Выпускники в топ-менеджменте"
+    ],
+    "infrastructure": [
+      "Современный кампус",
+      "Бизнес-лаборатории",
+      "Центр карьеры",
+      "Конференц-залы",
+      "Общежитие"
+    ],
+    "website": "https://mnarikbayev.edu.kz",
+    "email": "info@mnarikbayev.edu.kz",
+    "phone": "+7 (7172) 60-00-00",
+    "address": "ул. Кенесары 40, Астана, 010000",
+    "socialMedia": {
+      "instagram": "https://instagram.com/mnarikbayev_uni"
+    },
+    "tour3D": "",
+    "coordinates": {
+      "lat": 51.145000,
+      "lng": 71.450000
+    },
+    "stats": {
+      "views": 1900,
+      "uniqueVisitors": 1200,
+      "avgTimeOnPage": 400,
+      "favorites": 340,
+      "tour3DClicks": 180,
+      "comparisonCount": 280,
+      "applicationClicks": 160
+    },
+    "tuitionRange": {
+      "min": 1000000,
+      "max": 1800000
+    },
+    "dormitory": true,
+    "dormitoryCost": 90000
   }
 ]
 

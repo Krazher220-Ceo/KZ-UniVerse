@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
+import universitiesData from '@/data/universities.json'
+import programsData from '@/data/programs.json'
 
 export async function POST(request: NextRequest) {
   try {
     const { message, history } = await request.json()
 
-    // For MVP, we'll use a simple pattern matching approach
-    // In production, this would call OpenAI/Claude API
-    const response = generateResponse(message, history)
+    // Enhanced AI response with database context
+    const response = generateEnhancedResponse(message, history, universitiesData, programsData)
 
     return NextResponse.json({ response })
   } catch (error) {
@@ -18,7 +19,12 @@ export async function POST(request: NextRequest) {
   }
 }
 
-function generateResponse(message: string, history: any[]): string {
+function generateEnhancedResponse(
+  message: string, 
+  history: any[], 
+  universities: any[], 
+  programs: any[]
+): string {
   const lowerMessage = message.toLowerCase()
 
   // IT and Computer Science queries
@@ -46,28 +52,30 @@ function generateResponse(message: string, history: any[]): string {
 Хотите узнать подробнее о конкретном университете?`
   }
 
-  // Business and Economics
+  // Business and Economics - using database
   if (lowerMessage.includes('бизнес') || lowerMessage.includes('экономика') || 
       lowerMessage.includes('менеджмент')) {
-    return `💼 **Топ бизнес-школы Казахстана:**
+    const businessPrograms = programs.filter(p => p.field === 'Business')
+    const businessUniversities = universities.filter(u => 
+      businessPrograms.some(p => p.universityId === u.id)
+    ).slice(0, 5)
 
-1. **KIMEP University**
-   • MBA с AACSB аккредитацией
-   • Стоимость: 2.5-3.5 млн₸/год
-   • 100% на английском
-   • Лучшая бизнес-школа региона
+    let response = `💼 **Топ бизнес-школы Казахстана:**\n\n`
+    
+    businessUniversities.forEach((uni, index) => {
+      const uniPrograms = businessPrograms.filter(p => p.universityId === uni.id)
+      response += `${index + 1}. **${uni.shortName} (${uni.name})**\n`
+      response += `   • Город: ${uni.city}\n`
+      response += `   • Рейтинг: ${uni.rating}/5.0\n`
+      response += `   • Стоимость: ${(uni.tuitionRange.min / 1000000).toFixed(1)}-${(uni.tuitionRange.max / 1000000).toFixed(1)} млн₸/год\n`
+      if (uniPrograms.length > 0) {
+        response += `   • Программы: ${uniPrograms.map(p => p.nameRu).join(', ')}\n`
+      }
+      response += `\n`
+    })
 
-2. **Nazarbayev University**
-   • Business Administration
-   • Международная программа
-   • Стоимость: 7,500 USD/год
-
-3. **КЭУ (Караганда)**
-   • Экономика и финансы
-   • Доступная цена: 550-900 тыс₸/год
-   • Сильная региональная репутация
-
-Какой бюджет вы рассматриваете?`
+    response += `Какой бюджет вы рассматриваете?`
+    return response
   }
 
   // Medicine
@@ -177,44 +185,53 @@ function generateResponse(message: string, history: any[]): string {
 В какой университет планируете поступать?`
   }
 
-  // Cities
+  // Cities - using database
   if (lowerMessage.includes('алматы') || lowerMessage.includes('астана') || 
-      lowerMessage.includes('город')) {
-    const city = lowerMessage.includes('алматы') ? 'Алматы' : 
-                 lowerMessage.includes('астана') ? 'Астана' : null
+      lowerMessage.includes('город') || lowerMessage.includes('караганда')) {
+    let city = null
+    if (lowerMessage.includes('алматы')) city = 'Алматы'
+    else if (lowerMessage.includes('астана')) city = 'Астана'
+    else if (lowerMessage.includes('караганда')) city = 'Караганда'
 
     if (city) {
-      return `📍 **Университеты в городе ${city}:**
+      const cityUniversities = universities.filter(u => u.city === city)
+        .sort((a, b) => b.rating - a.rating)
+        .slice(0, 8)
 
-${city === 'Алматы' ? `
-**Топ вузов Алматы:**
-1. **КазНУ им. аль-Фараби** - старейший, 165 место в мире
-2. **КБТУ** - технический, сильный Petroleum Engineering
-3. **KIMEP** - бизнес-образование, 100% английский
-4. **SDU** - международный, турецко-казахстанский
-5. **МУИТ** - IT-специализация
+      let response = `📍 **Университеты в городе ${city}:**\n\n`
+      
+      cityUniversities.forEach((uni, index) => {
+        response += `${index + 1}. **${uni.shortName}** - ${uni.name}\n`
+        response += `   • Рейтинг: ${uni.rating}/5.0`
+        if (uni.worldRank) response += ` (#${uni.worldRank} в мире)`
+        response += `\n`
+        response += `   • Стоимость: от ${(uni.tuitionRange.min / 1000000).toFixed(1)} млн₸/год\n`
+        response += `   • Студентов: ${uni.students.toLocaleString()}\n`
+        if (uni.achievements && uni.achievements.length > 0) {
+          response += `   • ${uni.achievements[0]}\n`
+        }
+        response += `\n`
+      })
 
-**Преимущества Алматы:**
-✓ Крупнейший образовательный центр РК
-✓ Больше всего университетов
-✓ Развитая инфраструктура
-✓ Больше возможностей для стажировок
-✓ Активная студенческая жизнь
-` : `
-**Топ вузов Астаны:**
-1. **Nazarbayev University** - №1 в РК, топ-300 в мире
-2. **AITU** - специализированный IT-университет
-3. **ЕНУ им. Гумилева** - классический университет
+      response += `**Преимущества ${city === 'Алматы' ? 'Алматы' : city === 'Астана' ? 'Астаны' : 'Караганды'}:**\n`
+      if (city === 'Алматы') {
+        response += `✓ Крупнейший образовательный центр РК\n`
+        response += `✓ Больше всего университетов\n`
+        response += `✓ Развитая инфраструктура\n`
+        response += `✓ Больше возможностей для стажировок\n`
+      } else if (city === 'Астана') {
+        response += `✓ Столица Казахстана\n`
+        response += `✓ Современный город\n`
+        response += `✓ Новейшие кампусы\n`
+        response += `✓ Близость к госструктурам\n`
+      } else {
+        response += `✓ Крупный промышленный центр\n`
+        response += `✓ Доступная стоимость обучения\n`
+        response += `✓ Сильные технические программы\n`
+      }
 
-**Преимущества Астаны:**
-✓ Столица Казахстана
-✓ Современный город
-✓ Новейшие кампусы
-✓ Близость к госструктурам
-✓ Международные программы
-`}
-
-Какое направление вас интересует?`
+      response += `\nКакое направление вас интересует?`
+      return response
     }
   }
 
