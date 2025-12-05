@@ -2,13 +2,40 @@ import { NextRequest, NextResponse } from 'next/server'
 import universitiesData from '@/data/universities.json'
 import programsData from '@/data/programs.json'
 
+const GEMINI_API_KEY = 'AIzaSyCIhH-3VKldhugzLWxf4UWQ6tCrcksrjdA'
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent'
+
 export async function POST(request: NextRequest) {
   try {
-    const { message, history } = await request.json()
+    const { message, history, portfolio } = await request.json()
 
-    // Enhanced AI response with database context
+    // Пытаемся использовать Gemini API
+    try {
+      const geminiResponse = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: buildGeminiPrompt(message, portfolio, universitiesData, programsData)
+            }]
+          }]
+        })
+      })
+
+      if (geminiResponse.ok) {
+        const data = await geminiResponse.json()
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text
+        if (text) {
+          return NextResponse.json({ response: text })
+        }
+      }
+    } catch (geminiError) {
+      console.log('Gemini API fallback to local:', geminiError)
+    }
+
+    // Fallback на локальную логику
     const response = generateEnhancedResponse(message, history, universitiesData, programsData)
-
     return NextResponse.json({ response })
   } catch (error) {
     console.error('Chat API error:', error)
@@ -17,6 +44,24 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     )
   }
+}
+
+function buildGeminiPrompt(message: string, portfolio: any, universities: any[], programs: any[]): string {
+  return `Ты AI-помощник платформы KZ UniVerse. Помогаешь студентам выбрать университет в Казахстане.
+
+В базе данных:
+- ${universities.length} университетов
+- ${programs.length} программ обучения
+
+${portfolio ? `Портфолио студента:
+- ЕНТ: ${portfolio.entScore || 'не указано'}
+- GPA: ${portfolio.gpa || 'не указано'}
+- Достижения: ${portfolio.achievements?.length || 0}
+` : ''}
+
+Вопрос пользователя: ${message}
+
+Отвечай на русском языке, будь дружелюбным, конкретным и используй данные из базы.`
 }
 
 function generateEnhancedResponse(

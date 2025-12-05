@@ -1,10 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { FiUser, FiAward, FiBook, FiBriefcase, FiGlobe, FiTrendingUp, FiSave } from 'react-icons/fi'
 import { UserPortfolio, AdmissionChance } from '@/types'
+import { isAuthenticated, getCurrentUser } from '@/lib/auth'
+import { getPortfolio, savePortfolio } from '@/lib/portfolio'
 
 export default function ProfilePage() {
+  const router = useRouter()
   const [portfolio, setPortfolio] = useState<UserPortfolio>({
     entScore: undefined,
     ieltsScore: undefined,
@@ -18,6 +22,29 @@ export default function ProfilePage() {
   })
 
   const [admissionChances, setAdmissionChances] = useState<AdmissionChance[]>([])
+  const [isSaving, setIsSaving] = useState(false)
+
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      router.push('/login?redirect=/profile')
+      return
+    }
+
+    // Загружаем сохраненное портфолио
+    const saved = getPortfolio()
+    if (saved) {
+      setPortfolio(saved)
+    }
+  }, [router])
+
+  const handleSave = () => {
+    setIsSaving(true)
+    savePortfolio(portfolio)
+    setTimeout(() => {
+      setIsSaving(false)
+      alert('Портфолио сохранено!')
+    }, 500)
+  }
 
   const calculateChances = async () => {
     if (!portfolio.entScore && !portfolio.gpa) {
@@ -233,13 +260,23 @@ export default function ProfilePage() {
               ))}
             </div>
 
-            <button
-              onClick={calculateChances}
-              className="w-full px-6 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-xl hover:shadow-xl transition-all text-lg font-semibold flex items-center justify-center space-x-2"
-            >
-              <FiTrendingUp />
-              <span>Рассчитать шансы поступления</span>
-            </button>
+            <div className="flex gap-4">
+              <button
+                onClick={handleSave}
+                disabled={isSaving}
+                className="flex-1 px-6 py-4 border-2 border-primary-500 text-primary-600 rounded-xl hover:bg-primary-50 transition-all text-lg font-semibold flex items-center justify-center space-x-2"
+              >
+                <FiSave />
+                <span>{isSaving ? 'Сохранение...' : 'Сохранить'}</span>
+              </button>
+              <button
+                onClick={calculateChances}
+                className="flex-1 px-6 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-xl hover:shadow-xl transition-all text-lg font-semibold flex items-center justify-center space-x-2"
+              >
+                <FiTrendingUp />
+                <span>Рассчитать шансы</span>
+              </button>
+            </div>
           </div>
 
           {/* Шансы поступления */}

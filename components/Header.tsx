@@ -1,11 +1,27 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
-import { FiMenu, FiX, FiHome, FiBook, FiCompass, FiBarChart2, FiUser } from 'react-icons/fi'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { FiMenu, FiX, FiHome, FiBook, FiCompass, FiBarChart2, FiUser, FiLogOut } from 'react-icons/fi'
+import { isAuthenticated, getCurrentUser, logout } from '@/lib/auth'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [user, setUser] = useState<any>(null)
+  const router = useRouter()
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      setUser(getCurrentUser())
+    }
+  }, [])
+
+  const handleLogout = () => {
+    logout()
+    setUser(null)
+    router.push('/')
+  }
 
   return (
     <header className="sticky top-0 z-50 glass-effect">
@@ -48,9 +64,28 @@ export default function Header() {
 
           {/* CTA Button */}
           <div className="hidden md:flex items-center space-x-4">
-            <button className="px-6 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg hover:shadow-lg transition-all">
-              Подобрать ВУЗ
-            </button>
+            {user ? (
+              <>
+                <Link href="/profile">
+                  <button className="px-4 py-2 text-gray-700 hover:text-primary-600 transition-colors flex items-center space-x-2">
+                    <FiUser />
+                    <span>{user.name}</span>
+                  </button>
+                </Link>
+                <button 
+                  onClick={handleLogout}
+                  className="px-4 py-2 text-gray-700 hover:text-red-600 transition-colors"
+                >
+                  <FiLogOut />
+                </button>
+              </>
+            ) : (
+              <Link href="/login">
+                <button className="px-6 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg hover:shadow-lg transition-all">
+                  Войти
+                </button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}

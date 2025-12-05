@@ -3,15 +3,16 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { FiStar, FiMapPin, FiUsers, FiGlobe, FiPhone, FiMail, FiExternalLink, FiHeart, FiShare2 } from 'react-icons/fi'
-import { University, Program } from '@/types'
+import { University, Program, AdmissionChance } from '@/types'
 
 interface Props {
   university: University
   programs: Program[]
 }
 
-type TabType = 'about' | 'programs' | 'international' | 'admission' | 'tour'
+type TabType = 'about' | 'programs' | 'international' | 'admission' | 'tour' | 'mychances'
 
 export default function UniversityDetail({ university, programs }: Props) {
   const [activeTab, setActiveTab] = useState<TabType>('about')
@@ -23,6 +24,7 @@ export default function UniversityDetail({ university, programs }: Props) {
     { id: 'international', label: '🌍 Международное сотрудничество', icon: '🌍' },
     { id: 'admission', label: '📝 Поступление', icon: '📝' },
     { id: 'tour', label: '🏛️ 3D-тур', icon: '🏛️' },
+    { id: 'mychances', label: '🎯 Мои шансы', icon: '🎯' },
   ]
 
   return (
@@ -439,6 +441,315 @@ function TourTab({ university }: { university: University }) {
               <p className="text-sm text-gray-600">Запишитесь на очную экскурсию по университету</p>
             </div>
           </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function MyChancesTab({ university, programs }: { university: University, programs: Program[] }) {
+  const [isCalculating, setIsCalculating] = useState(false)
+  const [chances, setChances] = useState<AdmissionChance[]>([])
+  const [selectedProgram, setSelectedProgram] = useState<string>('')
+  const [isAuth, setIsAuth] = useState(false)
+  const [userPortfolio, setUserPortfolio] = useState<any>(null)
+  const router = useRouter()
+
+  useState(() => {
+    if (typeof window !== 'undefined') {
+      import('@/lib/auth').then(m => {
+        setIsAuth(m.isAuthenticated())
+      })
+      import('@/lib/portfolio').then(m => {
+        const portfolio = m.getPortfolio()
+        setUserPortfolio(portfolio)
+      })
+    }
+  })
+
+  const calculateChances = async () => {
+    if (!isAuth) {
+      router.push('/login?redirect=/universities/' + university.id)
+      return
+    }
+    if (!portfolio || (!portfolio.entScore && !portfolio.gpa)) {
+      alert('Заполните профиль с оценками для расчета шансов')
+      return
+    }
+
+    if (!selectedProgram) {
+      alert('Выберите программу')
+      return
+    }
+
+    setIsCalculating(true)
+    setChances([])
+
+    try {
+      const program = programs.find(p => p.id === selectedProgram)
+      if (!program) return
+
+      // Используем Gemini API
+      const response = await fetch('/api/gemini', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt: `Рассчитай шансы поступления студента в программу "${program.nameRu}" университета "${university.name}". 
+          Дай детальный анализ с процентами и рекомендациями.`,
+          portfolio: userPortfolio,
+          program,
+          university
+        })
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        // Парсим ответ от Gemini и создаем структурированные данные
+        const chance = parseGeminiResponse(data.response, university.id, selectedProgram, userPortfolio, program)
+        setChances([chance])
+      } else {
+        // Fallback на локальный расчет
+        const chance = calculateLocalChance(userPortfolio, program, university)
+        setChances([chance])
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      const program = programs.find(p => p.id === selectedProgram)
+      if (program && userPortfolio) {
+        const chance = calculateLocalChance(userPortfolio, program, university)
+        setChances([chance])
+      }
+    } finally {
+      setIsCalculating(false)
+    }
+  }
+
+  const parseGeminiResponse = (text: string, uniId: string, progId: string, portfolio: any, program: any): AdmissionChance => {
+    // Пытаемся извлечь процент из ответа
+    const chanceMatch = text.match(/(\d+)%/i)
+    const chance = chanceMatch ? parseInt(chanceMatch[1]) : 50
+
+    return {
+      universityId: uniId,
+      programId: progId,
+      chance: Math.min(100, Math.max(0, chance)),
+      factors: {
+        entScore: portfolio.entScore ? (portfolio.entScore / 140) * 100 : 0,
+        gpa: portfolio.gpa ? (portfolio.gpa / 5.0) * 100 : 0,
+        achievements: Math.min(100, (portfolio.achievements?.length || 0) * 10),
+        competition: university.rating * 20
+      },
+      recommendations: extractRecommendations(text)
+    }
+  }
+
+  const extractRecommendations = (text: string): string[] => {
+    const lines = text.split('\n').filter(l => l.trim())
+    const recommendations: string[] = []
+    
+    lines.forEach(line => {
+      if (line.includes('рекоменд') || line.includes('совет') || line.includes('•') || line.includes('-')) {
+        const clean = line.replace(/[•\-\d\.]/g, '').trim()
+        if (clean.length > 10) recommendations.push(clean)
+      }
+    })
+
+    return recommendations.length > 0 ? recommendations.slice(0, 5) : [
+      'Повысить балл ЕНТ',
+      'Участвовать в олимпиадах',
+      'Улучшить средний балл'
+    ]
+  }
+
+  const calculateLocalChance = (portfolio: any, program: any, university: any): AdmissionChance => {
+    const entScore = portfolio.entScore ? (portfolio.entScore / program.requirements?.minENT || 140) * 100 : 50
+    const gpa = portfolio.gpa ? (portfolio.gpa / 5.0) * 100 : 50
+    const achievements = Math.min(100, (portfolio.achievements?.length || 0) * 10 + (portfolio.olympiads?.length || 0) * 15)
+    
+    const chance = (entScore * 0.4 + gpa * 0.2 + achievements * 0.3) - (university.rating * 10 - 50) * 0.1
+
+    return {
+      universityId: university.id,
+      programId: program.id,
+      chance: Math.max(0, Math.min(100, Math.round(chance))),
+      factors: { entScore, gpa, achievements, competition: university.rating * 20 },
+      recommendations: [
+        portfolio.entScore && portfolio.entScore < (program.requirements?.minENT || 100) 
+          ? `Повысить ЕНТ до ${program.requirements.minENT}+` 
+          : 'ЕНТ соответствует требованиям',
+        portfolio.olympiads?.length === 0 ? 'Участвовать в олимпиадах' : 'Отличные достижения!',
+        'Подготовить портфолио проектов'
+      ]
+    }
+  }
+
+  if (!isAuth) {
+    return (
+      <div className="glass-effect rounded-2xl p-8 text-center">
+        <div className="text-6xl mb-4">🔒</div>
+        <h2 className="text-2xl font-bold mb-4">Требуется вход</h2>
+        <p className="text-gray-600 mb-6">
+          Войдите в систему, чтобы получить персонализированный расчет шансов поступления
+        </p>
+        <a href="/login" className="inline-block px-6 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg hover:shadow-lg transition-all">
+          Войти
+        </a>
+      </div>
+    )
+  }
+
+  const hasData = userPortfolio && (userPortfolio.entScore || userPortfolio.gpa)
+
+  return (
+    <div className="glass-effect rounded-2xl p-8">
+      <h2 className="text-2xl font-bold mb-6">Мои шансы поступления</h2>
+
+      {!hasData && (
+        <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+          <p className="text-yellow-800 text-sm">
+            ⚠️ Заполните профиль с оценками для расчета шансов. 
+            <a href="/profile" className="underline ml-1">Перейти в профиль</a>
+          </p>
+        </div>
+      )}
+
+      <div className="mb-6">
+        <label className="block text-sm font-medium mb-2">Выберите программу</label>
+        <select
+          value={selectedProgram}
+          onChange={(e) => setSelectedProgram(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-200 rounded-lg outline-none focus:border-primary-500"
+          disabled={isCalculating}
+        >
+          <option value="">-- Выберите программу --</option>
+          {programs.map(prog => (
+            <option key={prog.id} value={prog.id}>
+              {prog.nameRu} - {prog.field}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <button
+        onClick={calculateChances}
+        disabled={!selectedProgram || !hasData || isCalculating}
+        className="w-full px-6 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-xl hover:shadow-xl transition-all text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+      >
+        {isCalculating ? (
+          <>
+            <div className="spinner"></div>
+            <span>AI анализирует ваши данные...</span>
+          </>
+        ) : (
+          <>
+            <span>🎯 Рассчитать шансы с AI</span>
+          </>
+        )}
+      </button>
+
+      {isCalculating && (
+        <div className="mt-8 space-y-4">
+          <div className="p-6 bg-gradient-to-br from-primary-50 to-secondary-50 rounded-xl">
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="spinner"></div>
+              <div>
+                <h3 className="font-bold">AI анализирует ваше портфолио...</h3>
+                <p className="text-sm text-gray-600">Изучаем оценки, достижения и требования программы</p>
+              </div>
+            </div>
+            <div className="space-y-2 text-sm">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-primary-500 rounded-full animate-pulse"></div>
+                <span>Анализ балла ЕНТ...</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-secondary-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                <span>Оценка достижений...</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-accent-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                <span>Расчет конкуренции...</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" style={{ animationDelay: '0.6s' }}></div>
+                <span>Генерация рекомендаций...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {chances.length > 0 && !isCalculating && (
+        <div className="mt-8 space-y-6">
+          {chances.map((chance, index) => {
+            const program = programs.find(p => p.id === chance.programId)
+            return (
+              <div key={index} className="p-6 bg-gradient-to-br from-primary-50 to-secondary-50 rounded-xl">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h3 className="text-lg font-bold">{program?.nameRu}</h3>
+                    <p className="text-sm text-gray-600">{university.shortName}</p>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-4xl font-bold text-primary-600">{chance.chance}%</div>
+                    <div className="text-xs text-gray-500">шанс поступления</div>
+                  </div>
+                </div>
+
+                <div className="mb-6">
+                  <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
+                    <div 
+                      className={`h-3 rounded-full transition-all duration-1000 ${
+                        chance.chance >= 70 ? 'bg-green-500' :
+                        chance.chance >= 50 ? 'bg-yellow-500' :
+                        'bg-red-500'
+                      }`}
+                      style={{ width: `${chance.chance}%` }}
+                    ></div>
+                  </div>
+                  <div className="flex justify-between text-xs text-gray-600">
+                    <span>Низкий</span>
+                    <span>Средний</span>
+                    <span>Высокий</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                  <div className="text-center p-3 bg-white rounded-lg">
+                    <div className="text-2xl font-bold text-primary-600">{Math.round(chance.factors.entScore)}%</div>
+                    <div className="text-xs text-gray-600">ЕНТ</div>
+                  </div>
+                  <div className="text-center p-3 bg-white rounded-lg">
+                    <div className="text-2xl font-bold text-secondary-600">{Math.round(chance.factors.gpa)}%</div>
+                    <div className="text-xs text-gray-600">GPA</div>
+                  </div>
+                  <div className="text-center p-3 bg-white rounded-lg">
+                    <div className="text-2xl font-bold text-accent-600">{Math.round(chance.factors.achievements)}%</div>
+                    <div className="text-xs text-gray-600">Достижения</div>
+                  </div>
+                  <div className="text-center p-3 bg-white rounded-lg">
+                    <div className="text-2xl font-bold text-gray-600">{Math.round(chance.factors.competition)}%</div>
+                    <div className="text-xs text-gray-600">Конкуренция</div>
+                  </div>
+                </div>
+
+                <div className="pt-6 border-t border-gray-200">
+                  <h4 className="font-bold mb-3 flex items-center space-x-2">
+                    <span>💡</span>
+                    <span>Рекомендации AI</span>
+                  </h4>
+                  <ul className="space-y-2">
+                    {chance.recommendations.map((rec, i) => (
+                      <li key={i} className="flex items-start space-x-2 text-sm">
+                        <span className="text-primary-500 mt-1">✓</span>
+                        <span>{rec}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )
+          })}
         </div>
       )}
     </div>
