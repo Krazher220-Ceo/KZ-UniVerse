@@ -41,10 +41,25 @@ export default function AIChat() {
     setIsLoading(true)
 
     try {
+      // Получаем портфолио если есть
+      let portfolio = null
+      if (typeof window !== 'undefined') {
+        try {
+          const portfolioModule = await import('@/lib/portfolio')
+          portfolio = portfolioModule.getPortfolio()
+        } catch (e) {
+          // Игнорируем ошибку
+        }
+      }
+
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: input, history: messages })
+        body: JSON.stringify({ 
+          message: input, 
+          history: messages,
+          portfolio: portfolio
+        })
       })
 
       if (!response.ok) throw new Error('API error')
@@ -54,7 +69,7 @@ export default function AIChat() {
       const aiMessage: AIMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: data.response || getSimulatedResponse(input),
+        content: data.response || 'Извините, не удалось получить ответ. Попробуйте позже.',
         timestamp: new Date()
       }
 
@@ -65,7 +80,7 @@ export default function AIChat() {
       const aiMessage: AIMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: getSimulatedResponse(input),
+        content: 'Извините, произошла ошибка. Попробуйте перезагрузить страницу или задать вопрос позже.',
         timestamp: new Date()
       }
       setMessages(prev => [...prev, aiMessage])

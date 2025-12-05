@@ -13,7 +13,7 @@
     "founded": 2010,
     "students": 6000,
     "internationalStudents": 15,
-    "description": "Nazarbayev University - первый в Казахстане автономный исследовательский университет, созданный по инициативе Первого Президента РК. Университет предлагает мировое образование и является лидером в научных исследованиях.",
+    "description": "Nazarbayev University - первый в Казахстане автономный исследовательский университет, созданный по инициативе Первого Президента РК. Университет предлагает мировое образование и является лидером в научных исследованиях. Университет был основан в 2010 году по инициативе Первого Президента РК Н.А. Назарбаева. Является автономным исследовательским университетом, работающим по международным стандартам. Все программы аккредитованы международными агентствами. Преподавательский состав включает профессоров из ведущих мировых университетов.",
     "mission": "Содействие развитию образования, науки и инноваций в Казахстане путем предоставления мирового уровня образования, проведения передовых исследований и формирования интеллектуальной элиты страны.",
     "achievements": [
       "№1 университет Казахстана по международным рейтингам",
@@ -58,7 +58,33 @@
     },
     "dormitory": true,
     "dormitoryCost": 150000,
-    "type": "national"
+    "type": "national",
+    "faculties": [
+      "Школа инженерии и цифровых наук",
+      "Школа наук и технологий",
+      "Школа гуманитарных и социальных наук",
+      "Высшая школа бизнеса",
+      "Школа медицины"
+    ],
+    "researchAreas": [
+      "Искусственный интеллект",
+      "Нанотехнологии",
+      "Энергетика",
+      "Биомедицина",
+      "Социальные науки"
+    ],
+    "partners": [
+      "University of Cambridge",
+      "Stanford University",
+      "MIT",
+      "National University of Singapore"
+    ],
+    "alumni": [
+      "Выпускники работают в Google, Microsoft, Amazon",
+      "Основатели стартапов",
+      "Исследователи в ведущих лабораториях"
+    ],
+    "employmentRate": 98
   },
   {
     "id": "kaznu",
@@ -74,7 +100,7 @@
     "founded": 1934,
     "students": 20000,
     "internationalStudents": 8,
-    "description": "КазНУ им. аль-Фараби - старейший и крупнейший университет Казахстана, флагман национального высшего образования. Входит в топ-200 университетов мира по версии QS Rankings.",
+    "description": "КазНУ им. аль-Фараби - старейший и крупнейший университет Казахстана, флагман национального высшего образования. Входит в топ-200 университетов мира по версии QS Rankings. Основан в 1934 году, является старейшим университетом Казахстана. Входит в топ-200 университетов мира по версии QS World University Rankings. Имеет 17 факультетов, более 200 специальностей. Университет активно развивает международное сотрудничество с более чем 1000 партнерами по всему миру.",
     "mission": "Подготовка высококвалифицированных кадров для экономики и социальной сферы Казахстана, развитие фундаментальных и прикладных исследований, сохранение национальных культурных традиций.",
     "achievements": [
       "165 место в мировом рейтинге QS",
@@ -119,7 +145,38 @@
     },
     "dormitory": true,
     "dormitoryCost": 90000,
-    "type": "state"
+    "type": "state",
+    "faculties": [
+      "Факультет информационных технологий",
+      "Механико-математический факультет",
+      "Физико-технический факультет",
+      "Химический факультет",
+      "Биологический факультет",
+      "Факультет филологии",
+      "Исторический факультет",
+      "Экономический факультет",
+      "Юридический факультет"
+    ],
+    "researchAreas": [
+      "Математика и информатика",
+      "Физика и астрономия",
+      "Химия и биология",
+      "Гуманитарные науки",
+      "Экономика и право"
+    ],
+    "partners": [
+      "МГУ им. Ломоносова",
+      "Санкт-Петербургский университет",
+      "Пекинский университет",
+      "Университеты Европы и США"
+    ],
+    "alumni": [
+      "Государственные деятели",
+      "Ученые с мировым именем",
+      "Бизнес-лидеры",
+      "Писатели и деятели культуры"
+    ],
+    "employmentRate": 90
   },
   {
     "id": "kbtu",
@@ -180,7 +237,12 @@
     },
     "dormitory": true,
     "dormitoryCost": 120000,
-    "type": "state"
+    "type": "state",
+    "faculties": [],
+    "researchAreas": [],
+    "partners": [],
+    "alumni": [],
+    "employmentRate": 85
   },
   {
     "id": "aitu",
@@ -240,7 +302,12 @@
     },
     "dormitory": true,
     "dormitoryCost": 140000,
-    "type": "state"
+    "type": "state",
+    "faculties": [],
+    "researchAreas": [],
+    "partners": [],
+    "alumni": [],
+    "employmentRate": 85
   },
   {
     "id": "kimep",
@@ -301,7 +368,12 @@
     },
     "dormitory": true,
     "dormitoryCost": 180000,
-    "type": "private"
+    "type": "private",
+    "faculties": [],
+    "researchAreas": [],
+    "partners": [],
+    "alumni": [],
+    "employmentRate": 85
   },
   {
     "id": "sdu",
@@ -362,7 +434,12 @@
     },
     "dormitory": true,
     "dormitoryCost": 130000,
-    "type": "state"
+    "type": "state",
+    "faculties": [],
+    "researchAreas": [],
+    "partners": [],
+    "alumni": [],
+    "employmentRate": 85
   },
   {
     "id": "keu",
@@ -421,7 +498,12 @@
     },
     "dormitory": true,
     "dormitoryCost": 60000,
-    "type": "state"
+    "type": "state",
+    "faculties": [],
+    "researchAreas": [],
+    "partners": [],
+    "alumni": [],
+    "employmentRate": 85
   },
   {
     "id": "enu",
@@ -482,7 +564,12 @@
     },
     "dormitory": true,
     "dormitoryCost": 70000,
-    "type": "state"
+    "type": "state",
+    "faculties": [],
+    "researchAreas": [],
+    "partners": [],
+    "alumni": [],
+    "employmentRate": 85
   },
   {
     "id": "kstu",
@@ -541,7 +628,12 @@
     },
     "dormitory": true,
     "dormitoryCost": 55000,
-    "type": "state"
+    "type": "state",
+    "faculties": [],
+    "researchAreas": [],
+    "partners": [],
+    "alumni": [],
+    "employmentRate": 85
   },
   {
     "id": "iitu",
@@ -602,7 +694,12 @@
     },
     "dormitory": true,
     "dormitoryCost": 110000,
-    "type": "state"
+    "type": "state",
+    "faculties": [],
+    "researchAreas": [],
+    "partners": [],
+    "alumni": [],
+    "employmentRate": 85
   },
   {
     "id": "mgimo-astana",
@@ -662,7 +759,12 @@
     },
     "dormitory": true,
     "dormitoryCost": 160000,
-    "type": "private"
+    "type": "private",
+    "faculties": [],
+    "researchAreas": [],
+    "partners": [],
+    "alumni": [],
+    "employmentRate": 85
   },
   {
     "id": "msu-kz",
@@ -722,7 +824,12 @@
     },
     "dormitory": true,
     "dormitoryCost": 150000,
-    "type": "private"
+    "type": "private",
+    "faculties": [],
+    "researchAreas": [],
+    "partners": [],
+    "alumni": [],
+    "employmentRate": 85
   },
   {
     "id": "synergy-astana",
@@ -781,7 +888,12 @@
     },
     "dormitory": true,
     "dormitoryCost": 100000,
-    "type": "private"
+    "type": "private",
+    "faculties": [],
+    "researchAreas": [],
+    "partners": [],
+    "alumni": [],
+    "employmentRate": 85
   },
   {
     "id": "esil-university",
@@ -839,7 +951,12 @@
     },
     "dormitory": true,
     "dormitoryCost": 70000,
-    "type": "state"
+    "type": "state",
+    "faculties": [],
+    "researchAreas": [],
+    "partners": [],
+    "alumni": [],
+    "employmentRate": 85
   },
   {
     "id": "mnarikbayev",
@@ -897,6 +1014,11 @@
     },
     "dormitory": true,
     "dormitoryCost": 90000,
-    "type": "state"
+    "type": "state",
+    "faculties": [],
+    "researchAreas": [],
+    "partners": [],
+    "alumni": [],
+    "employmentRate": 85
   }
 ]

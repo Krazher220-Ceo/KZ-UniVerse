@@ -9,17 +9,24 @@ export async function POST(request: NextRequest) {
   try {
     const { message, history, portfolio } = await request.json()
 
-    // Пытаемся использовать Gemini API
+    // Используем Gemini API как основной источник
     try {
       const geminiResponse = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: buildGeminiPrompt(message, portfolio, universitiesData, programsData)
-            }]
-          }]
+          contents: [
+            ...(history?.slice(-5).map((h: any) => ({
+              role: h.role === 'user' ? 'user' : 'model',
+              parts: [{ text: h.content }]
+            })) || []),
+            {
+              role: 'user',
+              parts: [{
+                text: buildGeminiPrompt(message, portfolio, universitiesData, programsData)
+              }]
+            }
+          ]
         })
       })
 
@@ -31,10 +38,10 @@ export async function POST(request: NextRequest) {
         }
       }
     } catch (geminiError) {
-      console.log('Gemini API fallback to local:', geminiError)
+      console.error('Gemini API error:', geminiError)
     }
 
-    // Fallback на локальную логику
+    // Fallback на локальную логику только если Gemini недоступен
     const response = generateEnhancedResponse(message, history, universitiesData, programsData)
     return NextResponse.json({ response })
   } catch (error) {
@@ -47,21 +54,46 @@ export async function POST(request: NextRequest) {
 }
 
 function buildGeminiPrompt(message: string, portfolio: any, universities: any[], programs: any[]): string {
-  return `Ты AI-помощник платформы KZ UniVerse. Помогаешь студентам выбрать университет в Казахстане.
+  // Формируем список университетов для контекста
+  const topUniversities = universities.slice(0, 10).map(u => 
+    `- ${u.shortName} (${u.name}): рейтинг ${u.rating}/5.0, город ${u.city}, стоимость от ${(u.tuitionRange.min / 1000000).toFixed(1)}M₸/год`
+  ).join('\n')
 
-В базе данных:
-- ${universities.length} университетов
-- ${programs.length} программ обучения
+  const topPrograms = programs.slice(0, 10).map(p => 
+    `- ${p.nameRu} (${p.field}): ${p.universityId}, стоимость ${(p.tuitionPerYear / 1000000).toFixed(1)}M₸/год`
+  ).join('\n')
 
-${portfolio ? `Портфолио студента:
-- ЕНТ: ${portfolio.entScore || 'не указано'}
+  return `Ты AI-помощник платформы KZ UniVerse - единой платформы для выбора университетов в Казахстане.
+
+КОНТЕКСТ БАЗЫ ДАННЫХ:
+В системе ${universities.length} университетов и ${programs.length} программ.
+
+Топ университеты:
+${topUniversities}
+
+Популярные программы:
+${topPrograms}
+
+${portfolio ? `ПОРТФОЛИО СТУДЕНТА:
+- Балл ЕНТ: ${portfolio.entScore || 'не указано'}
 - GPA: ${portfolio.gpa || 'не указано'}
+- IELTS: ${portfolio.ieltsScore || 'не указано'}
 - Достижения: ${portfolio.achievements?.length || 0}
+- Олимпиады: ${portfolio.olympiads?.length || 0}
 ` : ''}
 
-Вопрос пользователя: ${message}
+ВОПРОС ПОЛЬЗОВАТЕЛЯ: ${message}
 
-Отвечай на русском языке, будь дружелюбным, конкретным и используй данные из базы.`
+ИНСТРУКЦИИ:
+1. Отвечай на русском языке
+2. Будь дружелюбным и профессиональным
+3. Используй конкретные данные из базы
+4. Давай детальные рекомендации
+5. Если спрашивают про конкретный университет - используй данные о нем
+6. Предлагай альтернативы если нужно
+7. Форматируй ответ с эмодзи и структурированно
+
+ОТВЕТ:`
 }
 
 function generateEnhancedResponse(
