@@ -32,7 +32,11 @@ export default function ComparisonTool() {
     setSelectedUniversities(selectedUniversities.filter(u => u.id !== id))
   }
 
-  const comparisonCriteria = [
+  const comparisonCriteria: Array<{
+    key: string
+    label: string
+    format: (v: any) => string
+  }> = [
     { key: 'rating', label: 'Рейтинг', format: (v: number) => v.toFixed(1) },
     { key: 'worldRank', label: 'Место в мире', format: (v?: number) => v ? `#${v}` : 'N/A' },
     { key: 'founded', label: 'Год основания', format: (v: number) => v.toString() },
@@ -162,7 +166,7 @@ export default function ComparisonTool() {
                       <td key={i} className="p-4 text-center">
                         <div className={`inline-flex items-center space-x-2 ${bestIndexes.includes(i) ? 'text-green-600 font-bold' : ''}`}>
                           {bestIndexes.includes(i) && <FiCheck />}
-                          <span>{criterion.format(value)}</span>
+                          <span>{criterion.format(value as any)}</span>
                         </div>
                       </td>
                     ))}
