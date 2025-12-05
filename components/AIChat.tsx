@@ -37,6 +37,7 @@ export default function AIChat() {
     }
 
     setMessages(prev => [...prev, userMessage])
+    const userQuery = input
     setInput('')
     setIsLoading(true)
 
@@ -54,25 +55,23 @@ export default function AIChat() {
 
       // Используем client-side API
       const { chatAPI } = await import('@/lib/api-client')
-      const response = await chatAPI(input, messages, portfolio)
-      
-      const data = { response }
+      const response = await chatAPI(userQuery, messages, portfolio)
 
       const aiMessage: AIMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: data.response || 'Извините, не удалось получить ответ. Попробуйте позже.',
+        content: response || getSimulatedResponse(userQuery),
         timestamp: new Date()
       }
 
       setMessages(prev => [...prev, aiMessage])
     } catch (error) {
       console.error('Chat error:', error)
-      // Fallback to simulated response
+      // Fallback to simulated response - всегда даём полезный ответ
       const aiMessage: AIMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: 'Извините, произошла ошибка. Попробуйте перезагрузить страницу или задать вопрос позже.',
+        content: getSimulatedResponse(userQuery),
         timestamp: new Date()
       }
       setMessages(prev => [...prev, aiMessage])

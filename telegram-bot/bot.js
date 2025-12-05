@@ -5,7 +5,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const fetch = require('node-fetch');
 
 // Конфигурация
-const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8552407784:AAHHb30Zi5N4Na6AEAoe2S6_7UUHMmiQlA4';
+const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8480152282:AAHZPfFdnS9GtSRfEiGtQyF3euzU0F43ZrI';
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyCIhH-3VKldhugzLWxf4UWQ6tCrcksrjdA';
 const API_URL = process.env.API_URL || 'https://kz-universe.vercel.app';
 
