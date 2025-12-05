@@ -35,6 +35,6 @@ next-env.d.ts
 
 # documentation (except README.md)
 
-/.docs/
+.docs/
 
 
