@@ -143,77 +143,87 @@ export default function SmartMatcher() {
   const calculateMatch = async () => {
     setIsCalculating(true)
     
-    // Имитация расчета
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    try {
+      // Используем AI для подбора
+      const aiModule = await import('@/lib/ai')
+      const aiResults = await aiModule.matchUniversities({
+        interests: answers.interests,
+        city: answers.city,
+        budget: answers.budget,
+        entScore: parseInt(answers.entScore) || 0,
+        language: answers.language
+      })
+      
+      // Объединяем с локальными данными для полной информации
+      const results: MatchResult[] = aiResults.map(aiResult => {
+        const uni = UNIVERSITIES_FOR_MATCHING.find(u => u.id === aiResult.universityId)
+        return {
+          universityId: aiResult.universityId,
+          name: aiResult.name,
+          shortName: uni?.shortName || aiResult.name,
+          matchScore: aiResult.matchScore,
+          reasons: aiResult.reasons,
+          city: uni?.city || '',
+          tuition: uni?.tuition || '',
+          rating: uni?.rating || 0
+        }
+      })
+      
+      setResults(results)
+    } catch (error) {
+      console.error('AI matching error:', error)
+      
+      // Fallback на локальный расчёт
+      const results: MatchResult[] = UNIVERSITIES_FOR_MATCHING.map(uni => {
+        let score = 0
+        const reasons: string[] = []
 
-    const results: MatchResult[] = UNIVERSITIES_FOR_MATCHING.map(uni => {
-      let score = 0
-      const reasons: string[] = []
+        const interestMatch = answers.interests.filter(i => uni.tags.includes(i)).length
+        score += (interestMatch / Math.max(answers.interests.length, 1)) * 40
+        if (interestMatch > 0) reasons.push(`${interestMatch} совпадений`)
 
-      // Совпадение интересов (40%)
-      const interestMatch = answers.interests.filter(i => uni.tags.includes(i)).length
-      const interestScore = (interestMatch / Math.max(answers.interests.length, 1)) * 40
-      score += interestScore
-      if (interestMatch > 0) {
-        reasons.push(`${interestMatch} совпадений по интересам`)
-      }
+        if (answers.city === 'any' || answers.city === uni.city.toLowerCase()) {
+          score += 15
+          if (answers.city !== 'any') reasons.push(`Город: ${uni.city}`)
+        }
 
-      // Совпадение города (15%)
-      if (answers.city === 'any' || answers.city === uni.city.toLowerCase()) {
-        score += 15
-        if (answers.city !== 'any') reasons.push(`Город: ${uni.city}`)
-      }
+        if (answers.budget === 'any' || answers.budget === uni.budget) {
+          score += 20
+          reasons.push('Подходит по бюджету')
+        }
 
-      // Бюджет (20%)
-      if (answers.budget === 'any' || answers.budget === uni.budget) {
-        score += 20
-        reasons.push('Подходит по бюджету')
-      } else if (
-        (answers.budget === 'medium' && uni.budget === 'low') ||
-        (answers.budget === 'high' && uni.budget !== 'high')
-      ) {
-        score += 10
-      }
+        const entScore = parseInt(answers.entScore) || 0
+        if (entScore >= uni.minENT) {
+          score += 15
+          reasons.push(`ЕНТ ≥ ${uni.minENT}`)
+        }
 
-      // ЕНТ (15%)
-      const entScore = parseInt(answers.entScore) || 0
-      if (entScore >= uni.minENT) {
-        score += 15
-        reasons.push(`ЕНТ выше минимума (${uni.minENT})`)
-      } else if (entScore >= uni.minENT - 10) {
-        score += 8
-        reasons.push(`ЕНТ близко к минимуму`)
-      }
+        if (answers.language === 'english' && uni.tags.includes('english')) {
+          score += 10
+          reasons.push('Английский')
+        } else if (answers.language !== 'english') {
+          score += 10
+        }
 
-      // Язык (10%)
-      if (answers.language === 'english' && uni.tags.includes('english')) {
-        score += 10
-        reasons.push('Обучение на английском')
-      } else if (answers.language === 'russian' || answers.language === 'any') {
-        score += 10
-      }
+        score += (uni.rating - 4) * 5
 
-      // Бонус за рейтинг
-      score += (uni.rating - 4) * 5
-
-      return {
-        universityId: uni.id,
-        name: uni.name,
-        shortName: uni.shortName,
-        matchScore: Math.min(100, Math.round(score)),
-        reasons,
-        city: uni.city,
-        tuition: uni.tuition,
-        rating: uni.rating
-      }
-    })
-
-    // Сортируем по score
-    results.sort((a, b) => b.matchScore - a.matchScore)
-    
-    setResults(results.slice(0, 5))
-    setIsCalculating(false)
-    setStep(6)
+        return {
+          universityId: uni.id,
+          name: uni.name,
+          shortName: uni.shortName,
+          matchScore: Math.min(100, Math.round(score)),
+          reasons,
+          city: uni.city,
+          tuition: uni.tuition,
+          rating: uni.rating
+        }
+      }).sort((a, b) => b.matchScore - a.matchScore).slice(0, 5)
+      
+      setResults(results)
+    } finally {
+      setIsCalculating(false)
+      setStep(6)
+    }
   }
 
   const renderStep = () => {

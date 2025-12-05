@@ -1,5 +1,6 @@
 // Telegram Bot для KZ UniVerse
 // Использование: node bot.js
+// AI: Ollama (локально) → Gemini (облако) → Fallback
 
 // Отключаем проверку SSL для разработки (не использовать в production!)
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -10,6 +11,8 @@ const fetch = require('node-fetch');
 // Конфигурация
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8480152282:AAHZPfFdnS9GtSRfEiGtQyF3euzU0F43ZrI';
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AQ.Ab8RN6I6fN37ba1DTn4XeUB4uw3cwBJAuce0U6wh9MwjXypUbA';
+const OLLAMA_URL = process.env.OLLAMA_URL || 'http://localhost:11434';
+const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'llama3.2:1b';
 const API_URL = process.env.API_URL || 'https://kz-universe.vercel.app';
 
 // Полная база данных университетов
@@ -213,8 +216,40 @@ ${context}
 
 ОТВЕТ:`;
 
-  // Попытка 1: Gemini API (новый формат)
+  // Попытка 1: Ollama (локальный AI - быстро и бесплатно)
   try {
+    console.log('🦙 Пробуем Ollama...');
+    const ollamaResponse = await fetch(`${OLLAMA_URL}/api/generate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: OLLAMA_MODEL,
+        prompt: fullPrompt,
+        stream: false,
+        options: {
+          temperature: 0.7,
+          top_p: 0.9,
+          num_predict: 500
+        }
+      }),
+      timeout: 30000
+    });
+
+    if (ollamaResponse.ok) {
+      const data = await ollamaResponse.json();
+      if (data.response && data.response.trim().length > 10) {
+        console.log('✅ Ollama успешно (локальный AI)');
+        return data.response.trim();
+      }
+    }
+    console.log('⚠️ Ollama не дал ответ, пробуем Gemini...');
+  } catch (error) {
+    console.log('⚠️ Ollama недоступна:', error.message);
+  }
+
+  // Попытка 2: Gemini API (облако)
+  try {
+    console.log('☁️ Пробуем Gemini API...');
     const response = await fetch(
       `https://aiplatform.googleapis.com/v1/publishers/google/models/gemini-2.5-flash-lite:streamGenerateContent?key=${GEMINI_API_KEY}`,
       {
@@ -267,7 +302,8 @@ ${context}
     console.error('❌ Gemini error:', error.message);
   }
 
-  // Попытка 2: Локальная умная логика
+  // Попытка 3: Локальная умная логика
+  console.log('📋 Используем локальный fallback');
   return getSmartLocalResponse(userMessage);
 }
 

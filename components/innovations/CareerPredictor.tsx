@@ -138,11 +138,29 @@ export default function CareerPredictor() {
     
     setIsLoading(true)
     
-    // Имитация загрузки
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    setPrediction(CAREER_DATA[selectedField] || null)
-    setIsLoading(false)
+    try {
+      // Используем AI для прогноза
+      const aiModule = await import('@/lib/ai')
+      const aiPrediction = await aiModule.predictCareer(selectedField)
+      
+      // Объединяем AI данные с локальными
+      const localData = CAREER_DATA[selectedField]
+      if (localData) {
+        setPrediction({
+          ...localData,
+          skills: aiPrediction.skills.length > 0 ? aiPrediction.skills : localData.skills,
+          timeline: aiPrediction.timeline.length > 0 ? aiPrediction.timeline : localData.timeline
+        })
+      } else {
+        setPrediction(CAREER_DATA['computer-science'])
+      }
+    } catch (error) {
+      console.error('AI prediction error:', error)
+      // Fallback на локальные данные
+      setPrediction(CAREER_DATA[selectedField] || CAREER_DATA['computer-science'])
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const getDemandColor = (demand: 'high' | 'medium' | 'low') => {
