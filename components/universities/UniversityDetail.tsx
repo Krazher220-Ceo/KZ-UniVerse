@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { FiStar, FiMapPin, FiUsers, FiGlobe, FiPhone, FiMail, FiExternalLink, FiHeart, FiShare2 } from 'react-icons/fi'
 import { University, Program, AdmissionChance } from '@/types'
+import { formatNumber } from '@/lib/format'
 
 interface Props {
   university: University
@@ -70,7 +71,7 @@ export default function UniversityDetail({ university, programs }: Props) {
                 </div>
                 <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
                   <FiUsers />
-                  <span>{university.students.toLocaleString()} студентов</span>
+                  <span>{formatNumber(university.students)} студентов</span>
                 </div>
                 {university.worldRank && (
                   <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
@@ -152,6 +153,13 @@ function AboutTab({ university }: { university: University }) {
         <p className="text-gray-700 leading-relaxed">{university.description}</p>
       </section>
 
+      {university.history && (
+        <section>
+          <h3 className="text-xl font-bold mb-3">История</h3>
+          <p className="text-gray-700 leading-relaxed">{university.history}</p>
+        </section>
+      )}
+
       <section>
         <h3 className="text-xl font-bold mb-3">Миссия</h3>
         <p className="text-gray-700 leading-relaxed">{university.mission}</p>
@@ -161,6 +169,48 @@ function AboutTab({ university }: { university: University }) {
         <section>
           <h3 className="text-xl font-bold mb-3">Видение</h3>
           <p className="text-gray-700 leading-relaxed">{university.vision}</p>
+        </section>
+      )}
+
+      {university.leadership && (
+        <section>
+          <h3 className="text-xl font-bold mb-3">Руководство</h3>
+          {university.leadership.rector && (
+            <div className="mb-6 p-4 bg-primary-50 rounded-lg">
+              <div className="flex items-start space-x-4">
+                {university.leadership.rector.photo && (
+                  <Image
+                    src={university.leadership.rector.photo}
+                    alt={university.leadership.rector.name}
+                    width={80}
+                    height={80}
+                    className="rounded-full object-cover"
+                  />
+                )}
+                <div className="flex-1">
+                  <h4 className="text-lg font-bold text-gray-900">{university.leadership.rector.name}</h4>
+                  <p className="text-primary-600 font-medium mb-2">{university.leadership.rector.position}</p>
+                  {university.leadership.rector.bio && (
+                    <p className="text-sm text-gray-600">{university.leadership.rector.bio}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+          {university.leadership.viceRectors && university.leadership.viceRectors.length > 0 && (
+            <div className="space-y-3">
+              <h4 className="font-semibold text-gray-700 mb-2">Проректоры</h4>
+              {university.leadership.viceRectors.map((viceRector, index) => (
+                <div key={index} className="p-3 bg-gray-50 rounded-lg">
+                  <div className="font-medium text-gray-900">{viceRector.name}</div>
+                  <div className="text-sm text-gray-600">{viceRector.position}</div>
+                  {viceRector.bio && (
+                    <p className="text-sm text-gray-500 mt-1">{viceRector.bio}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </section>
       )}
 
@@ -213,7 +263,7 @@ function AboutTab({ university }: { university: University }) {
             <div className="text-sm text-gray-600">Год основания</div>
           </div>
           <div className="p-4 bg-secondary-50 rounded-lg">
-            <div className="text-3xl font-bold text-secondary-600">{university.students.toLocaleString()}</div>
+            <div className="text-3xl font-bold text-secondary-600">{formatNumber(university.students)}</div>
             <div className="text-sm text-gray-600">Студентов</div>
           </div>
           <div className="p-4 bg-accent-50 rounded-lg">
@@ -441,6 +491,37 @@ function InternationalTab({ university }: { university: University }) {
         </div>
       </section>
 
+      {university.partners && university.partners.length > 0 && (
+        <section className="mb-8">
+          <h3 className="text-xl font-bold mb-4">Партнерские университеты</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {university.partners.map((partner, index) => {
+              const partnerName = typeof partner === 'string' 
+                ? partner 
+                : (partner as any).name || '';
+              const partnerCountry = typeof partner === 'object' && (partner as any).country 
+                ? (partner as any).country 
+                : '';
+              const partnerType = typeof partner === 'object' && (partner as any).type 
+                ? (partner as any).type 
+                : '';
+              
+              return (
+                <div key={index} className="p-4 bg-white border border-gray-200 rounded-lg hover:border-primary-300 transition-all">
+                  <div className="font-medium text-gray-900">{partnerName}</div>
+                  {partnerCountry && (
+                    <div className="text-sm text-gray-600 mt-1">🌍 {partnerCountry}</div>
+                  )}
+                  {partnerType && (
+                    <div className="text-xs text-primary-600 mt-1">{partnerType}</div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
       <section>
         <h3 className="text-xl font-bold mb-4">Процент иностранных студентов</h3>
         <div className="p-6 bg-gradient-to-r from-primary-50 to-secondary-50 rounded-xl">
@@ -502,6 +583,71 @@ function AdmissionTab({ university }: { university: University }) {
         </div>
       </section>
 
+      <section className="mb-8">
+        <h3 className="text-xl font-bold mb-4">Стипендии и финансовая помощь</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="p-5 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-200">
+            <div className="flex items-center space-x-3 mb-2">
+              <span className="text-2xl">🎓</span>
+              <h4 className="font-bold text-gray-900">Государственные гранты</h4>
+            </div>
+            <p className="text-sm text-gray-600 mb-3">
+              Полное покрытие стоимости обучения для лучших абитуриентов по результатам ЕНТ
+            </p>
+            <div className="text-xs text-gray-500">
+              ✓ Покрывает стоимость обучения<br />
+              ✓ Доступно для всех специальностей<br />
+              ✓ Конкурсный отбор
+            </div>
+          </div>
+          
+          <div className="p-5 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-200">
+            <div className="flex items-center space-x-3 mb-2">
+              <span className="text-2xl">💰</span>
+              <h4 className="font-bold text-gray-900">Стипендии университета</h4>
+            </div>
+            <p className="text-sm text-gray-600 mb-3">
+              Академические и социальные стипендии для студентов с высокими достижениями
+            </p>
+            <div className="text-xs text-gray-500">
+              ✓ Академические стипендии<br />
+              ✓ Социальные стипендии<br />
+              ✓ Стипендии за достижения
+            </div>
+          </div>
+
+          <div className="p-5 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl border border-purple-200">
+            <div className="flex items-center space-x-3 mb-2">
+              <span className="text-2xl">🌍</span>
+              <h4 className="font-bold text-gray-900">Международные стипендии</h4>
+            </div>
+            <p className="text-sm text-gray-600 mb-3">
+              Стипендии для иностранных студентов и программы обмена
+            </p>
+            <div className="text-xs text-gray-500">
+              ✓ Для иностранных студентов<br />
+              ✓ Программы обмена<br />
+              ✓ Двойные дипломы
+            </div>
+          </div>
+
+          <div className="p-5 bg-gradient-to-br from-orange-50 to-yellow-50 rounded-xl border border-orange-200">
+            <div className="flex items-center space-x-3 mb-2">
+              <span className="text-2xl">📚</span>
+              <h4 className="font-bold text-gray-900">Образовательные кредиты</h4>
+            </div>
+            <p className="text-sm text-gray-600 mb-3">
+              Льготные кредиты на образование с государственной поддержкой
+            </p>
+            <div className="text-xs text-gray-500">
+              ✓ Льготная процентная ставка<br />
+              ✓ Отсрочка платежа<br />
+              ✓ Государственная поддержка
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section>
         <h3 className="text-xl font-bold mb-4">Контакты приемной комиссии</h3>
         <div className="space-y-3">
@@ -537,25 +683,200 @@ function AdmissionTab({ university }: { university: University }) {
 }
 
 function TourTab({ university }: { university: University }) {
+  // Получаем координаты для карт
+  const coordinates = university.coordinates || { lat: 51.1694, lng: 71.4491 } // Астана по умолчанию
+  const mapCenter = `${coordinates.lat},${coordinates.lng}`
+  
+  // Яндекс карты (бесплатно, без API ключа):
+  // 1. Яндекс карта через поиск
+  const searchQuery = encodeURIComponent(university.address || `${university.name}, ${university.city}`)
+  const yandexMapUrl = `https://yandex.kz/maps/?pt=${coordinates.lng},${coordinates.lat}&z=17&l=map`
+  
+  // 2. Яндекс панорама (если есть в tour3D и это Яндекс ссылка, используем её, иначе создаём)
+  let yandexPanoramaUrl = ''
+  if (university.tour3D && university.tour3D.includes('yandex.kz/maps')) {
+    // Если tour3D уже содержит Яндекс панораму, используем её
+    yandexPanoramaUrl = university.tour3D
+  } else {
+    // Создаём Яндекс панораму по координатам
+    yandexPanoramaUrl = `https://yandex.kz/maps/?pt=${coordinates.lng},${coordinates.lat}&z=17&l=stv%2Csta`
+  }
+  
+  // Google Maps как альтернатива (бесплатно, без API ключа)
+  const googleMapsUrl = `https://www.google.com/maps?q=${searchQuery}&output=embed&z=17`
+  const googleStreetViewUrl = `https://www.google.com/maps/@${mapCenter},3a,75y,210h,90t/data=!3m6!1e1!3m4!1s${mapCenter}!2e0!3e2`
+
   return (
     <div className="glass-effect rounded-2xl p-8">
       <h2 className="text-2xl font-bold mb-6">3D-тур по кампусу</h2>
       
-      {university.tour3D ? (
-        <div className="space-y-6">
-          <div className="aspect-video bg-gray-900 rounded-xl overflow-hidden">
+      {/* Яндекс карты и панорама рядом */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+        {/* Яндекс карта - БЕСПЛАТНО без API ключа */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-bold flex items-center gap-2">
+              <span>🗺️</span>
+              <span>Карта кампуса</span>
+            </h3>
+            <a
+              href={yandexMapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors font-medium text-sm flex items-center gap-2 shadow-lg"
+            >
+              <span>📍</span>
+              <span>Открыть карту</span>
+            </a>
+          </div>
+          <div className="aspect-video bg-gray-900 rounded-xl overflow-hidden shadow-lg relative">
+            <iframe
+              src={yandexMapUrl}
+              className="w-full h-full border-0"
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title={`Карта ${university.name}`}
+            />
+            {/* Кнопка поверх карты */}
+            <div className="absolute top-4 right-4">
+              <a
+                href={yandexMapUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 bg-white/90 backdrop-blur-sm text-gray-900 rounded-lg hover:bg-white transition-all font-medium text-sm flex items-center gap-2 shadow-xl hover:shadow-2xl"
+              >
+                <span>🗺️</span>
+                <span>Открыть в Яндекс.Картах</span>
+                <FiExternalLink size={16} />
+              </a>
+            </div>
+          </div>
+          <p className="text-xs text-gray-500 text-center">
+            📍 {university.address}
+          </p>
+        </div>
+
+        {/* Яндекс панорама - БЕСПЛАТНО без API ключа */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-bold flex items-center gap-2">
+              <span>👤</span>
+              <span>Панорама</span>
+            </h3>
+            <a
+              href={yandexPanoramaUrl || `https://yandex.kz/maps/?pt=${coordinates.lng},${coordinates.lat}&z=17&l=stv%2Csta`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium text-sm flex items-center gap-2 shadow-lg"
+            >
+              <span>🚶</span>
+              <span>Прогуляться</span>
+            </a>
+          </div>
+          <div className="aspect-video bg-gray-900 rounded-xl overflow-hidden shadow-lg relative">
+            {yandexPanoramaUrl ? (
+              <>
+                <iframe
+                  src={yandexPanoramaUrl}
+                  className="w-full h-full border-0"
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title={`Панорама ${university.name}`}
+                />
+                {/* Кнопка поверх панорамы */}
+                <div className="absolute top-4 right-4">
+                  <a
+                    href={yandexPanoramaUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 bg-white/90 backdrop-blur-sm text-gray-900 rounded-lg hover:bg-white transition-all font-medium text-sm flex items-center gap-2 shadow-xl hover:shadow-2xl"
+                  >
+                    <span>👤</span>
+                    <span>Открыть панораму</span>
+                    <FiExternalLink size={16} />
+                  </a>
+                </div>
+              </>
+            ) : (
+              <div className="w-full h-full flex flex-col items-center justify-center bg-gray-800 text-white p-6">
+                <p className="text-center mb-4">
+                  Панорама недоступна для этого места
+                </p>
+                <a 
+                  href={`https://yandex.kz/maps/?pt=${coordinates.lng},${coordinates.lat}&z=17&l=stv%2Csta`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium flex items-center gap-2 shadow-lg"
+                >
+                  <span>👤</span>
+                  <span>Попробовать открыть панораму</span>
+                  <FiExternalLink size={16} />
+                </a>
+              </div>
+            )}
+          </div>
+          <p className="text-xs text-gray-500 text-center">
+            🚶 Прогуляйтесь по кампусу виртуально
+          </p>
+        </div>
+      </div>
+
+      {/* 3D тур если есть */}
+      {university.tour3D && (
+        <div className="space-y-6 mb-6">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-bold flex items-center gap-2">
+              <span>🏛️</span>
+              <span>Интерактивный 3D-тур</span>
+            </h3>
+            <a
+              href={university.tour3D}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all font-medium text-sm flex items-center gap-2 shadow-lg hover:shadow-xl"
+            >
+              <span>🌐</span>
+              <span>Открыть на сайте</span>
+              <FiExternalLink size={18} />
+            </a>
+          </div>
+          <div className="aspect-video bg-gray-900 rounded-xl overflow-hidden shadow-lg relative">
             <iframe
               src={university.tour3D}
               className="w-full h-full"
               allow="fullscreen; gyroscope; accelerometer"
+              title={`3D тур ${university.name}`}
             />
+            {/* Кнопка поверх iframe */}
+            <div className="absolute top-4 right-4">
+              <a
+                href={university.tour3D}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-5 py-3 bg-white/95 backdrop-blur-sm text-gray-900 rounded-lg hover:bg-white transition-all font-medium text-sm flex items-center gap-2 shadow-xl hover:shadow-2xl"
+              >
+                <span>🏛️</span>
+                <span>Открыть 3D-тур</span>
+                <FiExternalLink size={16} />
+              </a>
+            </div>
           </div>
           <div className="p-4 bg-blue-50 rounded-lg">
             <p className="text-sm text-gray-700">
               💡 <strong>Совет:</strong> Используйте мышь или сенсорный экран для навигации по кампусу. 
               Нажмите на точки интереса, чтобы узнать больше о помещениях и инфраструктуре.
+              <br />
+              <span className="text-blue-600 font-medium">Или откройте тур на сайте университета для лучшего опыта!</span>
             </p>
           </div>
+        </div>
+      )}
+      
+      {/* Инфраструктура */}
+      {university.tour3D || coordinates ? (
+        <div className="space-y-6">
 
           <section className="p-6 bg-white rounded-xl border border-gray-100">
             <h3 className="text-xl font-bold mb-4">Объекты инфраструктуры</h3>
@@ -606,24 +927,113 @@ function TourTab({ university }: { university: University }) {
           </section>
         </div>
       ) : (
-        <div className="text-center py-20">
-          <div className="text-6xl mb-4">🏛️</div>
-          <h3 className="text-2xl font-bold mb-2">3D-тур скоро будет доступен</h3>
-          <p className="text-gray-600 mb-6">
-            Мы работаем над созданием интерактивного тура по кампусу {university.shortName}
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-6 bg-gray-50 rounded-xl">
-              <h4 className="font-bold mb-2">📸 Фотогалерея</h4>
-              <p className="text-sm text-gray-600">Смотрите фотографии кампуса на официальном сайте</p>
+        <div className="space-y-6">
+          <section className="p-6 bg-white rounded-xl border border-gray-100">
+            <h3 className="text-xl font-bold mb-4">Объекты инфраструктуры</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {university.infrastructure.dormitories?.available && (
+                <div className="flex items-start space-x-2 p-3 bg-gray-50 rounded-lg">
+                  <span className="text-secondary-500">●</span>
+                  <span className="text-gray-700 text-sm">Общежитие {university.infrastructure.dormitories.costPerYear && ` (${(university.infrastructure.dormitories.costPerYear / 1000).toFixed(0)}K ₸/год)`}</span>
+                </div>
+              )}
+              {university.infrastructure.library?.name && (
+                <div className="flex items-start space-x-2 p-3 bg-gray-50 rounded-lg">
+                  <span className="text-secondary-500">●</span>
+                  <span className="text-gray-700 text-sm">Библиотека {university.infrastructure.library.name && `(${university.infrastructure.library.name})`}</span>
+                </div>
+              )}
+              {university.infrastructure.laboratories?.total && university.infrastructure.laboratories.total > 0 && (
+                <div className="flex items-start space-x-2 p-3 bg-gray-50 rounded-lg">
+                  <span className="text-secondary-500">●</span>
+                  <span className="text-gray-700 text-sm">Лаборатории ({university.infrastructure.laboratories.total})</span>
+                </div>
+              )}
+              {university.infrastructure.sports?.stadium && (
+                <div className="flex items-start space-x-2 p-3 bg-gray-50 rounded-lg">
+                  <span className="text-secondary-500">●</span>
+                  <span className="text-gray-700 text-sm">Стадион</span>
+                </div>
+              )}
+              {university.infrastructure.sports?.gym && university.infrastructure.sports.gym > 0 && (
+                <div className="flex items-start space-x-2 p-3 bg-gray-50 rounded-lg">
+                  <span className="text-secondary-500">●</span>
+                  <span className="text-gray-700 text-sm">Спортзалы ({university.infrastructure.sports.gym})</span>
+                </div>
+              )}
+              {university.infrastructure.sports?.pool && (
+                <div className="flex items-start space-x-2 p-3 bg-gray-50 rounded-lg">
+                  <span className="text-secondary-500">●</span>
+                  <span className="text-gray-700 text-sm">Бассейн</span>
+                </div>
+              )}
+              {university.infrastructure.dormitories?.amenities && university.infrastructure.dormitories.amenities.length > 0 && (
+                <div className="flex items-start space-x-2 p-3 bg-gray-50 rounded-lg">
+                  <span className="text-secondary-500">●</span>
+                  <span className="text-gray-700 text-sm">Удобства в общежитии: {university.infrastructure.dormitories.amenities.join(', ')}</span>
+                </div>
+              )}
             </div>
-            <div className="p-6 bg-gray-50 rounded-xl">
-              <h4 className="font-bold mb-2">📅 Экскурсия</h4>
-              <p className="text-sm text-gray-600">Запишитесь на очную экскурсию по университету</p>
-            </div>
-          </div>
+          </section>
         </div>
       )}
+
+      {/* Ссылки на карты */}
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Ссылка на Яндекс карты */}
+        <div className="p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl">
+          <div className="flex items-center justify-between">
+            <div>
+              <h4 className="font-bold text-gray-900 mb-1">📍 Яндекс.Карты</h4>
+              <p className="text-sm text-gray-600">Карта и маршруты</p>
+            </div>
+            <a
+              href={`https://yandex.kz/maps/?pt=${coordinates.lng},${coordinates.lat}&z=17&l=map`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors font-medium text-sm"
+            >
+              Открыть →
+            </a>
+          </div>
+        </div>
+
+        {/* Ссылка на Яндекс панораму */}
+        <div className="p-4 bg-gradient-to-r from-red-50 to-pink-50 rounded-xl">
+          <div className="flex items-center justify-between">
+            <div>
+              <h4 className="font-bold text-gray-900 mb-1">👤 Яндекс Панорама</h4>
+              <p className="text-sm text-gray-600">Виртуальная прогулка</p>
+            </div>
+            <a
+              href={yandexPanoramaUrl || `https://yandex.kz/maps/?pt=${coordinates.lng},${coordinates.lat}&z=17&l=stv%2Csta`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium text-sm"
+            >
+              Открыть →
+            </a>
+          </div>
+        </div>
+
+        {/* Ссылка на Google Maps (альтернатива) */}
+        <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl">
+          <div className="flex items-center justify-between">
+            <div>
+              <h4 className="font-bold text-gray-900 mb-1">🌍 Google Maps</h4>
+              <p className="text-sm text-gray-600">Альтернативная карта</p>
+            </div>
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(university.address || university.name)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm"
+            >
+              Открыть →
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -670,10 +1080,29 @@ function MyChancesTab({ university, programs }: { university: University, progra
       const program = programs.find(p => p.id === selectedProgram)
       if (!program) return
 
-      // Используем client-side API
-      const { admissionChanceAPI } = await import('@/lib/api-client')
-      const chance = await admissionChanceAPI(userPortfolio, university.id, selectedProgram)
-      setChances([chance])
+      // Используем новый AI модуль
+      const aiModule = await import('@/lib/ai')
+      const result = await aiModule.analyzeAdmissionChance({
+        entScore: userPortfolio.entScore,
+        gpa: userPortfolio.gpa,
+        ielts: userPortfolio.ieltsScore,
+        achievements: userPortfolio.achievements || [],
+        targetUniversity: university.id,
+        targetProgram: selectedProgram
+      })
+      
+      setChances([{
+        universityId: university.id,
+        programId: selectedProgram,
+        chance: result.chance,
+        factors: {
+          entScore: result.factors.find(f => f.name === 'Балл ЕНТ')?.score || 0,
+          gpa: result.factors.find(f => f.name === 'GPA')?.score || 0,
+          achievements: result.factors.find(f => f.name === 'Достижения')?.score || 0,
+          competition: 50
+        },
+        recommendations: result.recommendations
+      }])
     } catch (error) {
       console.error('Error:', error)
       const program = programs.find(p => p.id === selectedProgram)
@@ -974,7 +1403,7 @@ function Sidebar({ university }: { university: University }) {
           {university.dormitory && university.dormitoryCost && (
             <div className="flex justify-between">
               <span className="text-gray-500">Стоимость общежития:</span>
-              <span className="font-bold">{university.dormitoryCost.toLocaleString()}₸/мес</span>
+              <span className="font-bold">{formatNumber(university.dormitoryCost)}₸/мес</span>
             </div>
           )}
         </div>
@@ -1001,15 +1430,15 @@ function Sidebar({ university }: { university: University }) {
         <div className="space-y-3 text-sm">
           <div className="flex justify-between">
             <span className="text-gray-500">Просмотры:</span>
-            <span className="font-bold">{university.stats.views.toLocaleString()}</span>
+            <span className="font-bold">{formatNumber(university.stats.views)}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">Избранное:</span>
-            <span className="font-bold">{university.stats.favorites.toLocaleString()}</span>
+            <span className="font-bold">{formatNumber(university.stats.favorites)}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">3D-тур:</span>
-            <span className="font-bold">{university.stats.tour3DClicks.toLocaleString()}</span>
+            <span className="font-bold">{formatNumber(university.stats.tour3DClicks)}</span>
           </div>
         </div>
       </div>

@@ -2,10 +2,63 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { FiStar, FiMapPin, FiUsers, FiArrowRight } from 'react-icons/fi'
 import universitiesData from '@/data/universities.json'
+import { University } from '@/types'
+import { formatNumber } from '@/lib/format'
+
+// Функция для расчета приоритета университета
+function calculatePriority(uni: University): number {
+  let priority = 0
+
+  // Проверяем логотип (есть реальный логотип, не placeholder)
+  const hasRealLogo = uni.logo && 
+    !uni.logo.includes('placehold.co') && 
+    !uni.logo.includes('unsplash.com')
+  if (hasRealLogo) priority += 100
+
+  // Проверяем баннер (есть реальный баннер, не placeholder и не unsplash)
+  const hasRealCover = uni.cover && 
+    !uni.cover.includes('placehold.co') && 
+    !uni.cover.includes('unsplash.com')
+  if (hasRealCover) priority += 100
+
+  // Количество информации
+  if (uni.description && uni.description.length > 200) priority += 20
+  if (uni.mission) priority += 10
+  if (uni.vision) priority += 10
+  if (uni.history) priority += 10
+  if (uni.achievements && uni.achievements.length > 0) priority += uni.achievements.length * 2
+  if (uni.faculties && Array.isArray(uni.faculties) && uni.faculties.length > 0) priority += uni.faculties.length * 2
+  if (uni.partners && Array.isArray(uni.partners) && uni.partners.length > 0) priority += uni.partners.length * 2
+  if (uni.researchAreas && uni.researchAreas.length > 0) priority += uni.researchAreas.length * 2
+  if (uni.tour3D && uni.tour3D.length > 0) priority += 30
+  if (uni.coordinates) priority += 10
+  if (uni.worldRank) priority += 15
+  if (uni.rankings) priority += 10
+
+  // Бонус за инфраструктуру
+  if (uni.infrastructure && typeof uni.infrastructure === 'object') {
+    const infra = uni.infrastructure as any
+    if (infra.dormitories?.available) priority += 5
+    if (infra.library) priority += 5
+    if (infra.laboratories?.total > 0) priority += 5
+    if (infra.sports) priority += 5
+  }
+
+  return priority
+}
 
 export default function TopUniversities() {
   const topUniversities = universitiesData
-    .sort((a, b) => b.rating - a.rating)
+    .sort((a, b) => {
+      // Сначала по приоритету (логотипы, баннеры, полная информация)
+      const priorityA = calculatePriority(a as University)
+      const priorityB = calculatePriority(b as University)
+      if (priorityB !== priorityA) {
+        return priorityB - priorityA
+      }
+      // Затем по рейтингу
+      return b.rating - a.rating
+    })
     .slice(0, 6)
 
   return (
@@ -67,7 +120,7 @@ export default function TopUniversities() {
                   <div className="flex items-center justify-between text-sm">
                     <div className="flex items-center space-x-1 text-gray-500">
                       <FiUsers size={16} />
-                      <span>{uni.students.toLocaleString()} студентов</span>
+                      <span>{formatNumber(uni.students)} студентов</span>
                     </div>
                     <div className="text-primary-600 font-semibold flex items-center space-x-1">
                       <span>Узнать больше</span>

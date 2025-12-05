@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { FiStar, FiMapPin, FiUsers, FiDollarSign, FiFilter } from 'react-icons/fi'
 import universitiesData from '@/data/universities.json'
 import { University, SearchFilters } from '@/types'
+import { formatNumber } from '@/lib/format'
 
 export default function UniversityCatalog() {
   const searchParams = useSearchParams()
@@ -19,6 +20,48 @@ export default function UniversityCatalog() {
     sortBy: 'rating'
   })
   const [showFilters, setShowFilters] = useState(false)
+
+  // Функция для расчета приоритета университета
+  const calculatePriority = (uni: University): number => {
+    let priority = 0
+
+    // Проверяем логотип (есть реальный логотип, не placeholder)
+    const hasRealLogo = uni.logo && 
+      !uni.logo.includes('placehold.co') && 
+      !uni.logo.includes('unsplash.com')
+    if (hasRealLogo) priority += 100
+
+    // Проверяем баннер (есть реальный баннер, не placeholder и не unsplash)
+    const hasRealCover = uni.cover && 
+      !uni.cover.includes('placehold.co') && 
+      !uni.cover.includes('unsplash.com')
+    if (hasRealCover) priority += 100
+
+    // Количество информации
+    if (uni.description && uni.description.length > 200) priority += 20
+    if (uni.mission) priority += 10
+    if (uni.vision) priority += 10
+    if (uni.history) priority += 10
+    if (uni.achievements && uni.achievements.length > 0) priority += uni.achievements.length * 2
+    if (uni.faculties && Array.isArray(uni.faculties) && uni.faculties.length > 0) priority += uni.faculties.length * 2
+    if (uni.partners && Array.isArray(uni.partners) && uni.partners.length > 0) priority += uni.partners.length * 2
+    if (uni.researchAreas && uni.researchAreas.length > 0) priority += uni.researchAreas.length * 2
+    if (uni.tour3D && uni.tour3D.length > 0) priority += 30
+    if (uni.coordinates) priority += 10
+    if (uni.worldRank) priority += 15
+    if (uni.rankings) priority += 10
+
+    // Бонус за инфраструктуру
+    if (uni.infrastructure && typeof uni.infrastructure === 'object') {
+      const infra = uni.infrastructure as any
+      if (infra.dormitories?.available) priority += 5
+      if (infra.library) priority += 5
+      if (infra.laboratories?.total > 0) priority += 5
+      if (infra.sports) priority += 5
+    }
+
+    return priority
+  }
 
   const filteredUniversities = useMemo(() => {
     let result = [...universitiesData] as University[]
@@ -59,17 +102,62 @@ export default function UniversityCatalog() {
       result = result.filter(uni => uni.type === filters.universityType)
     }
 
-    // Sorting
+    // Сначала сортируем по приоритету (университеты с логотипами, баннерами и полной информацией вверху)
+    result.sort((a, b) => {
+      const priorityA = calculatePriority(a)
+      const priorityB = calculatePriority(b)
+      if (priorityB !== priorityA) {
+        return priorityB - priorityA // Сначала с высоким приоритетом
+      }
+      return 0
+    })
+
+    // Затем применяем выбранную пользователем сортировку
     if (filters.sortBy === 'rating') {
-      result.sort((a, b) => b.rating - a.rating)
+      result.sort((a, b) => {
+        const priorityA = calculatePriority(a)
+        const priorityB = calculatePriority(b)
+        if (priorityB !== priorityA) {
+          return priorityB - priorityA
+        }
+        return b.rating - a.rating
+      })
     } else if (filters.sortBy === 'tuition-asc') {
-      result.sort((a, b) => a.tuitionRange.min - b.tuitionRange.min)
+      result.sort((a, b) => {
+        const priorityA = calculatePriority(a)
+        const priorityB = calculatePriority(b)
+        if (priorityB !== priorityA) {
+          return priorityB - priorityA
+        }
+        return a.tuitionRange.min - b.tuitionRange.min
+      })
     } else if (filters.sortBy === 'tuition-desc') {
-      result.sort((a, b) => b.tuitionRange.min - a.tuitionRange.min)
+      result.sort((a, b) => {
+        const priorityA = calculatePriority(a)
+        const priorityB = calculatePriority(b)
+        if (priorityB !== priorityA) {
+          return priorityB - priorityA
+        }
+        return b.tuitionRange.min - a.tuitionRange.min
+      })
     } else if (filters.sortBy === 'popularity') {
-      result.sort((a, b) => b.stats.views - a.stats.views)
+      result.sort((a, b) => {
+        const priorityA = calculatePriority(a)
+        const priorityB = calculatePriority(b)
+        if (priorityB !== priorityA) {
+          return priorityB - priorityA
+        }
+        return b.stats.views - a.stats.views
+      })
     } else if (filters.sortBy === 'name') {
-      result.sort((a, b) => a.name.localeCompare(b.name))
+      result.sort((a, b) => {
+        const priorityA = calculatePriority(a)
+        const priorityB = calculatePriority(b)
+        if (priorityB !== priorityA) {
+          return priorityB - priorityA
+        }
+        return a.name.localeCompare(b.name)
+      })
     }
 
     return result
@@ -252,7 +340,7 @@ export default function UniversityCatalog() {
                         <FiUsers size={16} />
                         <span>Студентов:</span>
                       </span>
-                      <span className="font-semibold">{uni.students.toLocaleString()}</span>
+                      <span className="font-semibold">{formatNumber(uni.students)}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-gray-500 flex items-center space-x-1">
