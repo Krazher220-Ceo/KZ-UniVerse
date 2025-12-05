@@ -472,7 +472,7 @@ function MyChancesTab({ university, programs }: { university: University, progra
       router.push('/login?redirect=/universities/' + university.id)
       return
     }
-    if (!portfolio || (!portfolio.entScore && !portfolio.gpa)) {
+    if (!userPortfolio || (!userPortfolio.entScore && !userPortfolio.gpa)) {
       alert('Заполните профиль с оценками для расчета шансов')
       return
     }
