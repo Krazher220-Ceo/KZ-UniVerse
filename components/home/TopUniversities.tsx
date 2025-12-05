@@ -46,8 +46,13 @@ export default function TopUniversities() {
                       height={48}
                       className="rounded-lg"
                     />
-                    <div>
-                      <h3 className="font-bold text-lg">{uni.shortName}</h3>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-bold text-lg">{uni.shortName}</h3>
+                        <span className="text-xs px-2 py-1 rounded-full bg-primary-100 text-primary-700">
+                          {uni.type === 'national' ? '🏛️' : uni.type === 'state' ? '🏫' : '💼'}
+                        </span>
+                      </div>
                       <div className="flex items-center space-x-1 text-sm text-gray-500">
                         <FiMapPin size={12} />
                         <span>{uni.city}</span>

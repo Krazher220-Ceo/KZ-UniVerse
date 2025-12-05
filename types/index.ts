@@ -1,10 +1,13 @@
 // Типы для платформы KZ UniVerse
 
+export type UniversityType = 'national' | 'state' | 'private';
+
 export interface University {
   id: string;
   name: string;
   nameKz: string;
   shortName: string;
+  type: UniversityType; // национальный, государственный, частный
   logo: string;
   cover: string;
   city: string;
@@ -195,10 +198,64 @@ export interface UserPreferences {
   degree?: Degree;
 }
 
+export interface UserProfile {
+  id: string;
+  email: string;
+  name: string;
+  avatar?: string;
+  createdAt: Date;
+  preferences: UserPreferences;
+  portfolio: UserPortfolio;
+  favorites: string[]; // university IDs
+  comparisons: string[][]; // arrays of university IDs
+}
+
+export interface UserPortfolio {
+  entScore?: number; // ЕНТ балл
+  ieltsScore?: number;
+  toeflScore?: number;
+  gpa?: number; // средний балл аттестата
+  achievements: string[];
+  olympiads: {
+    name: string;
+    level: 'regional' | 'republican' | 'international';
+    year: number;
+    place?: number;
+  }[];
+  volunteerWork: {
+    organization: string;
+    duration: string;
+    description: string;
+  }[];
+  workExperience: {
+    company: string;
+    position: string;
+    duration: string;
+  }[];
+  languages: {
+    language: string;
+    level: 'basic' | 'intermediate' | 'advanced' | 'native';
+  }[];
+}
+
+export interface AdmissionChance {
+  universityId: string;
+  programId: string;
+  chance: number; // 0-100%
+  factors: {
+    entScore: number;
+    gpa: number;
+    achievements: number;
+    competition: number;
+  };
+  recommendations: string[];
+}
+
 export interface SearchFilters {
   query?: string;
   city?: string;
   field?: ProgramField;
+  universityType?: UniversityType;
   minRating?: number;
   maxTuition?: number;
   language?: Language;

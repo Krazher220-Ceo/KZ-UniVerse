@@ -56,6 +56,13 @@ export default function UniversityDetail({ university, programs }: Props) {
                   <span>рейтинг</span>
                 </div>
                 <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
+                  <span className="font-bold">
+                    {university.type === 'national' ? '🏛️ Национальный' : 
+                     university.type === 'state' ? '🏫 Государственный' : 
+                     '💼 Частный'}
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
                   <FiMapPin />
                   <span>{university.city}</span>
                 </div>

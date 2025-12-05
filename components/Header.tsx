@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { FiMenu, FiX, FiHome, FiBook, FiCompass, FiBarChart2 } from 'react-icons/fi'
+import { FiMenu, FiX, FiHome, FiBook, FiCompass, FiBarChart2, FiUser } from 'react-icons/fi'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -39,6 +39,10 @@ export default function Header() {
             <Link href="/analytics" className="flex items-center space-x-1 text-gray-700 hover:text-primary-600 transition-colors">
               <FiBarChart2 />
               <span>Аналитика</span>
+            </Link>
+            <Link href="/profile" className="flex items-center space-x-1 text-gray-700 hover:text-primary-600 transition-colors">
+              <FiUser />
+              <span>Профиль</span>
             </Link>
           </div>
 

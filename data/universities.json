@@ -57,7 +57,8 @@
       "max": 9000
     },
     "dormitory": true,
-    "dormitoryCost": 150000
+    "dormitoryCost": 150000,
+    "type": "national"
   },
   {
     "id": "kaznu",
@@ -117,7 +118,8 @@
       "max": 1800000
     },
     "dormitory": true,
-    "dormitoryCost": 90000
+    "dormitoryCost": 90000,
+    "type": "state"
   },
   {
     "id": "kbtu",
@@ -177,7 +179,8 @@
       "max": 2500000
     },
     "dormitory": true,
-    "dormitoryCost": 120000
+    "dormitoryCost": 120000,
+    "type": "state"
   },
   {
     "id": "aitu",
@@ -236,7 +239,8 @@
       "max": 2200000
     },
     "dormitory": true,
-    "dormitoryCost": 140000
+    "dormitoryCost": 140000,
+    "type": "state"
   },
   {
     "id": "kimep",
@@ -296,7 +300,8 @@
       "max": 3500000
     },
     "dormitory": true,
-    "dormitoryCost": 180000
+    "dormitoryCost": 180000,
+    "type": "private"
   },
   {
     "id": "sdu",
@@ -356,7 +361,8 @@
       "max": 2800000
     },
     "dormitory": true,
-    "dormitoryCost": 130000
+    "dormitoryCost": 130000,
+    "type": "state"
   },
   {
     "id": "keu",
@@ -414,7 +420,8 @@
       "max": 900000
     },
     "dormitory": true,
-    "dormitoryCost": 60000
+    "dormitoryCost": 60000,
+    "type": "state"
   },
   {
     "id": "enu",
@@ -474,7 +481,8 @@
       "max": 1200000
     },
     "dormitory": true,
-    "dormitoryCost": 70000
+    "dormitoryCost": 70000,
+    "type": "state"
   },
   {
     "id": "kstu",
@@ -532,7 +540,8 @@
       "max": 850000
     },
     "dormitory": true,
-    "dormitoryCost": 55000
+    "dormitoryCost": 55000,
+    "type": "state"
   },
   {
     "id": "iitu",
@@ -575,7 +584,7 @@
     },
     "tour3D": "",
     "coordinates": {
-      "lat": 43.232820,
+      "lat": 43.23282,
       "lng": 76.889709
     },
     "stats": {
@@ -592,7 +601,8 @@
       "max": 2000000
     },
     "dormitory": true,
-    "dormitoryCost": 110000
+    "dormitoryCost": 110000,
+    "type": "state"
   },
   {
     "id": "mgimo-astana",
@@ -634,8 +644,8 @@
     },
     "tour3D": "",
     "coordinates": {
-      "lat": 51.125000,
-      "lng": 71.430000
+      "lat": 51.125,
+      "lng": 71.43
     },
     "stats": {
       "views": 3200,
@@ -651,7 +661,8 @@
       "max": 3500000
     },
     "dormitory": true,
-    "dormitoryCost": 160000
+    "dormitoryCost": 160000,
+    "type": "private"
   },
   {
     "id": "msu-kz",
@@ -693,8 +704,8 @@
     },
     "tour3D": "",
     "coordinates": {
-      "lat": 51.130000,
-      "lng": 71.435000
+      "lat": 51.13,
+      "lng": 71.435
     },
     "stats": {
       "views": 5100,
@@ -710,7 +721,8 @@
       "max": 3000000
     },
     "dormitory": true,
-    "dormitoryCost": 150000
+    "dormitoryCost": 150000,
+    "type": "private"
   },
   {
     "id": "synergy-astana",
@@ -751,8 +763,8 @@
     },
     "tour3D": "",
     "coordinates": {
-      "lat": 51.135000,
-      "lng": 71.440000
+      "lat": 51.135,
+      "lng": 71.44
     },
     "stats": {
       "views": 2800,
@@ -768,7 +780,8 @@
       "max": 2000000
     },
     "dormitory": true,
-    "dormitoryCost": 100000
+    "dormitoryCost": 100000,
+    "type": "private"
   },
   {
     "id": "esil-university",
@@ -808,8 +821,8 @@
     },
     "tour3D": "",
     "coordinates": {
-      "lat": 51.140000,
-      "lng": 71.445000
+      "lat": 51.14,
+      "lng": 71.445
     },
     "stats": {
       "views": 2100,
@@ -825,7 +838,8 @@
       "max": 1000000
     },
     "dormitory": true,
-    "dormitoryCost": 70000
+    "dormitoryCost": 70000,
+    "type": "state"
   },
   {
     "id": "mnarikbayev",
@@ -865,8 +879,8 @@
     },
     "tour3D": "",
     "coordinates": {
-      "lat": 51.145000,
-      "lng": 71.450000
+      "lat": 51.145,
+      "lng": 71.45
     },
     "stats": {
       "views": 1900,
@@ -882,7 +896,7 @@
       "max": 1800000
     },
     "dormitory": true,
-    "dormitoryCost": 90000
+    "dormitoryCost": 90000,
+    "type": "state"
   }
 ]
-
