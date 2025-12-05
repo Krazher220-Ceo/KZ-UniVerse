@@ -1,7 +1,8 @@
 // Централизованный модуль для работы с AI провайдерами
-// Использует реальные данные из базы для контекста
+// Приоритет: Ollama (локально) → Gemini (облако) → Fallback
 
 import { generateContent as generateGeminiContent } from './gemini'
+import { checkOllamaAvailable, generateWithOllama } from './ollama'
 
 type AIType = 'chat' | 'admission';
 
@@ -176,8 +177,24 @@ export async function getAIResponse(prompt: string, type: AIType): Promise<strin
       ? buildChatPrompt(prompt, knowledgeContext)
       : buildAdmissionPrompt(prompt, knowledgeContext);
 
-    // 1. Try Gemini
+    // 1. ПРИОРИТЕТ: Ollama (локально, быстро, бесплатно)
     try {
+      const ollamaAvailable = await checkOllamaAvailable();
+      if (ollamaAvailable) {
+        console.log('🦙 Using Ollama (local AI)...');
+        response = await generateWithOllama(prompt, knowledgeContext.slice(0, 4000)); // Ограничиваем контекст
+        if (response && response.trim().length > 10) {
+          return response.trim();
+        }
+      }
+    } catch (error: any) {
+      console.error('Ollama failed:', error.message);
+      errorMessages.push(`Ollama failed: ${error.message}`);
+    }
+
+    // 2. Gemini (облако)
+    try {
+      console.log('☁️ Using Gemini API...');
       response = await generateGeminiContent(fullPrompt);
       if (response && response.trim().length > 10) {
         return response.trim();
@@ -187,7 +204,7 @@ export async function getAIResponse(prompt: string, type: AIType): Promise<strin
       errorMessages.push(`Gemini failed: ${error.message}`);
     }
 
-    // 2. Fallback to local logic with real data
+    // 3. Fallback to local logic with real data
     console.warn('Using local fallback with real data from knowledge base.');
     return getLocalFallbackResponse(prompt, type, errorMessages, universities, programs);
   } catch (error: any) {
