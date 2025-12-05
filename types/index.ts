@@ -43,6 +43,11 @@ export interface University {
   };
   dormitory: boolean;
   dormitoryCost?: number;
+  faculties?: string[]; // факультеты
+  researchAreas?: string[]; // области исследований
+  partners?: string[]; // партнерские университеты
+  alumni?: string[]; // известные выпускники
+  employmentRate?: number; // процент трудоустройства
 }
 
 export interface UniversityStats {
