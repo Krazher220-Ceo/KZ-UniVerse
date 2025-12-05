@@ -9,7 +9,7 @@ const fetch = require('node-fetch');
 
 // Конфигурация
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8480152282:AAHZPfFdnS9GtSRfEiGtQyF3euzU0F43ZrI';
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyB-V2bE9E3WaGhLFFns584x7xygyipqaco';
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AQ.Ab8RN6I6fN37ba1DTn4XeUB4uw3cwBJAuce0U6wh9MwjXypUbA';
 const API_URL = process.env.API_URL || 'https://kz-universe.vercel.app';
 
 // Полная база данных университетов
