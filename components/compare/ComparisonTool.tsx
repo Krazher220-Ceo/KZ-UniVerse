@@ -52,6 +52,7 @@ export default function ComparisonTool() {
   const getValue = (uni: University, key: string): any => {
     if (key === 'tuitionMin') return uni.tuitionRange.min
     if (key === 'tuitionMax') return uni.tuitionRange.max
+    if (key === 'dormitoryCost') return uni.dormitoryCost
     return (uni as any)[key]
   }
 

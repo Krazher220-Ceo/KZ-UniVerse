@@ -453,6 +453,14 @@ function Sidebar({ university }: { university: University }) {
         <h3 className="font-bold mb-4">Быстрая информация</h3>
         <div className="space-y-3 text-sm">
           <div className="flex justify-between">
+            <span className="text-gray-500">Тип вуза:</span>
+            <span className="font-bold">
+              {university.type === 'national' ? '🏛️ Национальный' : 
+               university.type === 'state' ? '🏫 Государственный' : 
+               '💼 Частный'}
+            </span>
+          </div>
+          <div className="flex justify-between">
             <span className="text-gray-500">Стоимость от:</span>
             <span className="font-bold text-primary-600">
               {(university.tuitionRange.min / 1000000).toFixed(1)}M₸
