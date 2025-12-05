@@ -1,0 +1,643 @@
+[
+  {
+    "id": "cs-nu",
+    "universityId": "nu",
+    "name": "Computer Science",
+    "nameKz": "Информатика",
+    "nameRu": "Компьютерные науки",
+    "field": "IT",
+    "degree": "Bachelor",
+    "duration": 4,
+    "language": ["English"],
+    "tuitionPerYear": 8000,
+    "scholarship": true,
+    "grantAvailable": true,
+    "description": "Программа готовит специалистов мирового уровня в области компьютерных наук, искусственного интеллекта и программной инженерии.",
+    "courses": [
+      "Algorithms and Data Structures",
+      "Machine Learning",
+      "Software Engineering",
+      "Database Systems",
+      "Computer Networks"
+    ],
+    "requirements": {
+      "minENT": 125,
+      "minIELTS": 6.5,
+      "requiredSubjects": ["Mathematics", "Physics", "English"],
+      "interview": true
+    },
+    "popularity": 98,
+    "employmentRate": 100,
+    "careerPaths": [
+      "Software Engineer",
+      "Data Scientist",
+      "ML Engineer",
+      "Tech Lead"
+    ]
+  },
+  {
+    "id": "business-nu",
+    "universityId": "nu",
+    "name": "Business Administration",
+    "nameKz": "Бизнес әкімшілендіру",
+    "nameRu": "Бизнес-администрирование",
+    "field": "Business",
+    "degree": "Bachelor",
+    "duration": 4,
+    "language": ["English"],
+    "tuitionPerYear": 7500,
+    "scholarship": true,
+    "grantAvailable": true,
+    "description": "Международная бизнес-программа с акцентом на предпринимательство и инновационный менеджмент.",
+    "courses": [
+      "Strategic Management",
+      "Financial Analysis",
+      "Marketing",
+      "Entrepreneurship",
+      "Business Analytics"
+    ],
+    "requirements": {
+      "minENT": 120,
+      "minIELTS": 6.0,
+      "requiredSubjects": ["Mathematics", "History", "English"],
+      "interview": true
+    },
+    "popularity": 92,
+    "employmentRate": 95,
+    "careerPaths": [
+      "Business Analyst",
+      "Marketing Manager",
+      "Entrepreneur",
+      "Consultant"
+    ]
+  },
+  {
+    "id": "it-kaznu",
+    "universityId": "kaznu",
+    "name": "Information Systems",
+    "nameKz": "Ақпараттық жүйелер",
+    "nameRu": "Информационные системы",
+    "field": "IT",
+    "degree": "Bachelor",
+    "duration": 4,
+    "language": ["Русский", "Казахский"],
+    "tuitionPerYear": 850000,
+    "scholarship": true,
+    "grantAvailable": true,
+    "description": "Подготовка специалистов по проектированию, разработке и эксплуатации информационных систем.",
+    "courses": [
+      "Программирование",
+      "Базы данных",
+      "Системный анализ",
+      "Веб-технологии",
+      "Информационная безопасность"
+    ],
+    "requirements": {
+      "minENT": 100,
+      "requiredSubjects": ["Математика", "Физика"],
+      "portfolio": false
+    },
+    "popularity": 88,
+    "employmentRate": 92,
+    "careerPaths": [
+      "Разработчик ПО",
+      "Системный аналитик",
+      "Архитектор ПО",
+      "IT-консультант"
+    ]
+  },
+  {
+    "id": "law-kaznu",
+    "universityId": "kaznu",
+    "name": "Law",
+    "nameKz": "Құқық",
+    "nameRu": "Юриспруденция",
+    "field": "Law",
+    "degree": "Bachelor",
+    "duration": 4,
+    "language": ["Русский", "Казахский"],
+    "tuitionPerYear": 750000,
+    "scholarship": true,
+    "grantAvailable": true,
+    "description": "Классическое юридическое образование с акцентом на казахстанское и международное право.",
+    "courses": [
+      "Конституционное право",
+      "Гражданское право",
+      "Уголовное право",
+      "Международное право",
+      "Корпоративное право"
+    ],
+    "requirements": {
+      "minENT": 110,
+      "requiredSubjects": ["История Казахстана", "Обществознание"],
+      "interview": true
+    },
+    "popularity": 85,
+    "employmentRate": 88,
+    "careerPaths": [
+      "Юрист",
+      "Адвокат",
+      "Судья",
+      "Корпоративный юрист"
+    ]
+  },
+  {
+    "id": "petroleum-kbtu",
+    "universityId": "kbtu",
+    "name": "Petroleum Engineering",
+    "nameKz": "Мұнай инженериясы",
+    "nameRu": "Нефтегазовое дело",
+    "field": "Engineering",
+    "degree": "Bachelor",
+    "duration": 4,
+    "language": ["English", "Русский"],
+    "tuitionPerYear": 2500000,
+    "scholarship": true,
+    "grantAvailable": false,
+    "description": "Топовая программа по нефтегазовой инженерии с практикой на реальных месторождениях.",
+    "courses": [
+      "Reservoir Engineering",
+      "Drilling Engineering",
+      "Production Engineering",
+      "Well Testing",
+      "Enhanced Oil Recovery"
+    ],
+    "requirements": {
+      "minENT": 115,
+      "minIELTS": 5.5,
+      "requiredSubjects": ["Mathematics", "Physics", "Chemistry"],
+      "interview": true
+    },
+    "popularity": 94,
+    "employmentRate": 98,
+    "careerPaths": [
+      "Petroleum Engineer",
+      "Reservoir Engineer",
+      "Drilling Engineer",
+      "Production Manager"
+    ]
+  },
+  {
+    "id": "cs-kbtu",
+    "universityId": "kbtu",
+    "name": "Computer Engineering",
+    "nameKz": "Компьютерлік инженерия",
+    "nameRu": "Компьютерная инженерия",
+    "field": "IT",
+    "degree": "Bachelor",
+    "duration": 4,
+    "language": ["English"],
+    "tuitionPerYear": 2200000,
+    "scholarship": true,
+    "grantAvailable": false,
+    "description": "Программа на стыке компьютерных наук и электроники, подготовка разработчиков embedded систем.",
+    "courses": [
+      "Digital Systems",
+      "Embedded Systems",
+      "Computer Architecture",
+      "IoT Systems",
+      "FPGA Programming"
+    ],
+    "requirements": {
+      "minENT": 115,
+      "minIELTS": 6.0,
+      "requiredSubjects": ["Mathematics", "Physics"],
+      "interview": true
+    },
+    "popularity": 90,
+    "employmentRate": 96,
+    "careerPaths": [
+      "Embedded Engineer",
+      "Hardware Engineer",
+      "IoT Developer",
+      "System Architect"
+    ]
+  },
+  {
+    "id": "ai-aitu",
+    "universityId": "aitu",
+    "name": "Artificial Intelligence",
+    "nameKz": "Жасанды интеллект",
+    "nameRu": "Искусственный интеллект",
+    "field": "IT",
+    "degree": "Bachelor",
+    "duration": 4,
+    "language": ["English", "Русский"],
+    "tuitionPerYear": 2200000,
+    "scholarship": true,
+    "grantAvailable": true,
+    "description": "Современная программа по AI и машинному обучению с практикой на реальных проектах.",
+    "courses": [
+      "Machine Learning",
+      "Deep Learning",
+      "Computer Vision",
+      "Natural Language Processing",
+      "Reinforcement Learning"
+    ],
+    "requirements": {
+      "minENT": 120,
+      "minIELTS": 6.0,
+      "requiredSubjects": ["Mathematics", "Physics"],
+      "portfolio": false,
+      "interview": true
+    },
+    "popularity": 97,
+    "employmentRate": 99,
+    "careerPaths": [
+      "ML Engineer",
+      "AI Researcher",
+      "Data Scientist",
+      "Computer Vision Engineer"
+    ]
+  },
+  {
+    "id": "cyber-aitu",
+    "universityId": "aitu",
+    "name": "Cybersecurity",
+    "nameKz": "Киберқауіпсіздік",
+    "nameRu": "Кибербезопасность",
+    "field": "IT",
+    "degree": "Bachelor",
+    "duration": 4,
+    "language": ["English", "Русский"],
+    "tuitionPerYear": 2000000,
+    "scholarship": true,
+    "grantAvailable": true,
+    "description": "Подготовка специалистов по защите информации и противодействию киберугрозам.",
+    "courses": [
+      "Network Security",
+      "Ethical Hacking",
+      "Cryptography",
+      "Security Operations",
+      "Incident Response"
+    ],
+    "requirements": {
+      "minENT": 115,
+      "requiredSubjects": ["Mathematics", "Информатика"],
+      "interview": true
+    },
+    "popularity": 93,
+    "employmentRate": 97,
+    "careerPaths": [
+      "Security Analyst",
+      "Penetration Tester",
+      "SOC Analyst",
+      "Security Architect"
+    ]
+  },
+  {
+    "id": "mba-kimep",
+    "universityId": "kimep",
+    "name": "Master of Business Administration",
+    "nameKz": "Бизнесті басқару магистрі",
+    "nameRu": "MBA",
+    "field": "Business",
+    "degree": "MBA",
+    "duration": 2,
+    "language": ["English"],
+    "tuitionPerYear": 3500000,
+    "scholarship": false,
+    "grantAvailable": false,
+    "description": "Топовая MBA программа в Центральной Азии с фокусом на лидерство и стратегический менеджмент.",
+    "courses": [
+      "Strategic Leadership",
+      "Financial Management",
+      "Global Business",
+      "Innovation Management",
+      "Business Ethics"
+    ],
+    "requirements": {
+      "minIELTS": 6.5,
+      "requiredSubjects": [],
+      "interview": true,
+      "additionalExams": ["GMAT"]
+    },
+    "popularity": 89,
+    "employmentRate": 95,
+    "careerPaths": [
+      "C-Level Executive",
+      "Business Consultant",
+      "Investment Manager",
+      "Entrepreneur"
+    ]
+  },
+  {
+    "id": "finance-kimep",
+    "universityId": "kimep",
+    "name": "Finance",
+    "nameKz": "Қаржы",
+    "nameRu": "Финансы",
+    "field": "Business",
+    "degree": "Bachelor",
+    "duration": 4,
+    "language": ["English"],
+    "tuitionPerYear": 2500000,
+    "scholarship": true,
+    "grantAvailable": false,
+    "description": "Программа по корпоративным финансам, инвестициям и финансовому анализу.",
+    "courses": [
+      "Corporate Finance",
+      "Investment Analysis",
+      "Financial Markets",
+      "Risk Management",
+      "International Finance"
+    ],
+    "requirements": {
+      "minENT": 115,
+      "minIELTS": 6.0,
+      "requiredSubjects": ["Mathematics", "Economics"],
+      "interview": true
+    },
+    "popularity": 91,
+    "employmentRate": 93,
+    "careerPaths": [
+      "Financial Analyst",
+      "Investment Banker",
+      "Portfolio Manager",
+      "Risk Analyst"
+    ]
+  },
+  {
+    "id": "med-sdu",
+    "universityId": "sdu",
+    "name": "General Medicine",
+    "nameKz": "Жалпы медицина",
+    "nameRu": "Общая медицина",
+    "field": "Medicine",
+    "degree": "Bachelor",
+    "duration": 5,
+    "language": ["English", "Русский"],
+    "tuitionPerYear": 2800000,
+    "scholarship": true,
+    "grantAvailable": true,
+    "description": "Медицинская программа международного уровня с практикой в современных клиниках.",
+    "courses": [
+      "Anatomy",
+      "Physiology",
+      "Pharmacology",
+      "Pathology",
+      "Clinical Medicine"
+    ],
+    "requirements": {
+      "minENT": 125,
+      "requiredSubjects": ["Biology", "Chemistry", "Physics"],
+      "interview": true,
+      "additionalExams": ["Medical Test"]
+    },
+    "popularity": 95,
+    "employmentRate": 98,
+    "careerPaths": [
+      "Врач",
+      "Хирург",
+      "Терапевт",
+      "Исследователь"
+    ]
+  },
+  {
+    "id": "eng-sdu",
+    "universityId": "sdu",
+    "name": "Civil Engineering",
+    "nameKz": "Азаматтық құрылыс",
+    "nameRu": "Строительство",
+    "field": "Engineering",
+    "degree": "Bachelor",
+    "duration": 4,
+    "language": ["English", "Русский"],
+    "tuitionPerYear": 1800000,
+    "scholarship": true,
+    "grantAvailable": true,
+    "description": "Подготовка инженеров-строителей для проектирования и строительства современных объектов.",
+    "courses": [
+      "Structural Analysis",
+      "Construction Materials",
+      "Geotechnical Engineering",
+      "Hydraulics",
+      "Project Management"
+    ],
+    "requirements": {
+      "minENT": 105,
+      "requiredSubjects": ["Mathematics", "Physics"],
+      "interview": false
+    },
+    "popularity": 82,
+    "employmentRate": 90,
+    "careerPaths": [
+      "Civil Engineer",
+      "Structural Engineer",
+      "Construction Manager",
+      "Project Engineer"
+    ]
+  },
+  {
+    "id": "econ-keu",
+    "universityId": "keu",
+    "name": "Economics",
+    "nameKz": "Экономика",
+    "nameRu": "Экономика",
+    "field": "Business",
+    "degree": "Bachelor",
+    "duration": 4,
+    "language": ["Русский", "Казахский"],
+    "tuitionPerYear": 600000,
+    "scholarship": true,
+    "grantAvailable": true,
+    "description": "Классическая программа по экономической теории и прикладной экономике.",
+    "courses": [
+      "Макроэкономика",
+      "Микроэкономика",
+      "Эконометрика",
+      "Экономика предприятия",
+      "Международная экономика"
+    ],
+    "requirements": {
+      "minENT": 95,
+      "requiredSubjects": ["Математика", "История Казахстана"],
+      "interview": false
+    },
+    "popularity": 78,
+    "employmentRate": 85,
+    "careerPaths": [
+      "Экономист",
+      "Аналитик",
+      "Консультант",
+      "Государственный служащий"
+    ]
+  },
+  {
+    "id": "acc-keu",
+    "universityId": "keu",
+    "name": "Accounting and Audit",
+    "nameKz": "Есеп және аудит",
+    "nameRu": "Учет и аудит",
+    "field": "Business",
+    "degree": "Bachelor",
+    "duration": 4,
+    "language": ["Русский", "Казахский"],
+    "tuitionPerYear": 550000,
+    "scholarship": true,
+    "grantAvailable": true,
+    "description": "Подготовка профессиональных бухгалтеров и аудиторов с международной сертификацией.",
+    "courses": [
+      "Финансовый учет",
+      "Управленческий учет",
+      "Аудит",
+      "Налогообложение",
+      "МСФО"
+    ],
+    "requirements": {
+      "minENT": 90,
+      "requiredSubjects": ["Математика"],
+      "interview": false
+    },
+    "popularity": 80,
+    "employmentRate": 88,
+    "careerPaths": [
+      "Бухгалтер",
+      "Аудитор",
+      "Налоговый консультант",
+      "Финансовый директор"
+    ]
+  },
+  {
+    "id": "phil-enu",
+    "universityId": "enu",
+    "name": "International Relations",
+    "nameKz": "Халықаралық қатынастар",
+    "nameRu": "Международные отношения",
+    "field": "Social Sciences",
+    "degree": "Bachelor",
+    "duration": 4,
+    "language": ["Русский", "Казахский", "English"],
+    "tuitionPerYear": 750000,
+    "scholarship": true,
+    "grantAvailable": true,
+    "description": "Подготовка специалистов в области международных отношений и дипломатии.",
+    "courses": [
+      "Международное право",
+      "Дипломатия",
+      "Геополитика",
+      "Международные организации",
+      "Политический анализ"
+    ],
+    "requirements": {
+      "minENT": 100,
+      "requiredSubjects": ["История", "География"],
+      "interview": true
+    },
+    "popularity": 84,
+    "employmentRate": 82,
+    "careerPaths": [
+      "Дипломат",
+      "Политический аналитик",
+      "Международный консультант",
+      "Государственный служащий"
+    ]
+  },
+  {
+    "id": "mining-kstu",
+    "universityId": "kstu",
+    "name": "Mining Engineering",
+    "nameKz": "Тау-кен ісі",
+    "nameRu": "Горное дело",
+    "field": "Engineering",
+    "degree": "Bachelor",
+    "duration": 4,
+    "language": ["Русский"],
+    "tuitionPerYear": 500000,
+    "scholarship": true,
+    "grantAvailable": true,
+    "description": "Классическая программа по горному делу с практикой на реальных месторождениях.",
+    "courses": [
+      "Геология",
+      "Технология добычи",
+      "Горные машины",
+      "Маркшейдерия",
+      "Обогащение полезных ископаемых"
+    ],
+    "requirements": {
+      "minENT": 90,
+      "requiredSubjects": ["Математика", "Физика"],
+      "interview": false
+    },
+    "popularity": 75,
+    "employmentRate": 92,
+    "careerPaths": [
+      "Горный инженер",
+      "Технолог",
+      "Маркшейдер",
+      "Начальник участка"
+    ]
+  },
+  {
+    "id": "ds-iitu",
+    "universityId": "iitu",
+    "name": "Data Science",
+    "nameKz": "Деректер ғылымы",
+    "nameRu": "Наука о данных",
+    "field": "IT",
+    "degree": "Bachelor",
+    "duration": 4,
+    "language": ["English", "Русский"],
+    "tuitionPerYear": 1900000,
+    "scholarship": true,
+    "grantAvailable": true,
+    "description": "Актуальная программа по анализу данных, машинному обучению и большим данным.",
+    "courses": [
+      "Statistics",
+      "Machine Learning",
+      "Big Data",
+      "Data Visualization",
+      "Business Analytics"
+    ],
+    "requirements": {
+      "minENT": 115,
+      "requiredSubjects": ["Математика", "Информатика"],
+      "interview": true
+    },
+    "popularity": 96,
+    "employmentRate": 98,
+    "careerPaths": [
+      "Data Scientist",
+      "Data Analyst",
+      "ML Engineer",
+      "Business Intelligence Analyst"
+    ]
+  },
+  {
+    "id": "se-iitu",
+    "universityId": "iitu",
+    "name": "Software Engineering",
+    "nameKz": "Бағдарламалық инженерия",
+    "nameRu": "Программная инженерия",
+    "field": "IT",
+    "degree": "Bachelor",
+    "duration": 4,
+    "language": ["English", "Русский"],
+    "tuitionPerYear": 1800000,
+    "scholarship": true,
+    "grantAvailable": true,
+    "description": "Практико-ориентированная программа по разработке современного программного обеспечения.",
+    "courses": [
+      "Software Design",
+      "Web Development",
+      "Mobile Development",
+      "DevOps",
+      "Agile Methodologies"
+    ],
+    "requirements": {
+      "minENT": 110,
+      "requiredSubjects": ["Математика"],
+      "portfolio": true,
+      "interview": true
+    },
+    "popularity": 94,
+    "employmentRate": 97,
+    "careerPaths": [
+      "Software Developer",
+      "Full-stack Developer",
+      "Mobile Developer",
+      "DevOps Engineer"
+    ]
+  }
+]
+

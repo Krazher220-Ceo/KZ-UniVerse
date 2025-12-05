@@ -1,0 +1,598 @@
+[
+  {
+    "id": "nu",
+    "name": "Nazarbayev University",
+    "nameKz": "Назарбаев Университеті",
+    "shortName": "NU",
+    "logo": "https://placehold.co/200x200/0066FF/white?text=NU",
+    "cover": "https://images.unsplash.com/photo-1562774053-701939374585?w=1200",
+    "city": "Астана",
+    "region": "Акмолинская область",
+    "rating": 4.9,
+    "worldRank": 295,
+    "founded": 2010,
+    "students": 6000,
+    "internationalStudents": 15,
+    "description": "Nazarbayev University - первый в Казахстане автономный исследовательский университет, созданный по инициативе Первого Президента РК. Университет предлагает мировое образование и является лидером в научных исследованиях.",
+    "mission": "Содействие развитию образования, науки и инноваций в Казахстане путем предоставления мирового уровня образования, проведения передовых исследований и формирования интеллектуальной элиты страны.",
+    "achievements": [
+      "№1 университет Казахстана по международным рейтингам",
+      "Более 200 публикаций в Web of Science ежегодно",
+      "15+ партнерских университетов из Top-100",
+      "100% англоязычное обучение",
+      "Средняя зарплата выпускников - 500,000₸+"
+    ],
+    "infrastructure": [
+      "Современные научные лаборатории с оборудованием мирового уровня",
+      "Библиотека с доступом к международным базам данных",
+      "Спортивный комплекс олимпийского стандарта",
+      "Студенческие резиденции европейского уровня",
+      "Коворкинг-пространства и инновационный хаб"
+    ],
+    "website": "https://nu.edu.kz",
+    "email": "admissions@nu.edu.kz",
+    "phone": "+7 (7172) 70-93-33",
+    "address": "Кабанбай батыр 53, Астана, 010000",
+    "socialMedia": {
+      "facebook": "https://facebook.com/NazarbayevUniversity",
+      "instagram": "https://instagram.com/nazarbayevuniversity",
+      "youtube": "https://youtube.com/@NazarbayevUniversity"
+    },
+    "tour3D": "https://www.google.com/maps/@51.090555,71.397777,3a,75y,h,90t/data=!3m7!1e1!3m5!1s",
+    "coordinates": {
+      "lat": 51.090555,
+      "lng": 71.397777
+    },
+    "stats": {
+      "views": 8420,
+      "uniqueVisitors": 5200,
+      "avgTimeOnPage": 520,
+      "favorites": 1890,
+      "tour3DClicks": 2230,
+      "comparisonCount": 1450,
+      "applicationClicks": 890
+    },
+    "tuitionRange": {
+      "min": 7000,
+      "max": 9000
+    },
+    "dormitory": true,
+    "dormitoryCost": 150000
+  },
+  {
+    "id": "kaznu",
+    "name": "Al-Farabi Kazakh National University",
+    "nameKz": "Әл-Фараби атындағы Қазақ ұлттық университеті",
+    "shortName": "КазНУ",
+    "logo": "https://placehold.co/200x200/DC143C/white?text=KazNU",
+    "cover": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200",
+    "city": "Алматы",
+    "region": "Алматинская область",
+    "rating": 4.7,
+    "worldRank": 165,
+    "founded": 1934,
+    "students": 20000,
+    "internationalStudents": 8,
+    "description": "КазНУ им. аль-Фараби - старейший и крупнейший университет Казахстана, флагман национального высшего образования. Входит в топ-200 университетов мира по версии QS Rankings.",
+    "mission": "Подготовка высококвалифицированных кадров для экономики и социальной сферы Казахстана, развитие фундаментальных и прикладных исследований, сохранение национальных культурных традиций.",
+    "achievements": [
+      "165 место в мировом рейтинге QS",
+      "17 факультетов и более 200 специальностей",
+      "Более 1000 международных партнеров",
+      "90% трудоустройства выпускников",
+      "Крупнейшая университетская библиотека Казахстана"
+    ],
+    "infrastructure": [
+      "19 учебных корпусов в центре Алматы",
+      "Научная библиотека с фондом 2+ млн книг",
+      "Центр инновационных технологий",
+      "Спортивный комплекс и стадион",
+      "7 студенческих общежитий"
+    ],
+    "website": "https://kaznu.kz",
+    "email": "admission@kaznu.kz",
+    "phone": "+7 (727) 377-33-30",
+    "address": "пр. Аль-Фараби 71, Алматы, 050040",
+    "socialMedia": {
+      "facebook": "https://facebook.com/KazNU",
+      "instagram": "https://instagram.com/kaznu_university",
+      "telegram": "https://t.me/kaznukz"
+    },
+    "tour3D": "https://tour.kaznu.kz",
+    "coordinates": {
+      "lat": 43.238949,
+      "lng": 76.945627
+    },
+    "stats": {
+      "views": 12500,
+      "uniqueVisitors": 8100,
+      "avgTimeOnPage": 485,
+      "favorites": 2450,
+      "tour3DClicks": 1890,
+      "comparisonCount": 2100,
+      "applicationClicks": 1450
+    },
+    "tuitionRange": {
+      "min": 600000,
+      "max": 1800000
+    },
+    "dormitory": true,
+    "dormitoryCost": 90000
+  },
+  {
+    "id": "kbtu",
+    "name": "Kazakh-British Technical University",
+    "nameKz": "Қазақ-Британ техникалық университеті",
+    "shortName": "КБТУ",
+    "logo": "https://placehold.co/200x200/003366/white?text=KBTU",
+    "cover": "https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=1200",
+    "city": "Алматы",
+    "region": "Алматинская область",
+    "rating": 4.6,
+    "worldRank": 401,
+    "founded": 2001,
+    "students": 5500,
+    "internationalStudents": 10,
+    "description": "КБТУ - ведущий технический университет Казахстана, созданный при поддержке British Council. Специализируется на инженерных и IT-специальностях, обучение ведется на английском языке.",
+    "mission": "Подготовка конкурентоспособных специалистов в области технологий и инженерии по международным стандартам, интеграция образования, науки и бизнеса.",
+    "achievements": [
+      "Лучший технический вуз Казахстана",
+      "Британская модель образования",
+      "95% выпускников трудоустроены до окончания",
+      "Сильнейшие программы по Petroleum Engineering",
+      "Партнерство с Shell, Chevron, Samsung"
+    ],
+    "infrastructure": [
+      "Современные инженерные лаборатории",
+      "Центр робототехники и AI",
+      "Нефтегазовый симулятор",
+      "Коворкинг и стартап-инкубатор",
+      "Общежития в шаговой доступности"
+    ],
+    "website": "https://kbtu.edu.kz",
+    "email": "admission@kbtu.kz",
+    "phone": "+7 (727) 355-24-83",
+    "address": "ул. Толе би 59, Алматы, 050000",
+    "socialMedia": {
+      "instagram": "https://instagram.com/kbtu.university",
+      "facebook": "https://facebook.com/kbtukz",
+      "telegram": "https://t.me/kbtukz"
+    },
+    "tour3D": "",
+    "coordinates": {
+      "lat": 43.251732,
+      "lng": 76.945255
+    },
+    "stats": {
+      "views": 7890,
+      "uniqueVisitors": 4900,
+      "avgTimeOnPage": 510,
+      "favorites": 1670,
+      "tour3DClicks": 890,
+      "comparisonCount": 1580,
+      "applicationClicks": 980
+    },
+    "tuitionRange": {
+      "min": 1500000,
+      "max": 2500000
+    },
+    "dormitory": true,
+    "dormitoryCost": 120000
+  },
+  {
+    "id": "aitu",
+    "name": "Astana IT University",
+    "nameKz": "Астана IT Университеті",
+    "shortName": "AITU",
+    "logo": "https://placehold.co/200x200/00C9A7/white?text=AITU",
+    "cover": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1200",
+    "city": "Астана",
+    "region": "Акмолинская область",
+    "rating": 4.5,
+    "founded": 2017,
+    "students": 3500,
+    "internationalStudents": 12,
+    "description": "AITU - первый IT-университет Казахстана, созданный для подготовки специалистов в области информационных технологий. Современные программы, сильные связи с IT-индустрией.",
+    "mission": "Формирование нового поколения IT-специалистов мирового уровня, развитие цифровой экономики Казахстана через инновационное образование и исследования.",
+    "achievements": [
+      "Лучший IT-вуз Центральной Азии",
+      "Партнерство с Google, Microsoft, AWS",
+      "100% практико-ориентированное обучение",
+      "Средняя стартовая зарплата 400,000₸",
+      "Собственный технопарк и инкубатор"
+    ],
+    "infrastructure": [
+      "Современный кампус с умными технологиями",
+      "AI и Machine Learning лаборатории",
+      "Центр кибербезопасности",
+      "Коворкинг 24/7",
+      "E-sports arena и maker space"
+    ],
+    "website": "https://aitu.edu.kz",
+    "email": "info@aitu.edu.kz",
+    "phone": "+7 (7172) 64-58-58",
+    "address": "ул. Мангилик Ел 55/11, Астана, 010000",
+    "socialMedia": {
+      "instagram": "https://instagram.com/aitu.edu.kz",
+      "telegram": "https://t.me/aitu_official",
+      "youtube": "https://youtube.com/@AITUkz"
+    },
+    "tour3D": "https://tour.aitu.edu.kz",
+    "coordinates": {
+      "lat": 51.128422,
+      "lng": 71.430548
+    },
+    "stats": {
+      "views": 9200,
+      "uniqueVisitors": 6100,
+      "avgTimeOnPage": 565,
+      "favorites": 2100,
+      "tour3DClicks": 1950,
+      "comparisonCount": 1820,
+      "applicationClicks": 1230
+    },
+    "tuitionRange": {
+      "min": 1800000,
+      "max": 2200000
+    },
+    "dormitory": true,
+    "dormitoryCost": 140000
+  },
+  {
+    "id": "kimep",
+    "name": "KIMEP University",
+    "nameKz": "KIMEP Университеті",
+    "shortName": "KIMEP",
+    "logo": "https://placehold.co/200x200/8B0000/white?text=KIMEP",
+    "cover": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200",
+    "city": "Алматы",
+    "region": "Алматинская область",
+    "rating": 4.6,
+    "worldRank": 601,
+    "founded": 1992,
+    "students": 4500,
+    "internationalStudents": 20,
+    "description": "KIMEP - первый международный университет Казахстана, специализирующийся на бизнесе, экономике и праве. Образование по американской модели, обучение полностью на английском языке.",
+    "mission": "Развитие бизнес-образования мирового уровня в Центральной Азии, подготовка лидеров для бизнеса и государственного управления.",
+    "achievements": [
+      "Лучшая бизнес-школа Казахстана",
+      "AACSB аккредитация",
+      "Более 60 стран в студенческом составе",
+      "Выпускники работают в Fortune 500",
+      "Сильнейшая программа MBA в регионе"
+    ],
+    "infrastructure": [
+      "Кампус в центре Алматы",
+      "Бизнес-инкубатор и центр карьеры",
+      "Bloomberg Terminal Lab",
+      "Современная библиотека",
+      "Спортивный комплекс"
+    ],
+    "website": "https://kimep.kz",
+    "email": "admission@kimep.kz",
+    "phone": "+7 (727) 270-42-52",
+    "address": "ул. Абая 2, Алматы, 050010",
+    "socialMedia": {
+      "facebook": "https://facebook.com/KIMEPUniversity",
+      "instagram": "https://instagram.com/kimepuniversity",
+      "linkedin": "https://linkedin.com/school/kimep"
+    },
+    "tour3D": "",
+    "coordinates": {
+      "lat": 43.238293,
+      "lng": 76.904486
+    },
+    "stats": {
+      "views": 6780,
+      "uniqueVisitors": 4200,
+      "avgTimeOnPage": 490,
+      "favorites": 1450,
+      "tour3DClicks": 680,
+      "comparisonCount": 1320,
+      "applicationClicks": 780
+    },
+    "tuitionRange": {
+      "min": 2200000,
+      "max": 3500000
+    },
+    "dormitory": true,
+    "dormitoryCost": 180000
+  },
+  {
+    "id": "sdu",
+    "name": "Suleyman Demirel University",
+    "nameKz": "Сулейман Демирель атындағы университет",
+    "shortName": "SDU",
+    "logo": "https://placehold.co/200x200/0047AB/white?text=SDU",
+    "cover": "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?w=1200",
+    "city": "Алматы",
+    "region": "Алматинская область",
+    "rating": 4.4,
+    "worldRank": 751,
+    "founded": 1996,
+    "students": 7000,
+    "internationalStudents": 15,
+    "description": "SDU - международный университет, созданный при поддержке Турции. Сильные программы по инженерии, медицине и гуманитарным наукам. Трехъязычное образование.",
+    "mission": "Предоставление качественного образования международного уровня, укрепление культурных и научных связей между Казахстаном и Турцией.",
+    "achievements": [
+      "Один из крупнейших частных вузов РК",
+      "Сильная медицинская школа",
+      "Обучение на 3 языках",
+      "Международные обмены с 50+ странами",
+      "Современный кампус европейского уровня"
+    ],
+    "infrastructure": [
+      "Современный кампус с парковой зоной",
+      "Медицинский симуляционный центр",
+      "Инженерные лаборатории",
+      "Спортивный комплекс с бассейном",
+      "Комфортные общежития"
+    ],
+    "website": "https://sdu.edu.kz",
+    "email": "admission@sdu.edu.kz",
+    "phone": "+7 (727) 269-63-26",
+    "address": "ул. Абылай хана 1/1, Алматы, 040900",
+    "socialMedia": {
+      "instagram": "https://instagram.com/sdu_edu_kz",
+      "facebook": "https://facebook.com/sdukazakhstan",
+      "youtube": "https://youtube.com/@SDUeduKZ"
+    },
+    "tour3D": "https://tour.sdu.edu.kz",
+    "coordinates": {
+      "lat": 43.284066,
+      "lng": 76.956489
+    },
+    "stats": {
+      "views": 5920,
+      "uniqueVisitors": 3800,
+      "avgTimeOnPage": 445,
+      "favorites": 1180,
+      "tour3DClicks": 890,
+      "comparisonCount": 1050,
+      "applicationClicks": 620
+    },
+    "tuitionRange": {
+      "min": 1400000,
+      "max": 2800000
+    },
+    "dormitory": true,
+    "dormitoryCost": 130000
+  },
+  {
+    "id": "keu",
+    "name": "Karaganda Economic University",
+    "nameKz": "Қарағанды экономикалық университеті",
+    "shortName": "КЭУ",
+    "logo": "https://placehold.co/200x200/228B22/white?text=KEU",
+    "cover": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200",
+    "city": "Караганда",
+    "region": "Карагандинская область",
+    "rating": 4.3,
+    "founded": 1972,
+    "students": 12000,
+    "internationalStudents": 5,
+    "description": "КЭУ - ведущий экономический вуз Центрального Казахстана. Готовит специалистов в области экономики, финансов, бизнеса и государственного управления.",
+    "mission": "Подготовка конкурентоспособных специалистов для экономики Казахстана, развитие экономической науки в регионе.",
+    "achievements": [
+      "Крупнейший экономический вуз региона",
+      "Сильная школа финансов и учета",
+      "85% трудоустройства выпускников",
+      "Партнерство с Национальным Банком РК",
+      "Доступная стоимость обучения"
+    ],
+    "infrastructure": [
+      "5 учебных корпусов",
+      "Современные компьютерные классы",
+      "Бизнес-инкубатор",
+      "Библиотека с электронными ресурсами",
+      "Студенческие общежития"
+    ],
+    "website": "https://keu.kz",
+    "email": "info@keu.kz",
+    "phone": "+7 (7212) 44-16-44",
+    "address": "ул. Академическая 9, Караганда, 100009",
+    "socialMedia": {
+      "instagram": "https://instagram.com/keukaraganda",
+      "facebook": "https://facebook.com/KEU.KAZPOTREBSOYUZ"
+    },
+    "tour3D": "",
+    "coordinates": {
+      "lat": 49.806406,
+      "lng": 73.085318
+    },
+    "stats": {
+      "views": 4250,
+      "uniqueVisitors": 2800,
+      "avgTimeOnPage": 380,
+      "favorites": 850,
+      "tour3DClicks": 320,
+      "comparisonCount": 780,
+      "applicationClicks": 520
+    },
+    "tuitionRange": {
+      "min": 450000,
+      "max": 900000
+    },
+    "dormitory": true,
+    "dormitoryCost": 60000
+  },
+  {
+    "id": "enu",
+    "name": "L.N. Gumilyov Eurasian National University",
+    "nameKz": "Л.Н. Гумилев атындағы Еуразия ұлттық университеті",
+    "shortName": "ЕНУ",
+    "logo": "https://placehold.co/200x200/FFD700/333?text=ENU",
+    "cover": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200",
+    "city": "Астана",
+    "region": "Акмолинская область",
+    "rating": 4.5,
+    "worldRank": 501,
+    "founded": 1996,
+    "students": 16000,
+    "internationalStudents": 10,
+    "description": "ЕНУ - классический университет в столице Казахстана, специализирующийся на гуманитарных, естественных и технических науках. Сильная научная школа.",
+    "mission": "Развитие фундаментальной науки и подготовка интеллектуальной элиты для Казахстана и стран Евразии.",
+    "achievements": [
+      "Крупнейший классический вуз столицы",
+      "Сильная филологическая школа",
+      "Более 80 программ обучения",
+      "Активная научная деятельность",
+      "Доступные образовательные гранты"
+    ],
+    "infrastructure": [
+      "Современный кампус в центре Астаны",
+      "Научная библиотека с 1 млн книг",
+      "Исследовательские центры",
+      "Спортивный комплекс",
+      "Комфортные общежития для студентов"
+    ],
+    "website": "https://enu.kz",
+    "email": "rector@enu.kz",
+    "phone": "+7 (7172) 70-95-00",
+    "address": "ул. Сатпаева 2, Астана, 010008",
+    "socialMedia": {
+      "instagram": "https://instagram.com/enu.official",
+      "facebook": "https://facebook.com/ENU.ASTANA",
+      "telegram": "https://t.me/enu_kz"
+    },
+    "tour3D": "",
+    "coordinates": {
+      "lat": 51.167583,
+      "lng": 71.417195
+    },
+    "stats": {
+      "views": 6450,
+      "uniqueVisitors": 4100,
+      "avgTimeOnPage": 420,
+      "favorites": 1280,
+      "tour3DClicks": 650,
+      "comparisonCount": 1150,
+      "applicationClicks": 780
+    },
+    "tuitionRange": {
+      "min": 550000,
+      "max": 1200000
+    },
+    "dormitory": true,
+    "dormitoryCost": 70000
+  },
+  {
+    "id": "kstu",
+    "name": "Karaganda State Technical University",
+    "nameKz": "Қарағанды мемлекеттік техникалық университеті",
+    "shortName": "КарТУ",
+    "logo": "https://placehold.co/200x200/FF8C00/white?text=KSTU",
+    "cover": "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1200",
+    "city": "Караганда",
+    "region": "Карагандинская область",
+    "rating": 4.2,
+    "founded": 1953,
+    "students": 10000,
+    "internationalStudents": 8,
+    "description": "КарТУ - крупнейший технический вуз Центрального Казахстана. Готовит инженеров для горнодобывающей, металлургической и машиностроительной промышленности.",
+    "mission": "Подготовка высококвалифицированных инженерных кадров для индустриально-инновационного развития Казахстана.",
+    "achievements": [
+      "Ведущий технический вуз региона",
+      "Сильная школа горного дела",
+      "Партнерство с ArcelorMittal",
+      "Современные инженерные лаборатории",
+      "Высокий процент трудоустройства"
+    ],
+    "infrastructure": [
+      "7 учебных корпусов",
+      "Горнодобывающие симуляторы",
+      "Металлургические лаборатории",
+      "Техническая библиотека",
+      "Общежития для студентов"
+    ],
+    "website": "https://kstu.kz",
+    "email": "info@kstu.kz",
+    "phone": "+7 (7212) 56-44-22",
+    "address": "бульвар Мира 56, Караганда, 100027",
+    "socialMedia": {
+      "instagram": "https://instagram.com/kstu_official",
+      "facebook": "https://facebook.com/KSTUkaraganda"
+    },
+    "tour3D": "",
+    "coordinates": {
+      "lat": 49.802244,
+      "lng": 73.109438
+    },
+    "stats": {
+      "views": 3890,
+      "uniqueVisitors": 2500,
+      "avgTimeOnPage": 360,
+      "favorites": 720,
+      "tour3DClicks": 290,
+      "comparisonCount": 650,
+      "applicationClicks": 450
+    },
+    "tuitionRange": {
+      "min": 400000,
+      "max": 850000
+    },
+    "dormitory": true,
+    "dormitoryCost": 55000
+  },
+  {
+    "id": "iitu",
+    "name": "International Information Technology University",
+    "nameKz": "Халықаралық ақпараттық технологиялар университеті",
+    "shortName": "МУИТ",
+    "logo": "https://placehold.co/200x200/4169E1/white?text=IITU",
+    "cover": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200",
+    "city": "Алматы",
+    "region": "Алматинская область",
+    "rating": 4.4,
+    "worldRank": 801,
+    "founded": 2009,
+    "students": 2500,
+    "internationalStudents": 12,
+    "description": "МУИТ - специализированный IT-университет, готовящий программистов, дата-сайентистов и специалистов по кибербезопасности. Сильные связи с IT-индустрией.",
+    "mission": "Формирование инновационной IT-элиты Казахстана через современное образование, практические проекты и партнерство с индустрией.",
+    "achievements": [
+      "Топ-3 IT вуз Казахстана",
+      "Партнерство с Kaspersky, EPAM, Yandex",
+      "Практико-ориентированное обучение",
+      "98% выпускников в IT-индустрии",
+      "Собственный технопарк"
+    ],
+    "infrastructure": [
+      "Современный IT-кампус",
+      "Лаборатории программирования",
+      "Центр Data Science и AI",
+      "Хакспейс и коворкинг",
+      "Общежитие в шаговой доступности"
+    ],
+    "website": "https://iitu.edu.kz",
+    "email": "info@iitu.edu.kz",
+    "phone": "+7 (727) 330-09-00",
+    "address": "ул. Манаса 34/1, Алматы, 050000",
+    "socialMedia": {
+      "instagram": "https://instagram.com/iitu_edu",
+      "telegram": "https://t.me/iitu_official",
+      "facebook": "https://facebook.com/iitu.edu.kz"
+    },
+    "tour3D": "",
+    "coordinates": {
+      "lat": 43.232820,
+      "lng": 76.889709
+    },
+    "stats": {
+      "views": 7120,
+      "uniqueVisitors": 4600,
+      "avgTimeOnPage": 495,
+      "favorites": 1580,
+      "tour3DClicks": 920,
+      "comparisonCount": 1380,
+      "applicationClicks": 890
+    },
+    "tuitionRange": {
+      "min": 1600000,
+      "max": 2000000
+    },
+    "dormitory": true,
+    "dormitoryCost": 110000
+  }
+]
+
