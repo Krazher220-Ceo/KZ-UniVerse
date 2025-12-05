@@ -4,7 +4,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 const fetch = require('node-fetch');
 
-const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || 'YOUR_BOT_TOKEN';
+const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8552407784:AAHHb30Zi5N4Na6AEAoe2S6_7UUHMmiQlA4';
 const API_URL = process.env.API_URL || 'http://localhost:3000';
 
 const bot = new TelegramBot(BOT_TOKEN, { polling: true });
@@ -123,7 +123,7 @@ bot.on('message', async (msg) => {
   
   try {
     // Прямой вызов Gemini API
-    const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyCIhH-3VKldhugzLWxf4UWQ6tCrcksrjdA';
+    const GEMINI_API_KEY = 'AIzaSyCIhH-3VKldhugzLWxf4UWQ6tCrcksrjdA';
     const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
     
     const prompt = `Ты AI-помощник платформы KZ UniVerse. Помогаешь студентам выбрать университет в Казахстане.
