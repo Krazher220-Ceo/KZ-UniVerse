@@ -2,7 +2,10 @@
   "name": "kz-universe",
   "version": "1.0.0",
   "description": "Единая платформа университетов Казахстана",
+  "license": "AGPL-3.0",
   "private": true,
+  "author": "DataHub ВУЗ-ов РК Team",
+  "copyright": "Copyright (C) 2024 DataHub ВУЗ-ов РК (KZ UniVerse). All rights reserved.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
